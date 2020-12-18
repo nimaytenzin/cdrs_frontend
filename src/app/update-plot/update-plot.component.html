@@ -1,0 +1,74 @@
+<mat-toolbar>
+  <span>Update Feature</span>
+  <span class="menu-spacer"></span>
+</mat-toolbar>
+
+
+
+<div class="form-wraper" style="text-align:left" style="margin: 3px;">
+  <div class="form-container card" >
+  <table style="width: 100%" >
+    <tr>
+      <td>Plot ID: </td><td>DL1-23</td>
+    </tr>
+    <tr>
+      <td>Precinct: </td><td>UV1</td>
+    </tr>
+    <tr>
+      <td>Maximum Height: </td><td> 3 Floors</td>
+    </tr>
+    <tr>
+      <td>Coverage: </td><td> 50 %</td>
+    </tr>
+    <tr>
+      <td>Setbacks: </td><td>3m on side and 5m on side accomodating septic Tank</td>
+    </tr>
+
+  </table>
+  </div>
+</div>
+
+
+<div class="form-wraper" style="text-align:center">
+  <div class="form-container card" >
+    <div class="form-body">
+          <!-- Start of Multi unit Form-->  
+          <form [formGroup]="updatePlotForm">
+            <mat-form-field class="justifier">
+              <mat-label>Development Status</mat-label>
+              <mat-select name="developmentStatus" formControlName="developmentStatusControl"[readonly]="disableForm" >
+                <mat-option *ngFor="let status of developmentStatus" [value]="status.name">
+                  {{status.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+              <mat-label>Plot Use</mat-label>
+              <mat-select name="plotUse" formControlName="plotUseControl" [readonly]="disableForm" >
+                <mat-option *ngFor="let use of plotuses" [value]="use.name">
+                  {{use.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+              <mat-label>On-site Parking</mat-label>
+              <input matInput type="number" name="onsiteParking" formControlName="onsiteParkingControl" required min="0" [readonly]="disableForm" required autofocus>
+            </mat-form-field>
+      
+            <mat-form-field class="justifier">
+              <mat-label>Remarks</mat-label>
+              <input matInput type="text" name="plotRemarks" formControlName="plotRemarksControl" required min="0" [readonly]="disableForm" autofocus>
+            </mat-form-field>
+      
+          </form>
+          <!-- End of Multi unit Form-->
+    </div>
+    <div class="form-footer">
+      <button mat-raised-button class="btn custom-btn" (click)="submit()">
+        <mat-icon>note_add</mat-icon> Submit
+      </button>
+    </div>
+  </div>
+</div>

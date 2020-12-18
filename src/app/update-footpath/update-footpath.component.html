@@ -1,0 +1,49 @@
+<mat-toolbar>
+    <span>Update Footpath Segment</span>
+    <span class="menu-spacer"></span>
+  </mat-toolbar>
+  <div class="form-wraper" style="text-align:center">
+    <div class="form-container card" >
+      <div class="form-body">
+            <!-- Start of Form-->  
+            <form [formGroup]="updatePathForm">
+              <mat-form-field class="justifier">
+                <mat-label>Development Status</mat-label>
+                <mat-select name="developmentStatus" formControlName="developmentStatusControl" [readonly]="disableForm" >
+                  <mat-option *ngFor="let status of developmentStatus" [value]="status.id">
+                    {{status.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              
+              <mat-form-field class="justifier">
+                <mat-label>Width</mat-label>
+                <input matInput type="number" name="footpathWidth" formControlName="footpathWidthControl" required min="0" [readonly]="disableForm" required autofocus>
+              </mat-form-field>
+              
+  
+              <mat-form-field class="justifier">
+                <mat-label>Lighting</mat-label>
+                <mat-select name="lighting" formControlName="lightingControl"  [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of lights" [value]="option.id">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+         
+              <mat-form-field class="justifier">
+                <mat-label>Remarks</mat-label>
+                <input matInput type="text" name="footpathRemarks" formControlName="footpathRemarksControl" required min="0" [readonly]="disableForm" autofocus>
+              </mat-form-field>
+        
+            </form>
+            <!-- End of Form-->
+      </div>
+      <div class="form-footer">
+        <button mat-raised-button class="btn custom-btn" (click)="submit()">
+          <mat-icon>note_add</mat-icon> Submit
+        </button>
+      </div>
+    </div>
+  </div>
+  
