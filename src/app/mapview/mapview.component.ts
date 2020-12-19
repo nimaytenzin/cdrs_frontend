@@ -96,6 +96,7 @@ export class MapviewComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
+  
     private dataService: DataService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
@@ -110,6 +111,10 @@ export class MapviewComponent implements OnInit {
     var cartoMap = L.tileLayer(this.cartoPositronUrl);
     var satelliteMap = L.tileLayer(this.googleSatUrl);
     var osmBaseMap = L.tileLayer(this.osmBaseUrl);
+    
+    L.control.zoom({
+      position: 'bottomleft'
+  })
   
 
     var baseMaps = {
@@ -133,14 +138,12 @@ export class MapviewComponent implements OnInit {
 
   renderFeatures(){
     this.fetchGeojson()
-
-
-   
     this.plotMap= L.geoJSON(null,{
       onEachFeature: function (feature, layer) {  
         layer.on('click',function(e){
-            // this.router.navigate(['dashboard'])
-            alert('click works')
+          this.router.navigate(['dashboard']);
+            console.log(e.target.feature)
+         
         });},
         style: this.plotStyle
     })
@@ -148,7 +151,7 @@ export class MapviewComponent implements OnInit {
     this.roadMap = L.geoJSON(null, {
       onEachFeature: function (feature, layer) {
         layer.on('click',function(e){
-              //onlcik function
+             console.log(e)
         });
       }, 
         style: this.roadStyle}) 
@@ -210,12 +213,10 @@ export class MapviewComponent implements OnInit {
 
           if (this.accuracy > 100) {
             L.marker([this.latitude, this.longitude], {icon: iconDefault}).addTo(this.map)
-            .bindPopup('You are here')
-             
+                      
             this.map.flyTo([this.latitude, this.longitude], 19);
           } else {
             L.marker([this.latitude, this.longitude], {icon: iconDefault}).addTo(this.map)
-            .bindPopup('You are here')
             .openPopup();
             L.circle([this.latitude, this.longitude], {
               color: '#3498db',
@@ -256,5 +257,9 @@ export class MapviewComponent implements OnInit {
             }
         }, options);
       }
+    }
+
+    logout(){
+      this.router.navigate(['login'])
     }
 }

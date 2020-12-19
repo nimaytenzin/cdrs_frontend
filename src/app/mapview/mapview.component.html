@@ -1,21 +1,36 @@
 
-  <div class="map-container">
+  
 
-    <button (click)="goToDash()">Click</button>
+
+  <div class="map-container">
+    
     <div class="map-frame">
       <div id="map">
+        
         <div class="leaflet-bottom leaflet-right">
+          <button mat-icon-button (click)="logout()"style="
+          width: 42px;
+          border-radius: 23px;
+          height: 42px;
+          background: white;
+          cursor: pointer;
+          margin-bottom: 20px;
+          border: none;" value="Cancel" class=" span3 leaflet-control" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+          </button>
+
             <button style="
             width: 42px;
             border-radius: 23px;
             height: 42px;
-            background: #ffffffa3;
+            background: white;
             cursor: pointer;
             margin-bottom: 20px;
             border: none;" value="Cancel" class=" span3 leaflet-control" (click)="getLocation()">
-              <mat-icon style="color: blue;">location_searching</mat-icon>
+              <mat-icon style="color: black;">location_searching</mat-icon>
             </button>
         </div>
+
       </div>
     </div>
   </div>

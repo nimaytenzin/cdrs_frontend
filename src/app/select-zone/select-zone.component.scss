@@ -1,3 +1,20 @@
+.image{
+  width: 100%;
+  height: 100vh;
+  background-image: url('../../assets/loginbg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.form-wraper{
+  width: 90%;
+  margin-top: -10%;
+}
 .my-form{
   min-width: 150px;
   max-width: 500px;
@@ -6,4 +23,20 @@
 
 .full-width {
   width: 100%;
+}
+
+.mat-button, .mat-raised-button{
+  background-color:#C49A0A;
+} 
+
+footer {
+  position: fixed;
+  padding: 0.2rem;
+  left: 0;
+  bottom: -15px;
+  width: 100%;
+  background-color: white;
+  color:black;
+  text-align: center;
+  opacity: .8;
 }

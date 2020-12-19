@@ -7,33 +7,18 @@ import { AuthenticationService } from '../service/authentication.service';
 interface Zone {
   id: string;
   name: string;
-  map_image: string;
-  dzongkhag_id: number;
-  color_code: string;
-  lat: number;
-  lng: number;
-  created_at: string;
-  updated_date: string;
+  thromde:string
 }
 
 interface Subzone {
   id: string;
-  created_at: string;
-  updated_at: string;
   name: string;
   zone_id: number;
 }
 
-interface Shop {
+interface Thromde {
   id: string;
   name: string;
-}
-
-interface Dzongkhag {
-  id: string;
-  name: string;
-  created_at: string;
-  updated_at: string;
 }
 
 @Component({
@@ -44,10 +29,21 @@ interface Dzongkhag {
 export class SelectZoneComponent implements OnInit {
 
   zoneForm: FormGroup;
-  dzongkhags: Dzongkhag[] = [];
-  zones: Zone[] = [];
-  subZones: Subzone[] = [];
-  shops: Shop[] = [];
+  thromdes: Thromde[] = [
+    {id: "1", name: "Thimphu Thromde"},
+    {id: "2", name: "Phuntsholing Thromde"},
+    {id: "3", name: "Gelephu Thromde"},
+    {id: "4", name: "SamdrupJongkhar Thromde"},
+  ];
+  zones: Zone[] = [
+    {id: "1", name: "North Thimphu", thromde:"Thimphu Thromde"},
+    {id: "2", name: "South Thimphu", thromde:"Thimphu Thromde"},
+  ];
+  plans: Subzone[] = [
+    {id: "1", name: "Simtokha LAP", zone_id:1},
+    {id: "1", name: "Dechencholing LAP", zone_id:2},
+  ];
+  
 
   isUserLoggedIn: boolean;
 
@@ -69,14 +65,14 @@ export class SelectZoneComponent implements OnInit {
     });
 
     this.reactiveForm();
-    this.getDzongkhagList();
+    // this.getDzongkhagList();
 
     const dzongkhagId = sessionStorage.getItem('dzongkhagId');
     const zoneId = sessionStorage.getItem('zoneId');
     const subZoneId = sessionStorage.getItem('subZoneId');
     const shopId = sessionStorage.getItem('shopId');
-    this.getZoneList(dzongkhagId);
-    this.getSubzoneList(zoneId);
+    // this.getZoneList(dzongkhagId);
+    // this.getSubzoneList(zoneId);
     this.dzongkhag = dzongkhagId;
     this.zone = zoneId;
     this.subZone = subZoneId;
@@ -92,23 +88,23 @@ export class SelectZoneComponent implements OnInit {
     });
   }
 
-  getDzongkhagList() {
-    this.dataService.getDzongkhags().subscribe(response => {
-      this.dzongkhags = response.data;
-    });
-  }
+  // getDzongkhagList() {
+  //   this.dataService.getDzongkhags().subscribe(response => {
+  //     this.dzongkhags = response.data;
+  //   });
+  // }
 
-  getZoneList(dzongkhagId) {
-    this.dataService.getZones(dzongkhagId).subscribe(response => {
-      this.zones = response.data;
-    });
-  }
+  // getZoneList(dzongkhagId) {
+  //   this.dataService.getZones(dzongkhagId).subscribe(response => {
+  //     this.zones = response.data;
+  //   });
+  // }
 
-  getSubzoneList(zoneId) {
-    this.dataService.getSubZones(zoneId).subscribe(response => {
-      this.subZones = response.data;
-    });
-  }
+  // getSubzoneList(zoneId) {
+  //   this.dataService.getSubZones(zoneId).subscribe(response => {
+  //     this.subZones = response.data;
+  //   });
+  // }
 
   redirectToDashboard() {
     if (this.zoneForm.valid) {
@@ -116,7 +112,7 @@ export class SelectZoneComponent implements OnInit {
       sessionStorage.setItem('zoneId', this.zoneForm.get('zoneControl').value);
       sessionStorage.setItem('subZoneId', this.zoneForm.get('subZoneControl').value);
       sessionStorage.setItem('shopId', this.zoneForm.get('shopControl').value);
-      this.router.navigate(['map']);
+      this.router.navigate(['mapview']);
     }
   }
 }
