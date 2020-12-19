@@ -108,42 +108,35 @@ export class MapviewComponent implements OnInit {
   }
 
   renderBaseMap() {
-    var cartoMap = L.tileLayer(this.cartoPositronUrl);
-    var satelliteMap = L.tileLayer(this.googleSatUrl);
-    var osmBaseMap = L.tileLayer(this.osmBaseUrl);
     
-    L.control.zoom({
-      position: 'bottomleft'
-  })
   
 
-    var baseMaps = {
-      "Satellite": satelliteMap,
-      "Carto Map" : cartoMap,
-      "OSM Base Map": osmBaseMap,
-    };
-    var overlayMaps = {
-      "Plots": this.plotMap,
-      "Roads": this.roadMap,
-      "Footpath": this.footpathMap
-    };
-       
-    this.map = L.map('map',{
-      layers: [cartoMap],
-      renderer: L.canvas({ tolerance: 3 })
-    }).setView([ 27.4712,89.64191,], 13);
-    this.layers = L.control.layers(baseMaps,overlayMaps).addTo(this.map);
+  
   
   }
 
   renderFeatures(){
-    this.fetchGeojson()
+   
+    var cartoMap = L.tileLayer(this.cartoPositronUrl);
+    var satelliteMap = L.tileLayer(this.googleSatUrl);
+    var osmBaseMap = L.tileLayer(this.osmBaseUrl);
+
+     
+    this.map = L.map('map',{
+      layers: [cartoMap],
+      renderer: L.canvas({ tolerance: 3 })
+    }).setView([ 27.4712,89.64191,], 13);
+    
+      var baseMaps = {
+      "Satellite": satelliteMap,
+      "Carto Map" : cartoMap,
+      "OSM Base Map": osmBaseMap,
+    };
+ 
     this.plotMap= L.geoJSON(null,{
       onEachFeature: function (feature, layer) {  
-        layer.on('click',function(e){
-          this.router.navigate(['dashboard']);
-            console.log(e.target.feature)
-         
+        layer.on('click',(e) => {
+          this.router.navigate(['dashboard']);         
         });},
         style: this.plotStyle
     })
@@ -164,7 +157,18 @@ export class MapviewComponent implements OnInit {
       }, 
         style: this.footpathStyle}) 
 
+        var overlayMaps = {
+          "Plots": this.plotMap,
+          "Roads": this.roadMap,
+          "Footpath": this.footpathMap
+        };
+           
+        this.layers = L.control.layers(baseMaps,overlayMaps).addTo(this.map);
+
+        this.fetchGeojson()
+
   }
+
 
  
 
