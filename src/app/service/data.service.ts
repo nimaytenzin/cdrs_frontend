@@ -50,7 +50,41 @@ export class DataService {
         catchError(this.handleError)
       );
   }
-  ///
+
+  getThromdes(){
+    return this.http
+    .get<any>(`${this.API_URL}/get-thromdes`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+  getLapsByThromdes(thromde_id){
+    return this.http
+    .get<any>(`${this.API_URL}/get-laps/${thromde_id}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+  
+
+
+//renderShapefile
+getPlotsByLap(lap_id){
+  return this.http
+  .get<any>(`${this.API_URL}/shapefile/get-plots/${lap_id}`, this.httpOptions)
+  .pipe(
+    catchError(this.handleError)
+  )
+}
+
+getAllPlots(){
+  return this.http
+  .get<any>(`${this.API_URL}/shapefile/get-all-plots`, this.httpOptions)
+  .pipe(
+    catchError(this.handleError)
+  )
+}
+
 
   getPlotData(){
     return this.http
@@ -109,56 +143,7 @@ export class DataService {
   getZones(){
     
   }
-  postRegistration(item) {
-    return this.http
-      .post(`${this.API_URL}/household-details`, item, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  postUpdateHouseHold(item, houseHoldId) {
-    return this.http
-      .put(`${this.API_URL}/household-details/${houseHoldId}`, item, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-  postUnit(item){
-    return this.http
-      .post<any>(`${this.API_URL}/createunit`,item,this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-  postResident(item){
-    return this.http
-      .post<any>(`${this.API_URL}/create-resident`,item,this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-  postCompelte(strid){
-    return this.http
-      .get<any>(`${this.API_URL}/markcomplete/${strid}`)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-  postShop(item){
-    return this.http
-      .post<any>(`${this.API_URL}/create-shop`,item,this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-  postBuilding(item){
-    return this.http
-      .post<any>(`${this.API_URL}/createbuilding`,item,this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
+  
   uploadImg(item){
     return this.http
       .post<any>(`${this.API_URL}/upload-img`,item,this.httpOptions)

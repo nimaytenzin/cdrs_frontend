@@ -1,11 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DataService } from '../service/data.service';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatSnackBar, MatDialog, MatSidenav } from '@angular/material';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { environment } from '../../environments/environment';
+
+export class PlotInfo{
+  plot_id: string;
+  precinct: string;
+  area:string;
+  height: string;
+  coverage: string;
+  setback: string
+}
+export class RoadSegmentInfo{
+  segment_id: string;
+  length: number
+}
+
+export class FootpathInfo{
+  segment_id: string;
+  length:number
+}
+
 
 
 @Component({
@@ -22,7 +41,15 @@ export class MapviewComponent implements OnInit {
   footpathMap:L.GeoJSON;
   map: L.Map;
   layers: L.Control;
+  isShowing:boolean;
+  displayFootpathCard:boolean;
+  displayPlotCard:boolean;
+  displayRoadSegmentCard:boolean;
 
+  plotInfo: PlotInfo;
+  roadSegmentInfo: RoadSegmentInfo;
+  footpathInfo : FootpathInfo;
+  
    googleSatUrl = "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}";
    hybridMapUrl = "http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}";
    cartoPositronUrl = "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png";
@@ -43,6 +70,7 @@ export class MapviewComponent implements OnInit {
     iconUrl: 'assets/marker-icon.png',
     iconSize: [20, 20]
   });
+  
 
   plotStyle(feature) {
     return {
@@ -103,20 +131,32 @@ export class MapviewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+  // fetch('https://raw.githubusercontent.com/nimaytenzin/cdrs/main/ThimphuZonee.geojson').then(res => res.json()).then(res => this.plotMap.addData(res))
+  
     this.renderFeatures();
-    this.renderBaseMap();
+    this.displayFootpathCard = false;
+    this.displayPlotCard = false;
+    this.displayRoadSegmentCard = false;
+    this.plotInfo = new PlotInfo();
+    this.roadSegmentInfo = new RoadSegmentInfo();
+    this.footpathInfo = new FootpathInfo();
+
   }
 
-  renderBaseMap() {
-    
-  
-
-  
-  
+  toPlotForm(){
+    this.router.navigate(['updateplot'])
   }
+  toRoadForm(){
+     this.router.navigate(['updateroad'])
+  }
+  toFootpathForm(){
+    this.router.navigate(['updatepath'])
+  }
+
 
   renderFeatures(){
-   
+ 
     var cartoMap = L.tileLayer(this.cartoPositronUrl);
     var satelliteMap = L.tileLayer(this.googleSatUrl);
     var osmBaseMap = L.tileLayer(this.osmBaseUrl);
@@ -132,27 +172,72 @@ export class MapviewComponent implements OnInit {
       "Carto Map" : cartoMap,
       "OSM Base Map": osmBaseMap,
     };
+   
  
     this.plotMap= L.geoJSON(null,{
-      onEachFeature: function (feature, layer) {  
+      onEachFeature:  (feature, layer) => {  
         layer.on('click',(e) => {
-          this.router.navigate(['dashboard']);         
-        });},
+          this.displayFootpathCard = false;
+          this.displayPlotCard = true;
+          this.displayRoadSegmentCard = false;
+      
+          this.plotInfo.plot_id = feature.properties.plot_id;
+          this.plotInfo.precinct = feature.properties.precinct;
+          this.plotInfo.area = feature.properties.area;
+          this.plotInfo.height = feature.properties.height;
+          this.plotInfo.coverage = feature.properties.coverage;
+          this.plotInfo.setback = feature.properties.setback;
+
+         if(this.isShowing === true){
+           this.isShowing = false;
+         } else{
+           this.isShowing = true
+         }            
+        }
+        );
+      },
         style: this.plotStyle
-    })
+    }).addTo(this.map)
    
     this.roadMap = L.geoJSON(null, {
-      onEachFeature: function (feature, layer) {
-        layer.on('click',function(e){
-             console.log(e)
+      onEachFeature:  (feature, layer) => {
+        layer.on('click',(e) => {
+         
+          this.displayFootpathCard = false;
+          this.displayPlotCard = false;
+          this.displayRoadSegmentCard = true;
+
+          this.footpathInfo.segment_id = feature.properties.id;
+          this.footpathInfo.length = feature.properties.length; 
+
+          if(this.isShowing === true){
+            this.isShowing = false;
+          } else{
+            this.isShowing = true
+          }   
         });
       }, 
         style: this.roadStyle}) 
 
     this.footpathMap = L.geoJSON(null, {
-      onEachFeature: function (feature, layer) {
-        layer.on('click',function(e){
-              //onlcik function
+      onEachFeature:  (feature, layer) => {
+        layer.on('click', (e) => {
+
+          this.displayFootpathCard = true;
+          this.displayPlotCard = false;
+          this.displayRoadSegmentCard = false;
+          
+          this.footpathInfo.segment_id = feature.properties.id;
+          this.footpathInfo.length = Math.round(feature.properties.length);
+
+          
+          if(this.isShowing === true){
+            this.isShowing = false;
+          } else{
+            this.isShowing = true
+          }   
+
+  
         });
       }, 
         style: this.footpathStyle}) 
@@ -169,22 +254,20 @@ export class MapviewComponent implements OnInit {
 
   }
 
-
- 
-
-
   fetchGeojson() {
-    this.dataService.getPlotData().subscribe(response => {
-      this.plotMap.addData(response).addTo(this.map) //the response is a geojson
-      this.map.fitBounds(this.plotMap.getBounds()); //Bounds to geojson
-    });
-    this.dataService.getRoadData().subscribe(res =>{
-      this.roadMap.addData(res)
+    let thromde_id = sessionStorage.getItem('thromde_id');
+    let lap_id = sessionStorage.getItem('lap_id')
+
+    this.dataService.getPlotsByLap(lap_id).subscribe(res =>{
+      this.plotMap.addData(res)
+      this.map.fitBounds(this.plotMap.getBounds())
     })
 
-    this.dataService.getPathData().subscribe(res => {
-      this.footpathMap.addData(res)
-    })
+    // this.dataService.getPlotsByLap(lap_id).subscribe( res => {
+    //   this.plotMap.addData(res)
+    //   console.log(res)
+
+    // })
   }
 
   goToDash(){

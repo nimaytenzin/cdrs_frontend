@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
   }
 
   goback(){
-    this.router.navigate(['map']);
+    this.router.navigate(['mapview']);
   }
 
   update() {

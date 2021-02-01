@@ -4,7 +4,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 import { ErrorComponent } from './error/error.component';
 import { SelectZoneComponent } from './select-zone/select-zone.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -28,7 +27,6 @@ import { HttpInterceptorService } from './service/http-interceptor.service';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatListModule } from '@angular/material/list';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { MapComponent } from './map/map.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { CameraComponent } from './camera/camera.component';
 import {WebcamModule} from 'ngx-webcam';
@@ -36,19 +34,17 @@ import { UploadImageComponent } from './upload-image/upload-image.component';
 import { UpdatePlotComponent } from './update-plot/update-plot.component';
 import { UpdateRoadComponent } from './update-road/update-road.component';
 import { UpdateFootpathComponent } from './update-footpath/update-footpath.component';
+import { RegisterUserComponent } from "./register-user/register-user.component";
 import { MapviewComponent } from './mapview/mapview.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent,
-
     ErrorComponent,
     SelectZoneComponent,
     DashboardComponent,
     ChangePasswordComponent,
-    MapComponent,
     ConfirmDialogComponent,
     CameraComponent,
     UploadImageComponent,
@@ -56,6 +52,7 @@ import { MapviewComponent } from './mapview/mapview.component';
     UpdateRoadComponent,
     UpdateFootpathComponent,
     MapviewComponent,
+    RegisterUserComponent
   ],
   imports: [
     BrowserModule,

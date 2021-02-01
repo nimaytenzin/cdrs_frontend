@@ -20,19 +20,11 @@ export class AuthenticationService {
     private http: HttpClient
   ) { }
 
-  validateLogin(cid, password) {
+  validateLogin(username, password) {
     return this.http.post<any>(`${this.API_URL}/login`, {
-      cid,
+      username,
       password
-    }).pipe(
-      map(
-        data => {
-          sessionStorage.setItem(AUTHENTICATED_USER, cid);
-          sessionStorage.setItem(TOKEN, `Bearer ${data.data.token}`);
-          this.authState.next(true);
-          return data;
-      }));
-
+    })
   }
 
   getAuthenticatedUser() {

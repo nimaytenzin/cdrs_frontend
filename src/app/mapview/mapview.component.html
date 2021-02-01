@@ -1,36 +1,205 @@
+ 
+ <mat-drawer-container class="example-container">
+  <mat-drawer #drawer  class="drawer-info" mode="over" [opened]="isShowing">
+    <mat-toolbar class="header">
+      <mat-toolbar style=" display:flex;justify-content: flex-start;">
+         <mat-icon>view_carousel</mat-icon><span>Attributes</span>
+       
+     </mat-toolbar>
+    </mat-toolbar>
 
+      <mat-card style="padding:5px;margin: 0;" *ngIf="displayPlotCard">
+       <table>
+        <ng-container matColumnDef="position">
+        <tr>
+          <th>Plot Id: </th>
+          <td>{{plotInfo.plot_id}}</td>
+        </tr>
+        <tr>
+          <th>Precicnt: </th>
+          <td>{{plotInfo.precinct}}</td>
+        </tr>
+        <tr>
+          <th>Area: </th>
+          <td>{{plotInfo.area}}</td>
+        </tr>
+        <tr>
+          <th>Maximum Height: </th>
+          <td>{{plotInfo.height}}</td>
+        </tr>
+        <tr>
+          <th>Coverage</th>
+          <td>{{plotInfo.coverage}}</td>
+        </tr>
+        <tr>
+          <th>Setback</th>
+          <td>{{plotInfo.setback}}</td>
+        </tr>
+        </ng-container>
+       </table>      
+   
+        <button  mat-icon-button color="black"  (click)="toPlotForm()">
+          <mat-icon>edit</mat-icon>
+        </button><span style="font-weight: bold;">Update plot Details</span> <br>
+        <hr>
+
+        <div>
+          <mat-toolbar class="header">
+            <mat-toolbar style=" display:flex;justify-content: space-between;">
+               <mat-icon>ballot</mat-icon><span>Onsite Details</span>
+               <button mat-icon-button color="black"  (click)="toPlotForm()">
+                <mat-icon>edit</mat-icon>
+              </button> 
+           </mat-toolbar>
+          </mat-toolbar>
+         
+          <table >
+            <td colspan="2">to be populated from database</td>
+            <ng-container matColumnDef="position">
+            <tr>
+              <th>Development Status: </th>
+              <td>Under Development</td>
+            </tr>
+            <tr>
+              <th>Use: </th>
+              <td>Residential</td>
+            </tr>
+            <tr>
+              <th>Coverage: </th>
+              <td>Maintained</td>
+            </tr>
+            <tr>
+              <th>Setbacks: </th>
+              <td>Maintained</td>
+            </tr>
+            </ng-container>
+           </table>     
   
+        </div>
 
+      </mat-card>
 
-  <div class="map-container">
-    
-    <div class="map-frame">
-      <div id="map">
+      <mat-card *ngIf="displayRoadSegmentCard">
+        <table>
+          <ng-container matColumnDef="position">
+          <tr>
+            <th>Segment Id: </th>
+            <td>{{roadSegmentInfo.segment_id}}</td>
+          </tr>
+          <tr>
+            <th>Length: </th>
+            <td>{{roadSegmentInfo.length}} metres</td>
+          </tr>
         
-        <div class="leaflet-bottom leaflet-right">
-          <button mat-icon-button (click)="logout()"style="
-          width: 42px;
-          border-radius: 23px;
-          height: 42px;
-          background: white;
-          cursor: pointer;
-          margin-bottom: 20px;
-          border: none;" value="Cancel" class=" span3 leaflet-control" (click)="logout()">
-            <mat-icon>logout</mat-icon>
-          </button>
+          </ng-container>
+         </table>      
+  
+          <br>
+          <button style="text-align: center;align-items: right;" (click) = "toRoadForm()"><mat-icon>edit</mat-icon></button> <br>
+          <table >
+            <td colspan="2">to be populated from database</td>
+            <ng-container matColumnDef="position">
+            <tr>
+              <th>Development Status: </th>
+              <td>Under Development</td>
+            </tr>
+            <tr>
+              <th>Use: </th>
+              <td>Residential</td>
+            </tr>
+            <tr>
+              <th>Coverage: </th>
+              <td>Maintained</td>
+            </tr>
+            </ng-container>
+           </table>
 
-            <button style="
+           <p>Segment Photo</p>
+  
+           
+  
+  
+      </mat-card>
+
+      <mat-card *ngIf="displayFootpathCard">
+        <table>
+          <ng-container matColumnDef="position">
+          <tr>
+            <th>Segment Id: </th>
+            <td>{{roadSegmentInfo.segment_id}}</td>
+          </tr>
+          <tr>
+            <th>Length: </th>
+            <td>{{footpath.length}} metres</td>
+          </tr>
+        
+          </ng-container>
+         </table>      
+  
+          <br>
+          <button style="text-align: center;align-items: right;" (click)= "toFootpathForm()"><mat-icon>edit</mat-icon></button> <br>
+          <table >
+            <td colspan="2">to be populated from database</td>
+            <ng-container matColumnDef="position">
+            <tr>
+              <th>Development Status: </th>
+              <td>Under Development</td>
+            </tr>
+            <tr>
+              <th>Use: </th>
+              <td>Residential</td>
+            </tr>
+            <tr>
+              <th>Coverage: </th>
+              <td>Maintained</td>
+            </tr>
+            </ng-container>
+           </table>
+  
+  
+      </mat-card>
+  </mat-drawer>
+  <mat-drawer-content>Main content  
+    <div class="map-container">
+      <div class="map-frame">
+        <div id="map">
+        
+          
+          <div class="leaflet-bottom leaflet-right">
+            <button mat-icon-button (click)="logout()"style="
             width: 42px;
             border-radius: 23px;
             height: 42px;
             background: white;
             cursor: pointer;
             margin-bottom: 20px;
-            border: none;" value="Cancel" class=" span3 leaflet-control" (click)="getLocation()">
-              <mat-icon style="color: black;">location_searching</mat-icon>
+            border: none;" value="Cancel" class=" span3 leaflet-control" (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              
             </button>
+  
+              <button style="
+              width: 42px;
+              border-radius: 23px;
+              height: 42px;
+              background: white;
+              cursor: pointer;
+              margin-bottom: 20px;
+              border: none;" value="Cancel" class=" span3 leaflet-control" (click)="getLocation()">
+                <mat-icon style="color: black;">location_searching</mat-icon>
+              </button>
+          </div>
+  
         </div>
-
       </div>
     </div>
-  </div>
+
+  </mat-drawer-content>
+  
+</mat-drawer-container>
+
+
+
+
+
+ 

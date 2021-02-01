@@ -4,36 +4,28 @@
       <div class="form-header">
       </div>
       <div class="form-body">
-        <form [formGroup]="zoneForm">
+        <form [formGroup]="lapForm">
           <mat-form-field class="justifier">
             <mat-label>Thromde/Dzongkhag</mat-label>
-            <mat-select #dzongkhag formControlName="dzongkhagControl" name="dzongkhag"  required>
-              <mat-option *ngFor="let dzongkhag of thromdes" [value]="dzongkhag.id">
-                {{dzongkhag.name}}
+            <mat-select #dzongkhag formControlName="thromdeControl" name="thromde"   required   (selectionChange)="getLaps($event)" >
+              <mat-option *ngFor="let thromde of thromdes" [value]="thromde.id">
+                {{thromde.thromde_name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field class="justifier">
-            <mat-label>Zone</mat-label>
-            <mat-select #zone formControlName="zoneControl" name="zone"   required>
-              <mat-option *ngFor="let zone of zones" [value]="zone.id">
-                {{zone.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="justifier">
-            <mat-label>Plans</mat-label>
-            <mat-select formControlName="subZoneControl" name="subZone" required>
-              <mat-option *ngFor="let subZone of plans" [value]="subZone.id">
-                {{subZone.name}}
+            <mat-label>Select LAPs</mat-label>
+            <mat-select formControlName="lapControl" name="lap" required>
+              <mat-option *ngFor="let lap of laps" [value]="lap.id">
+                {{lap.lap_name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </form>
       </div>
       <div class="form-footer">
-        <button mat-raised-button class="btn custom-btn" (click)="redirectToDashboard()" color="primary" [disabled]="!zoneForm.valid">
-          <mat-icon>arrow_forward</mat-icon> Proceed
+        <button mat-raised-button class="btn custom-btn" (click)="redirectToDashboard()" color="primary" [disabled]="!lapForm.valid">
+          <mat-icon>arrow_forward</mat-icon>Proceed
         </button>
       </div>
     </div>

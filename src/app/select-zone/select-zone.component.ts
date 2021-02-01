@@ -10,15 +10,16 @@ interface Zone {
   thromde:string
 }
 
-interface Subzone {
+interface Laps {
   id: string;
-  name: string;
-  zone_id: number;
+  lap_name: string;
 }
 
 interface Thromde {
   id: string;
   name: string;
+  createdAt: string;
+  updatedAt:string;
 }
 
 @Component({
@@ -28,29 +29,12 @@ interface Thromde {
 })
 export class SelectZoneComponent implements OnInit {
 
-  zoneForm: FormGroup;
-  thromdes: Thromde[] = [
-    {id: "1", name: "Thimphu Thromde"},
-    {id: "2", name: "Phuntsholing Thromde"},
-    {id: "3", name: "Gelephu Thromde"},
-    {id: "4", name: "SamdrupJongkhar Thromde"},
-  ];
-  zones: Zone[] = [
-    {id: "1", name: "North Thimphu", thromde:"Thimphu Thromde"},
-    {id: "2", name: "South Thimphu", thromde:"Thimphu Thromde"},
-  ];
-  plans: Subzone[] = [
-    {id: "1", name: "Simtokha LAP", zone_id:1},
-    {id: "1", name: "Dechencholing LAP", zone_id:2},
-  ];
+  lapForm: FormGroup;
+  thromdes: Thromde[] = [];
+  laps: Laps[] = [];
   
-
   isUserLoggedIn: boolean;
 
-  dzongkhag: string;
-  zone: string;
-  subZone: string;
-  shop: string;
 
   constructor(
     private router: Router,
@@ -60,58 +44,33 @@ export class SelectZoneComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.authService.authState.subscribe(value => {
-      this.isUserLoggedIn = value;
-    });
+    
+    this.dataService.getThromdes().subscribe(res => {
+      this.thromdes = res
+    })
 
     this.reactiveForm();
-    // this.getDzongkhagList();
-
-    const dzongkhagId = sessionStorage.getItem('dzongkhagId');
-    const zoneId = sessionStorage.getItem('zoneId');
-    const subZoneId = sessionStorage.getItem('subZoneId');
-    const shopId = sessionStorage.getItem('shopId');
-    // this.getZoneList(dzongkhagId);
-    // this.getSubzoneList(zoneId);
-    this.dzongkhag = dzongkhagId;
-    this.zone = zoneId;
-    this.subZone = subZoneId;
-    this.shop = shopId;
   }
 
+
   reactiveForm() {
-    this.zoneForm = this.fb.group({
-      zoneControl: ['', Validators.compose([Validators.required])],
-      subZoneControl: ['', Validators.compose([Validators.required])],
-      shopControl: ['', Validators.compose([])],
-      dzongkhagControl: ['', Validators.compose([Validators.required])]
+    this.lapForm = this.fb.group({
+      thromdeControl: [],
+      lapControl: []
     });
   }
 
-  // getDzongkhagList() {
-  //   this.dataService.getDzongkhags().subscribe(response => {
-  //     this.dzongkhags = response.data;
-  //   });
-  // }
-
-  // getZoneList(dzongkhagId) {
-  //   this.dataService.getZones(dzongkhagId).subscribe(response => {
-  //     this.zones = response.data;
-  //   });
-  // }
-
-  // getSubzoneList(zoneId) {
-  //   this.dataService.getSubZones(zoneId).subscribe(response => {
-  //     this.subZones = response.data;
-  //   });
-  // }
+  getLaps(e){
+    console.log(e.value)
+    this.dataService.getLapsByThromdes(e.value).subscribe(res => {
+      this.laps = res
+    })
+  }
 
   redirectToDashboard() {
-    if (this.zoneForm.valid) {
-      sessionStorage.setItem('dzongkhagId', this.zoneForm.get('dzongkhagControl').value);
-      sessionStorage.setItem('zoneId', this.zoneForm.get('zoneControl').value);
-      sessionStorage.setItem('subZoneId', this.zoneForm.get('subZoneControl').value);
-      sessionStorage.setItem('shopId', this.zoneForm.get('shopControl').value);
+    if (this.lapForm.valid) {
+      sessionStorage.setItem('thromde_id', this.lapForm.get('thromdeControl').value);
+      sessionStorage.setItem('lap_id', this.lapForm.get('lapControl').value);
       this.router.navigate(['mapview']);
     }
   }
