@@ -1,0 +1,131 @@
+
+<div class="form-wraper" style="text-align:left" style="margin: 3px;">
+    <div class="form-container card" >
+    <table style="width: 100%" >
+      <tr>
+        <td>Building Owner </td><td>{{buildingOwner}}</td>
+      </tr>
+      <tr>
+        <td>Contact Number </td><td>{{ownerContact}}</td>
+      </tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="form-wraper" style="text-align:center">
+    <h3>Update Building Details</h3>
+    <div class="form-container card" >
+      <div class="form-body">
+            <!-- Start of Multi unit Form-->  
+            <form [formGroup]="updateRoadForm">
+              <mat-form-field class="justifier">
+                <mat-label>Existancy Status</mat-label>
+                <mat-select name="existancyStatus" formControlName="existancyStatusControl"  [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of existancyStatus" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+                <mat-form-field class="justifier">
+                    <mat-label>Year of Construction</mat-label>
+                    <input matInput type="number" name="constructionYear" formControlName="constructionYearControl" required min="0" [readonly]="disableForm" required autofocus>
+                </mat-form-field>
+
+                <mat-form-field class="justifier">
+                    <mat-label>Building Use</mat-label>
+                    <mat-select name="buildingUse" formControlName="buildingUseControl"  [readonly]="disableForm" >
+                      <mat-option *ngFor="let use of buildingUses" [value]="use.name">
+                        {{use.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                
+              <mat-form-field class="justifier">
+                <mat-label>Building Height</mat-label>
+                <mat-select name="buildingHeight" formControlName="buildingHeightControl"  [readonly]="disableForm" >
+                  <mat-option *ngFor="let height of buildingHeight" [value]="height.name">
+                    {{height.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>Attic</mat-label>
+                <mat-select name="attic" formControlName="atticControl"  [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>Jamthog</mat-label>
+                <mat-select name="jamthog" formControlName="buildingHeightControl"  [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>Basement</mat-label>
+                <mat-select name="basement" formControlName="basementControl"  [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+           
+              <mat-form-field class="justifier">
+                <mat-label>Facade as per BAG</mat-label>
+                <mat-select name="facade" formControlName="facadeControl"  [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>Boundary Wall</mat-label>
+                <mat-select name="boundaryWall" formControlName="boundaryWallControl"  [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+
+
+              <mat-form-field class="justifier">
+                <mat-label>Balcony projection towards Primary Road</mat-label>
+                <mat-select name="balconyProjection" formControlName="balconyProjectionControl"  [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+
+              <mat-form-field class="justifier">
+                <mat-label>Building Color</mat-label>
+                <input matInput type="text" name="buildingColor" formControlName="buildingColorControl" required min="0" [readonly]="disableForm" required autofocus>
+              </mat-form-field>
+         
+              <mat-form-field class="justifier">
+                <mat-label>Remarks</mat-label>
+                <input matInput type="text" name="buildingRemarks" formControlName="buildingRemarksControl" required min="0" [readonly]="disableForm" autofocus>
+              </mat-form-field>
+        
+            </form>
+            <!-- End of Multi unit Form-->
+      </div>
+      <div class="form-footer">
+        <button mat-raised-button class="btn custom-btn" (click)="submit()">
+          <mat-icon>note_add</mat-icon> Submit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  

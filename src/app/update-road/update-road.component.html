@@ -1,11 +1,8 @@
-<mat-toolbar>
-    <span>Update Road Segment</span>
-    <span class="menu-spacer"></span>
-  </mat-toolbar>
+
   <div class="form-wraper" style="text-align:center">
+    <h3>Update Road Details</h3>
     <div class="form-container card" >
       <div class="form-body">
-        <button routerLink="mapview"></button>
             <!-- Start of Multi unit Form-->  
             <form [formGroup]="updateRoadForm">
               <mat-form-field class="justifier">
@@ -38,33 +35,48 @@
                 <input matInput type="number" name="median" formControlName="medianControl" required min="0" [readonly]="disableForm" required autofocus>
               </mat-form-field>
 
+          
+               
+              <p>On Street Parking</p>
               <mat-form-field class="justifier">
-                <mat-label>On Street Parking</mat-label>
+                <mat-label>Parking Left</mat-label>
                 <input matInput type="text" name="streetParking" formControlName="streetParkingControl" required min="0" [readonly]="disableForm" required autofocus>
               </mat-form-field>
-
+      
               <mat-form-field class="justifier">
-                <mat-label>On Street Footpath</mat-label>
+                <mat-label>Parking Right</mat-label>
                 <input matInput type="text" name="streetPath" formControlName="streetPathControl" required min="0" [readonly]="disableForm" required autofocus>
               </mat-form-field>
-  
-              <mat-form-field class="justifier">
-                <mat-label>Street Lighting</mat-label>
-                <mat-select name="streetLight" formControlName="streetLightControl"  [readonly]="disableForm" >
-                  <mat-option *ngFor="let option of streetLight" [value]="option.name">
-                    {{option.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
 
+                       
+              <p>Street Light</p>
               <mat-form-field class="justifier">
-                <mat-label>Drains</mat-label>
-                <mat-select name="drains" formControlName="drainsControl"  [readonly]="disableForm" >
-                  <mat-option *ngFor="let option of drains" [value]="option.name">
-                    {{option.name}}
-                  </mat-option>
-                </mat-select>
+                <mat-label>Light Left</mat-label>
+                <input matInput type="text" name="streetParking" formControlName="streetParkingControl" required min="0" [readonly]="disableForm" required autofocus>
               </mat-form-field>
+      
+              <mat-form-field class="justifier">
+                <mat-label>Light Right</mat-label>
+                <input matInput type="text" name="streetPath" formControlName="streetPathControl" required min="0" [readonly]="disableForm" required autofocus>
+              </mat-form-field>
+    
+
+                       
+              <p>Drains</p>
+              <mat-form-field class="justifier">
+                <mat-label>Drain Left</mat-label>
+                <input matInput type="text" name="streetParking" formControlName="streetParkingControl" required min="0" [readonly]="disableForm" required autofocus>
+              </mat-form-field>
+      
+              <mat-form-field class="justifier">
+                <mat-label>Drain Right</mat-label>
+                <input matInput type="text" name="streetPath" formControlName="streetPathControl" required min="0" [readonly]="disableForm" required autofocus>
+              </mat-form-field>
+    
+    
+
+              <br>
+              <br>
          
               <mat-form-field class="justifier">
                 <mat-label>Remarks</mat-label>

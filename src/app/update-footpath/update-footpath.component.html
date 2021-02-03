@@ -1,8 +1,6 @@
-<mat-toolbar>
-    <span>Update Footpath Segment</span>
-    <span class="menu-spacer"></span>
-  </mat-toolbar>
+ 
   <div class="form-wraper" style="text-align:center">
+    <h3>Update FootPath Details</h3>
     <div class="form-container card" >
       <div class="form-body">
             <!-- Start of Form-->  
@@ -30,6 +28,17 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
+
+
+              <mat-form-field class="justifier">
+                <mat-label>User Friendly</mat-label>
+                <mat-select name="lighting" formControlName="lightingControl"  [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of lights" [value]="option.id">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+         
          
               <mat-form-field class="justifier">
                 <mat-label>Remarks</mat-label>

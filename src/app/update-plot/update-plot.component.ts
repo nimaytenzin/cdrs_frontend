@@ -37,18 +37,39 @@ export class UpdatePlotComponent implements OnInit {
   developmentStatus: OPTIONS[]=[
     {id: "1", name: "Developed"},
     {id: "2", name: "Undeveloped"},
-    {id: "3", name: "Under Development"},
-    {id: "4", name: "UnderDeveloped"},
+    {id: "3", name: "Under Development"}
   ]
   
+  yesNo:OPTIONS[]=[
+    {id: "1", name: "Yes"},
+    {id: "2", name: "No"}
+  ]
   plotuses: OPTIONS[]=[
+    {id: "1", name: "Mixed"},
     {id: "1", name: "Residential"},
     {id: "2", name: "Commercial"},
-    {id: "3", name: "Mixed"},
+    {id: "3", name: "Open Spaces"},
     {id: "4", name: "Institutional"},
     {id: "2", name: "Services"},
-    {id: "3", name: "Open Space"},
-    {id: "4", name: "Others"},
+    {id: "3", name: "Recreational"},
+    {id: "4", name: "Others"}
+  ]
+
+  
+  coverage:OPTIONS[]=[
+    {id: "1", name: "Maintained"},
+    {id: "2", name: "Not Maintained"}
+  ]
+
+
+  buildingHeight:OPTIONS[]=[
+    {id: "1", name: "G"},
+    {id: "2", name: "G+1"},
+    {id: "3", name: "G+2"},
+    {id: "4", name: "G+3"},
+    {id: "5", name: "G+4"},
+    {id: "6", name: "G+5"},
+    {id: "6", name: "G+6"}
   ]
 
   constructor(

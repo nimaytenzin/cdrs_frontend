@@ -1,10 +1,7 @@
-<mat-toolbar>
-  <span>Update Feature</span>
-  <span class="menu-spacer"></span>
-</mat-toolbar>
-
+ 
 
 <div class="form-wraper" style="text-align:left" style="margin: 3px;">
+ 
   <div class="form-container card" >
   <table style="width: 100%" >
     <tr>
@@ -28,6 +25,7 @@
 </div>
 
 <div class="form-wraper" style="text-align:center">
+  <h3>Update Plot Details</h3>
   <div class="form-container card" >
     <div class="form-body">
           <!-- Start of Multi unit Form-->  
@@ -50,6 +48,26 @@
               </mat-select>
             </mat-form-field>
 
+
+            <mat-form-field class="justifier">
+              <mat-label>Maximum Building Height Constructed</mat-label>
+              <mat-select name="plotUse" formControlName="plotUseControl" [readonly]="disableForm" >
+                <mat-option *ngFor="let height of buildingHeight" [value]="height.name">
+                  {{height.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+              <mat-label>Setback Encroachment</mat-label>
+              <mat-select name="plotUse" formControlName="plotUseControl" [readonly]="disableForm" >
+                <mat-option *ngFor="let height of yesNo" [value]="height.name">
+                  {{height.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+  
             <mat-form-field class="justifier">
               <mat-label>On-site Parking</mat-label>
               <input matInput type="number" name="onsiteParking" formControlName="onsiteParkingControl" required min="0" [readonly]="disableForm" required autofocus>
@@ -59,7 +77,6 @@
               <mat-label>Remarks</mat-label>
               <input matInput type="text" name="plotRemarks" formControlName="plotRemarksControl" required min="0" [readonly]="disableForm" autofocus>
             </mat-form-field>
-      
           </form>
           <!-- End of Multi unit Form-->
     </div>

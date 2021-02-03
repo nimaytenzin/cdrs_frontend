@@ -33,8 +33,7 @@ export class UpdateFootpathComponent implements OnInit {
   developmentStatus: OPTIONS[]=[
     {id: "1", name: "Developed"},
     {id: "2", name: "Undeveloped"},
-    {id: "3", name: "Under Development"},
-    {id: "4", name: "UnderDeveloped"},
+    {id: "3", name: "Under Development"}
   ]
 
   lights: OPTIONS[]=[

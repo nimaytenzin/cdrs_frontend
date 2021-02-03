@@ -12,6 +12,7 @@ import { UpdateRoadComponent } from './update-road/update-road.component';
 import { UpdateFootpathComponent } from './update-footpath/update-footpath.component';
 import { MapviewComponent } from './mapview/mapview.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
+import { UpdateBuildingComponent } from './update-building/update-building.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,7 @@ const routes: Routes = [
   {path: 'updateplot', component: UpdatePlotComponent},
   {path:'updateroad', component:UpdateRoadComponent},
   {path:"updatepath", component:UpdateFootpathComponent},
+  {path:"updatebuilding", component:UpdateBuildingComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'camera',component: UploadImageComponent},
   {path: '**', component: ErrorComponent},

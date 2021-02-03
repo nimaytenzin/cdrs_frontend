@@ -133,6 +133,14 @@ getAllPlots(){
     );
   }
 
+  updateBuilding(buildingDetails){
+    return this.http
+    .post<any>(`${this.API_URL}/updateBuilding`, buildingDetails, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
 
   
 
