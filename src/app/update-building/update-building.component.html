@@ -17,7 +17,7 @@
     <div class="form-container card" >
       <div class="form-body">
             <!-- Start of Multi unit Form-->  
-            <form [formGroup]="updateRoadForm">
+            <form [formGroup]="updateBuildingForm">
               <mat-form-field class="justifier">
                 <mat-label>Existancy Status</mat-label>
                 <mat-select name="existancyStatus" formControlName="existancyStatusControl"  [readonly]="disableForm" >
@@ -61,7 +61,7 @@
 
               <mat-form-field class="justifier">
                 <mat-label>Jamthog</mat-label>
-                <mat-select name="jamthog" formControlName="buildingHeightControl"  [readonly]="disableForm" >
+                <mat-select name="jamthog" formControlName="jamthogControl"  [readonly]="disableForm" >
                   <mat-option *ngFor="let option of yesNo" [value]="option.name">
                     {{option.name}}
                   </mat-option>
