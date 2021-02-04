@@ -11,13 +11,15 @@ interface OPTIONS{
 }
 
 export class UpdatedPlot{
-  gid: number;
-  lapid:number;
+  fid: number;
+  lap_id:number;
   plot_id:string;
-  developmentStatus:string;
-  plotUse:string;
-  onsiteParking:number;
-  plotRemarks:string 
+  d_status:string;
+  plot_use:string;
+  max_height:string;
+  setback_e:string;
+  parking:number;
+  remarks:string
 }
 
 
@@ -33,6 +35,13 @@ export class UpdatePlotComponent implements OnInit {
   disableForm = false;
   displayForm = true;
   Plot = new UpdatedPlot;
+
+
+  plot_id = sessionStorage.getItem('plot_id');
+  precinct = sessionStorage.getItem('precinct');
+  height = sessionStorage.getItem('height');
+  coverageC = sessionStorage.getItem('coverage');
+  setback = sessionStorage.getItem('setback')
 
   developmentStatus: OPTIONS[]=[
     {id: "1", name: "Developed"},
@@ -89,8 +98,11 @@ export class UpdatePlotComponent implements OnInit {
     this.updatePlotForm = this.fb.group({
       developmentStatusControl:[],
       plotUseControl:[],
+      maxHeightControl:[],
+      setbackEnControl:[],
       onsiteParkingControl:[],
       plotRemarksControl:[]
+
     });    
     }
   submit(){
@@ -103,42 +115,60 @@ export class UpdatePlotComponent implements OnInit {
       this.router.navigate(['mapview']);
   }
 
+  clearCookie(){
+    sessionStorage.removeItem('plot_id')
+  }
 
   updatePlot(){
-    this.Plot.gid = 1;
-    this.Plot.lapid = 2;
-    this.Plot.plot_id = "22.3"
-    this.Plot.developmentStatus = this.updatePlotForm.get('developmentStatusControl').value;
-    this.Plot.plotUse = this.updatePlotForm.get('plotUseControl').value;
-    this.Plot.onsiteParking = this.updatePlotForm.get('onsiteParkingControl').value;
-    this.Plot.plotRemarks = this.updatePlotForm.get('plotRemarksControl').value;
+    this.Plot.fid = parseInt(sessionStorage.getItem('fid'));
+    this.Plot.lap_id = parseInt(sessionStorage.getItem('lap_id'));
+    this.Plot.plot_id = sessionStorage.getItem('plot_id')
+    this.Plot.d_status = this.updatePlotForm.get('developmentStatusControl').value;
+    this.Plot.plot_use = this.updatePlotForm.get('plotUseControl').value;
+    this.Plot.max_height = this.updatePlotForm.get('maxHeightControl').value;
+    this.Plot.setback_e = this.updatePlotForm.get('setbackEnControl').value;
+    this.Plot.parking = this.updatePlotForm.get('onsiteParkingControl').value;
+    this.Plot.remarks = this.updatePlotForm.get('plotRemarksControl').value;
 
-   
     this.dataService.updatePlot(this.Plot).subscribe(response=>{
-         
-      if(response.success === "true"){
-        this.router.navigate(['dashboard',this.Plot]);
-        this.snackBar.open('Plot Details Updated', '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['success-snackbar']
-        });
-      }else if(response.success === "false"){
-        this.snackBar.open('Could not Update Plot Details'+response.msg, '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['error-snackbar']
-        });
-      }else{
-        this.snackBar.open('Error Updating Plot Details', '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['error-snackbar']
-        });
-      }
+       if(response.status === "Success"){
+        this.clearCookie()
+           this.router.navigate(['mapview']);
+           this.snackBar.open('Plot Details Updated', '', {
+             duration: 5000,
+             verticalPosition: 'bottom',
+             panelClass: ['success-snackbar']
+        
+        })
+       }
     })
   }
   
 
 }
 
+// if(response.success === "true"){
+//   this.clearCookie()
+//    this.router.navigate(['dashboard',this.Plot]);
+//    this.snackBar.open('Plot Details Updated', '', {
+//      duration: 5000,
+//      verticalPosition: 'bottom',
+//      panelClass: ['success-snackbar']
+
+// })
+
+// }else if(response.success === "false"){
+// this.clearCookie()
+// this.snackBar.open('Could not Update Plot Details'+response.msg, '', {
+//  duration: 5000,
+//  verticalPosition: 'bottom',
+//  panelClass: ['error-snackbar']
+// });
+// }else{
+// this.clearCookie()
+// this.snackBar.open('Error Updating Plot Details', '', {
+//  duration: 5000,
+//  verticalPosition: 'bottom',
+//  panelClass: ['error-snackbar']
+// });
+// }

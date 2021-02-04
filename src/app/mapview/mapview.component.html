@@ -38,12 +38,12 @@
         </ng-container>
        </table>      
    
-        <button  mat-icon-button color="black"  (click)="toPlotForm()">
+        <button  mat-icon-button color="black"  [disabled]=  "editDisabled" (click)="toPlotForm()">
           <mat-icon>edit</mat-icon>
         </button><span style="font-weight: bold;">Update plot Details</span> <br>
         <hr>
 
-        <div>
+        <!-- <div>
           <mat-toolbar class="header">
             <mat-toolbar style=" display:flex;justify-content: space-between;">
                <mat-icon>ballot</mat-icon><span>Onsite Details</span>
@@ -75,7 +75,7 @@
             </ng-container>
            </table>     
   
-        </div>
+        </div> -->
 
       </mat-card>
 
@@ -95,7 +95,7 @@
          </table>      
   
           <br>
-          <button style="text-align: center;align-items: right;" (click) = "toRoadForm()"><mat-icon>edit</mat-icon></button> <br>
+          <button style="text-align: center;align-items: right;" disabled (click) = "toRoadForm()"><mat-icon>edit</mat-icon></button> <br>
           <table >
             <td colspan="2">to be populated from database</td>
             <ng-container matColumnDef="position">

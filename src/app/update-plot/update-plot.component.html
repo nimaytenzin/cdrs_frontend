@@ -5,19 +5,19 @@
   <div class="form-container card" >
   <table style="width: 100%" >
     <tr>
-      <td>Plot ID: </td><td>DL1-23</td>
+      <td>Plot ID: </td><td>{{plot_id}}</td>
     </tr>
     <tr>
-      <td>Precinct: </td><td>UV1</td>
+      <td>Precinct: </td><td>{{precinct}}</td>
     </tr>
     <tr>
-      <td>Maximum Height: </td><td> 3 Floors</td>
+      <td>Maximum Height: </td><td> {{height}} Floors</td>
     </tr>
     <tr>
-      <td>Coverage: </td><td> 50 %</td>
+      <td>Coverage: </td><td>{{coverageC}} %</td>
     </tr>
     <tr>
-      <td>Setbacks: </td><td>3m on side and 5m on side accomodating septic Tank</td>
+      <td>Setbacks: </td><td>{{setback}}</td>
     </tr>
 
   </table>
@@ -51,7 +51,7 @@
 
             <mat-form-field class="justifier">
               <mat-label>Maximum Building Height Constructed</mat-label>
-              <mat-select name="plotUse" formControlName="plotUseControl" [readonly]="disableForm" >
+              <mat-select name="maxHeight" formControlName="maxHeightControl" [readonly]="disableForm" >
                 <mat-option *ngFor="let height of buildingHeight" [value]="height.name">
                   {{height.name}}
                 </mat-option>
@@ -60,7 +60,7 @@
 
             <mat-form-field class="justifier">
               <mat-label>Setback Encroachment</mat-label>
-              <mat-select name="plotUse" formControlName="plotUseControl" [readonly]="disableForm" >
+              <mat-select name="setbackEn" formControlName="setbackEnControl" [readonly]="disableForm" >
                 <mat-option *ngFor="let height of yesNo" [value]="height.name">
                   {{height.name}}
                 </mat-option>
@@ -81,7 +81,7 @@
           <!-- End of Multi unit Form-->
     </div>
     <div class="form-footer">
-      <button mat-raised-button class="btn custom-btn" (click)="submit()">
+      <button mat-raised-button class="btn custom-btn" (click)="updatePlot()">
         <mat-icon>note_add</mat-icon> Submit
       </button>
     </div>

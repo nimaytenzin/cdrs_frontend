@@ -69,7 +69,6 @@ export class SelectZoneComponent implements OnInit {
 
   redirectToDashboard() {
     if (this.lapForm.valid) {
-      sessionStorage.setItem('thromde_id', this.lapForm.get('thromdeControl').value);
       sessionStorage.setItem('lap_id', this.lapForm.get('lapControl').value);
       this.router.navigate(['mapview']);
     }

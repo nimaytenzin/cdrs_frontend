@@ -95,7 +95,7 @@ getAllPlots(){
   }
   updatePlot(plotDetails){
     return this.http
-    .post<any>(`${this.API_URL}/updateplot`, plotDetails, this.httpOptions)
+    .post<any>(`${this.API_URL}/plots/add-plot`, plotDetails, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     );
@@ -141,6 +141,13 @@ getAllPlots(){
     );
   }
 
+  shapefileSetDone(lap_id,gid){
+    return this.http
+    .put<any>(`${this.API_URL}/api/shapefile/set-done/${lap_id}/${gid}'`,this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
 
   
 

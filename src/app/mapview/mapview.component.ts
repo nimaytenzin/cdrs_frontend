@@ -6,6 +6,7 @@ import { DataService } from '../service/data.service';
 import { MatSnackBar, MatDialog, MatSidenav } from '@angular/material';
 
 export class PlotInfo{
+  
   plot_id: string;
   precinct: string;
   area:string;
@@ -41,7 +42,7 @@ export class MapviewComponent implements OnInit {
   displayFootpathCard:boolean;
   displayPlotCard:boolean;
   displayRoadSegmentCard:boolean;
-
+  editDisabled:boolean;
   plotInfo: PlotInfo;
   roadSegmentInfo: RoadSegmentInfo;
   footpathInfo : FootpathInfo;
@@ -137,18 +138,17 @@ export class MapviewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-     
     this.renderFeatures();
     this.displayFootpathCard = false;
     this.displayPlotCard = false;
     this.displayRoadSegmentCard = false;
     this.plotInfo = new PlotInfo();
     this.roadSegmentInfo = new RoadSegmentInfo();
-    this.footpathInfo = new FootpathInfo();
-
+    this.footpathInfo = new FootpathInfo(); 
   }
 
   toPlotForm(){
+
     this.router.navigate(['updateplot'])
   }
   toRoadForm(){
@@ -176,15 +176,69 @@ export class MapviewComponent implements OnInit {
       "Carto Map" : cartoMap,
       "OSM Base Map": osmBaseMap,
     };
-   
+
+    function setStyle(feature){
+      if (feature.properties.done === "null") {
+      
+
+        return {
+          fillColor: "white" ,
+          weight: 0.5,
+          opacity: 1,
+          color: "black",
+          fillOpacity: .8
+        };
+    } else {
+        return {
+          fillColor: "white" ,
+          weight: 0.5,
+          opacity: 1,
+          color: "black",
+          fillOpacity: .8
+        };
+    }
+    }
+    
+    function getColor(feature){
+      if(feature.properties.done === "true"){
+        return "red"
+      }else{
+        return "green"
+      }
+    }
  
     this.plotMap= L.geoJSON(null,{
+      style: function (feature) {
+        return {
+            fillColor: getColor(feature),
+            weight: 0.5,
+            opacity: 1,
+            color: "black",
+            fillOpacity: .8
+        };
+      },
       onEachFeature:  (feature, layer) => {  
+      console.log(this.editDisabled)
         layer.on('click',(e) => {
+          
+          if(feature.properties.done === "true"){
+            this.editDisabled === true
+            alert(this.editDisabled)
+          }else{
+            this.editDisabled === false
+            alert(this.editDisabled)
+          }
+          sessionStorage.setItem('fid', feature.properties.gid);
+          sessionStorage.setItem('plot_id', feature.properties.plot_id)
+          sessionStorage.setItem('precinct', feature.properties.precinct)
+          sessionStorage.setItem('area', feature.properties.area )
+          sessionStorage.setItem('height', feature.properties.height)
+          sessionStorage.setItem('coverage', feature.properties.coverage)
+          sessionStorage.setItem('setback', feature.properties.setback)
+
           this.displayFootpathCard = false;
           this.displayPlotCard = true;
           this.displayRoadSegmentCard = false;
-            
           this.plotInfo.plot_id = feature.properties.plot_id;
           this.plotInfo.precinct = feature.properties.precinct;
           this.plotInfo.area = feature.properties.area;
@@ -199,9 +253,11 @@ export class MapviewComponent implements OnInit {
          }            
         }
         );
-      },
-        style: this.plotStyle
+      }
+        
     }).addTo(this.map)
+
+
    
     this.roadMap = L.geoJSON(null, {
       onEachFeature:  (feature, layer) => {
@@ -256,25 +312,17 @@ export class MapviewComponent implements OnInit {
 
         this.fetchGeojson()
 
+        
+
   }
 
   fetchGeojson() {
-    let thromde_id = sessionStorage.getItem('thromde_id');
     let lap_id = sessionStorage.getItem('lap_id')
-
-
     this.dataService.getPlotsByLap(lap_id).subscribe(res =>{
       this.plotMap.addData(res)
-      this.plotMap.setStyle(this.doneStyle)
-      console.log(this.plotMap)
       this.map.fitBounds(this.plotMap.getBounds())
-    })
-
-    // this.dataService.getPlotsByLap(lap_id).subscribe( res => {
-    //   this.plotMap.addData(res)
-    //   console.log(res)
-
-    // })
+    })  
+    
   }
 
   goToDash(){
