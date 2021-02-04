@@ -1,11 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DataService } from '../service/data.service';
 import { MatSnackBar, MatDialog, MatSidenav } from '@angular/material';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { environment } from '../../environments/environment';
 
 export class PlotInfo{
   plot_id: string;
@@ -24,8 +22,6 @@ export class FootpathInfo{
   segment_id: string;
   length:number
 }
-
-
 
 @Component({
   selector: 'app-mapview',
@@ -81,6 +77,16 @@ export class MapviewComponent implements OnInit {
     fillOpacity: .8
    };
   }	
+
+  doneStyle(feature) {
+    return {
+    fillColor: "red" ,
+    weight: 0.5,
+    opacity: 1,
+    color: "black",
+    fillOpacity: .8
+   };
+  }	
   
   highlight = {
     'fillColor': 'yellow',
@@ -104,7 +110,7 @@ export class MapviewComponent implements OnInit {
     'opacity': 1
   };
  
-  
+
   footpathStyle (feature){
     return {
     weight: 2,
@@ -131,9 +137,7 @@ export class MapviewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
-  // fetch('https://raw.githubusercontent.com/nimaytenzin/cdrs/main/ThimphuZonee.geojson').then(res => res.json()).then(res => this.plotMap.addData(res))
-  
+     
     this.renderFeatures();
     this.displayFootpathCard = false;
     this.displayPlotCard = false;
@@ -180,7 +184,7 @@ export class MapviewComponent implements OnInit {
           this.displayFootpathCard = false;
           this.displayPlotCard = true;
           this.displayRoadSegmentCard = false;
-      
+            
           this.plotInfo.plot_id = feature.properties.plot_id;
           this.plotInfo.precinct = feature.properties.precinct;
           this.plotInfo.area = feature.properties.area;
@@ -258,8 +262,11 @@ export class MapviewComponent implements OnInit {
     let thromde_id = sessionStorage.getItem('thromde_id');
     let lap_id = sessionStorage.getItem('lap_id')
 
+
     this.dataService.getPlotsByLap(lap_id).subscribe(res =>{
       this.plotMap.addData(res)
+      this.plotMap.setStyle(this.doneStyle)
+      console.log(this.plotMap)
       this.map.fitBounds(this.plotMap.getBounds())
     })
 
