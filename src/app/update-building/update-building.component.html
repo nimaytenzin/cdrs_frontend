@@ -106,15 +106,36 @@
                 </mat-select>
               </mat-form-field>
 
+              <table style="text-align: left;color:lightslategray;">
+                <tr>
+                  <span>Building Colors for Thimphu Thromde (DCR 2016)</span>
+                </tr>
+                <tr>
+                  <td>White</td><td style="border:solid 1px gray; width: 40px;"></td>
+                </tr>
+                <tr>
+                  <td>Mud Color</td><td style="border:solid 1px #e2df7f; width: 40px;background-color: #e2df7f;"></td>
+                </tr>
+                <tr>
+                  <td>Light Brown</td><td style="border:solid 1px #db9d32; width: 40px;background-color: #db9d32;"></td>
+                </tr>
+                <tr>
+                  <td>Exposed Stone Masonry</td><td style=" width: 40px;background-image: url('https://i.pinimg.com/originals/88/ea/65/88ea65a30f3b2d088af1e6e3753e6fd7.jpg');"></td>
+                </tr>
+              </table>
 
               <mat-form-field class="justifier">
-                <mat-label>Building Color</mat-label>
-                <input matInput type="text" name="buildingColor" formControlName="buildingColorControl" required min="0" [readonly]="disableForm" required autofocus>
+                <mat-label>Building Color Code Compliance</mat-label>
+                <mat-select name="buildingColor" formControlName="buildingColorControl"  [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
               </mat-form-field>
          
               <mat-form-field class="justifier">
                 <mat-label>Remarks</mat-label>
-                <input matInput type="text" name="buildingRemarks" formControlName="buildingRemarksControl" required min="0" [readonly]="disableForm" autofocus>
+                <input matInput type="text" name="buildingRemarks" formControlName="buildingRemarksControl"   [readonly]="disableForm" autofocus>
               </mat-form-field>
         
             </form>

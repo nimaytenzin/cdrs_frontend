@@ -35,7 +35,6 @@ export class SelectZoneComponent implements OnInit {
   
   isUserLoggedIn: boolean;
 
-
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -48,7 +47,6 @@ export class SelectZoneComponent implements OnInit {
     this.dataService.getThromdes().subscribe(res => {
       this.thromdes = res
     })
-
     this.reactiveForm();
   }
 
@@ -61,7 +59,6 @@ export class SelectZoneComponent implements OnInit {
   }
 
   getLaps(e){
-    console.log(e.value)
     this.dataService.getLapsByThromdes(e.value).subscribe(res => {
       this.laps = res
     })

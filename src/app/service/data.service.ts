@@ -51,6 +51,23 @@ export class DataService {
       );
   }
 
+  //getbuildings
+  getBuildingsShape(lap_id){
+    return this.http
+    .get<any>(`${this.API_URL}/shapefile/get-buildings/${lap_id}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getSpecificBuildingDetails(id){
+    return this.http
+    .get<any>(`${this.API_URL}/buildings/get-building/${id}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
   getThromdes(){
     return this.http
     .get<any>(`${this.API_URL}/get-thromdes`, this.httpOptions)
@@ -65,6 +82,8 @@ export class DataService {
       catchError(this.handleError)
     )
   }
+
+
   
 
 
@@ -93,13 +112,35 @@ getAllPlots(){
       catchError(this.handleError)
     )
   }
-  updatePlot(plotDetails){
+
+  // post plot detials
+  postPlot(plotDetails){
     return this.http
     .post<any>(`${this.API_URL}/plots/add-plot`, plotDetails, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     );
   }
+
+  updatePlot(lap_id,fid,plotDetails){
+    return this.http
+    .put<any>(`${this.API_URL}/plots/update-plot/${lap_id}/${fid}`, plotDetails, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // get updated plot details
+  getSpecificPlotDetails(lap_id,fid){
+    return this.http
+    .get<any>(`${this.API_URL}/plots/get-plot/${lap_id}/${fid}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+
+
 
   getRoadData(){
     return this.http
@@ -143,7 +184,7 @@ getAllPlots(){
 
   shapefileSetDone(lap_id,gid){
     return this.http
-    .put<any>(`${this.API_URL}/api/shapefile/set-done/${lap_id}/${gid}'`,this.httpOptions)
+    .put<any>(`${this.API_URL}/shapefile/set-done/${lap_id}/${gid}'`,this.httpOptions)
     .pipe(
       catchError(this.handleError)
     );

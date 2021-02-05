@@ -7,7 +7,6 @@
        
      </mat-toolbar>
     </mat-toolbar>
-
       <mat-card style="padding:5px;margin: 0;" *ngIf="displayPlotCard">
        <table>
         <ng-container matColumnDef="position">
@@ -21,15 +20,15 @@
         </tr>
         <tr>
           <th>Area: </th>
-          <td>{{plotInfo.area}}</td>
+          <td>{{plotInfo.area.toFixed(2)}} Sq.M</td>
         </tr>
         <tr>
           <th>Maximum Height: </th>
-          <td>{{plotInfo.height}}</td>
+          <td>{{plotInfo.height}} Floors</td>
         </tr>
         <tr>
           <th>Coverage</th>
-          <td>{{plotInfo.coverage}}</td>
+          <td>{{plotInfo.coverage}} %</td>
         </tr>
         <tr>
           <th>Setback</th>
@@ -40,42 +39,43 @@
    
         <button  mat-icon-button color="black"  [disabled]=  "editDisabled" (click)="toPlotForm()">
           <mat-icon>edit</mat-icon>
-        </button><span style="font-weight: bold;">Update plot Details</span> <br>
-        <hr>
-
-        <!-- <div>
-          <mat-toolbar class="header">
-            <mat-toolbar style=" display:flex;justify-content: space-between;">
-               <mat-icon>ballot</mat-icon><span>Onsite Details</span>
-               <button mat-icon-button color="black"  (click)="toPlotForm()">
-                <mat-icon>edit</mat-icon>
-              </button> 
-           </mat-toolbar>
-          </mat-toolbar>
-         
+        </button><span style="font-weight: bold;">Add  Details</span> <br>
+     
+        <div *ngIf="displayDetails">
+               
           <table >
-            <td colspan="2">to be populated from database</td>
             <ng-container matColumnDef="position">
             <tr>
               <th>Development Status: </th>
-              <td>Under Development</td>
+              <td>{{this.d_status}}</td>
             </tr>
             <tr>
-              <th>Use: </th>
-              <td>Residential</td>
+              <th>Plot Use: </th>
+              <td>{{this.plot_use}}</td>
             </tr>
             <tr>
-              <th>Coverage: </th>
-              <td>Maintained</td>
+              <th>Maximum Height Constructed</th>
+              <td>{{this.max_height}}</td>
             </tr>
             <tr>
-              <th>Setbacks: </th>
-              <td>Maintained</td>
+              <th>Setback Encroachment</th>
+              <td>{{this.setback_e}}</td>
+            </tr>
+            <tr>
+              <th>On Site Parking</th>
+              <td>{{this.parking}}</td>
+            </tr>
+
+            <tr>
+              <th>Remarks</th>
+              <td>{{this.remarks}}</td>
             </tr>
             </ng-container>
            </table>     
-  
-        </div> -->
+           <button  mat-icon-button color="black"  (click)="toPlotForm()">
+            <mat-icon>edit</mat-icon>
+          </button><span style="font-weight: bold;">Update Details</span> <br>
+        </div>
 
       </mat-card>
 

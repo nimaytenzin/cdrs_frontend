@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { DataService } from '../service/data.service';
+import { browser } from 'protractor';
 
 
 interface OPTIONS{
@@ -35,7 +36,6 @@ export class UpdatePlotComponent implements OnInit {
   disableForm = false;
   displayForm = true;
   Plot = new UpdatedPlot;
-
 
   plot_id = sessionStorage.getItem('plot_id');
   precinct = sessionStorage.getItem('precinct');
@@ -90,8 +90,31 @@ export class UpdatePlotComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
-  ngOnInit() {
-    this.reactiveForms();
+  ngOnInit() {   
+   this.reactiveForms();
+    this.fetchDataIfExists();
+  }
+
+  fetchDataIfExists(){
+    this.dataService.getSpecificPlotDetails(sessionStorage.getItem('lap_id'),sessionStorage.getItem('fid')).subscribe(res => {
+      console.log(res.status)
+      if(res.data[0]){
+        sessionStorage.setItem('update', "true");
+        this.updatePlotForm.patchValue({
+          developmentStatusControl: res.data[0].d_status,
+          plotUseControl:res.data[0].plot_use,
+          maxHeightControl:res.data[0].max_height,
+          setbackEnControl:res.data[0].setback_e,
+          onsiteParkingControl:res.data[0].parking,
+          plotRemarksControl:res.data[0].remarks
+        
+        });
+      }else{
+        sessionStorage.setItem('update', "false")
+      }
+    
+    })
+   
   }
 
   reactiveForms() {
@@ -105,18 +128,11 @@ export class UpdatePlotComponent implements OnInit {
 
     });    
     }
-  submit(){
-      this.updatePlot();
-      this.snackBar.open('Plot Details Updated', '', {
-        duration: 5000,
-        verticalPosition: 'bottom',
-        panelClass: ['success-snackbar']
-      });
-      this.router.navigate(['mapview']);
-  }
+ 
 
   clearCookie(){
     sessionStorage.removeItem('plot_id')
+    sessionStorage.removeItem('update')
   }
 
   updatePlot(){
@@ -130,18 +146,35 @@ export class UpdatePlotComponent implements OnInit {
     this.Plot.parking = this.updatePlotForm.get('onsiteParkingControl').value;
     this.Plot.remarks = this.updatePlotForm.get('plotRemarksControl').value;
 
-    this.dataService.updatePlot(this.Plot).subscribe(response=>{
-       if(response.status === "Success"){
-        this.clearCookie()
-           this.router.navigate(['mapview']);
-           this.snackBar.open('Plot Details Updated', '', {
-             duration: 5000,
-             verticalPosition: 'bottom',
-             panelClass: ['success-snackbar']
-        
-        })
-       }
-    })
+    if(sessionStorage.getItem('update') === "false"){
+      this.dataService.postPlot(this.Plot).subscribe(response=>{
+        if(response.status === "Success"){
+         this.clearCookie()
+         this.dataService.shapefileSetDone(this.Plot.lap_id, this.Plot.fid).subscribe(res => console.log(res))
+            this.router.navigate(['mapview']);
+            this.snackBar.open('Plot Details Added', '', {
+              duration: 5000,
+              verticalPosition: 'bottom',
+              panelClass: ['success-snackbar']
+         
+         })
+        }
+     })
+
+
+    }else{
+      this.clearCookie()
+      this.dataService.updatePlot(this.Plot.lap_id,this.Plot.fid, this.Plot).subscribe(res => {
+        console.log(res)
+      })
+      this.router.navigate(['mapview']);
+      this.snackBar.open('Plot Details Updated', '', {
+        duration: 5000,
+        verticalPosition: 'bottom',
+        panelClass: ['success-snackbar']
+   
+   })
+    }
   }
   
 

@@ -39,10 +39,11 @@ export class UpdateBuildingComponent implements OnInit {
   Building = new Building;
   buildingOwner:string;
   ownerContact:number;
-
+  buildingDetails:any;
+  updateSwitch:boolean;
 
   buildingUses:OPTIONS[] =[
-    {id: "1", name: "Mixed"},
+    {id: "1", name: "Mixed Use"},
     {id: "2", name: "Residential"},
     {id: "3", name: "Commercial"},
     {id: "4", name: "Institutional"},
@@ -73,9 +74,6 @@ export class UpdateBuildingComponent implements OnInit {
     {id: "2", name: "No"}
   ]
 
-
-
-
   existancyStatus:OPTIONS[]=[
     {id: "1", name: "Standing"},
     {id: "2", name: "Under Construction"},
@@ -93,9 +91,26 @@ export class UpdateBuildingComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.updateSwitch = false;
+
+    this.Building.building_id = parseInt(sessionStorage.getItem('building_id'));
+    this.dataService.getSpecificBuildingDetails(this.Building.building_id).subscribe(res => {
+      this.buildingDetails = res
+      console.log(res)
+      this.buildingOwner = res.owner;
+      this.ownerContact = res.contact;
+      this.updateBuildingForm.patchValue({
+        existancyStatusControl: res.status,
+        constructionYearControl:res.year,
+        buildingUseControl:res.use,
+        buildingHeightControl:res.height,
+        atticControl:res.attic,
+        jamthogControl:res.jamthog,
+        basementControl:res.basement
+      });
+    })
     this.reactiveForms();
-    this.buildingOwner = "Nima";
-    this.ownerContact = 17234452
+    
   }
 
   reactiveForms() {
@@ -116,7 +131,11 @@ export class UpdateBuildingComponent implements OnInit {
     }
 
   submit(){
-      this.updateRoad();
+      if(this.updateSwitch){
+        alert('asdsd')
+      }else{
+        this.updateRoad();
+      }
       this.snackBar.open('Building Details Updated', '', {
         duration: 5000,
         verticalPosition: 'bottom',

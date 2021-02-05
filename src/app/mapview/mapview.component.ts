@@ -9,11 +9,13 @@ export class PlotInfo{
   
   plot_id: string;
   precinct: string;
-  area:string;
+  area:number;
   height: string;
   coverage: string;
   setback: string
 }
+
+
 export class RoadSegmentInfo{
   segment_id: string;
   length: number
@@ -34,6 +36,7 @@ export class MapviewComponent implements OnInit {
   longitude: number;
   accuracy: number;
   plotMap: L.GeoJSON;
+  buildingMap:L.GeoJSON;
   roadMap:L.GeoJSON;
   footpathMap:L.GeoJSON;
   map: L.Map;
@@ -46,48 +49,21 @@ export class MapviewComponent implements OnInit {
   plotInfo: PlotInfo;
   roadSegmentInfo: RoadSegmentInfo;
   footpathInfo : FootpathInfo;
-  
+  displayDetails:boolean = false;
+
+
+  d_status: string;
+  plot_use:string;
+  max_height:string;
+  setback_e:string;
+  parking:string;
+  remarks:string
+
    googleSatUrl = "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}";
    hybridMapUrl = "http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}";
    cartoPositronUrl = "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png";
    osmBaseUrl = "https://tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png";
 
-
-  greenMarker = L.icon({
-    iconUrl: 'assets/marker-green.png',
-    iconSize: [15, 15]
-  });
-
-  redMarker = L.icon({
-    iconUrl: 'assets/marker-red.png',
-    iconSize: [15, 15]
-  });
-
-  myMarker = L.icon({
-    iconUrl: 'assets/marker-icon.png',
-    iconSize: [20, 20]
-  });
-  
-
-  plotStyle(feature) {
-    return {
-    fillColor: "white" ,
-    weight: 0.5,
-    opacity: 1,
-    color: "black",
-    fillOpacity: .8
-   };
-  }	
-
-  doneStyle(feature) {
-    return {
-    fillColor: "red" ,
-    weight: 0.5,
-    opacity: 1,
-    color: "black",
-    fillOpacity: .8
-   };
-  }	
   
   highlight = {
     'fillColor': 'yellow',
@@ -128,6 +104,15 @@ export class MapviewComponent implements OnInit {
     dashArray: "",
   };
 
+  geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -145,6 +130,10 @@ export class MapviewComponent implements OnInit {
     this.plotInfo = new PlotInfo();
     this.roadSegmentInfo = new RoadSegmentInfo();
     this.footpathInfo = new FootpathInfo(); 
+  }
+
+  getplotDetails(){
+   
   }
 
   toPlotForm(){
@@ -177,27 +166,7 @@ export class MapviewComponent implements OnInit {
       "OSM Base Map": osmBaseMap,
     };
 
-    function setStyle(feature){
-      if (feature.properties.done === "null") {
-      
 
-        return {
-          fillColor: "white" ,
-          weight: 0.5,
-          opacity: 1,
-          color: "black",
-          fillOpacity: .8
-        };
-    } else {
-        return {
-          fillColor: "white" ,
-          weight: 0.5,
-          opacity: 1,
-          color: "black",
-          fillOpacity: .8
-        };
-    }
-    }
     
     function getColor(feature){
       if(feature.properties.done === "true"){
@@ -206,6 +175,25 @@ export class MapviewComponent implements OnInit {
         return "green"
       }
     }
+    this.buildingMap = L.geoJSON(null, {
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius : 4,
+          fillColor : "red",
+          color : "red",
+          weight : 1,
+          opacity : 1,
+          fillOpacity : 1
+      });
+    },
+    onEachFeature:  (feature, layer) => {
+      layer.on('click',(e) => {
+       sessionStorage.setItem('building_id', feature.properties.structure_)
+       this.router.navigate(['updatebuilding'])
+      });
+    }, 
+    }) 
+   
  
     this.plotMap= L.geoJSON(null,{
       style: function (feature) {
@@ -214,19 +202,27 @@ export class MapviewComponent implements OnInit {
             weight: 0.5,
             opacity: 1,
             color: "black",
-            fillOpacity: .8
+            fillOpacity: .5
         };
       },
       onEachFeature:  (feature, layer) => {  
-      console.log(this.editDisabled)
-        layer.on('click',(e) => {
-          
+        layer.on('click',(e) => {          
           if(feature.properties.done === "true"){
-            this.editDisabled === true
-            alert(this.editDisabled)
+            this.editDisabled = true 
+            this.displayDetails = true     
+            this.dataService.getSpecificPlotDetails(feature.properties.lap_id, feature.properties.gid).subscribe(res => {
+              this.d_status = res.data[0].d_status;
+              this.plot_use = res.data[0].plot_use;
+              this.max_height = res.data[0].max_height;
+              this.setback_e = res.data[0].setback_e;
+              this.parking = res.data[0].parking;
+              this.d_status = res.data[0].d_status;
+              this.remarks = res.data[0].remarks;
+            })
+
           }else{
-            this.editDisabled === false
-            alert(this.editDisabled)
+            this.editDisabled = false
+            this.displayDetails = false
           }
           sessionStorage.setItem('fid', feature.properties.gid);
           sessionStorage.setItem('plot_id', feature.properties.plot_id)
@@ -241,7 +237,7 @@ export class MapviewComponent implements OnInit {
           this.displayRoadSegmentCard = false;
           this.plotInfo.plot_id = feature.properties.plot_id;
           this.plotInfo.precinct = feature.properties.precinct;
-          this.plotInfo.area = feature.properties.area;
+          this.plotInfo.area = feature.properties.area_m2;
           this.plotInfo.height = feature.properties.height;
           this.plotInfo.coverage = feature.properties.coverage;
           this.plotInfo.setback = feature.properties.setback;
@@ -290,7 +286,6 @@ export class MapviewComponent implements OnInit {
           this.footpathInfo.segment_id = feature.properties.id;
           this.footpathInfo.length = Math.round(feature.properties.length);
 
-          
           if(this.isShowing === true){
             this.isShowing = false;
           } else{
@@ -304,24 +299,30 @@ export class MapviewComponent implements OnInit {
 
         var overlayMaps = {
           "Plots": this.plotMap,
+          "Buildings":this.buildingMap,
           "Roads": this.roadMap,
           "Footpath": this.footpathMap
         };
-           
+        
+       
+
         this.layers = L.control.layers(baseMaps,overlayMaps).addTo(this.map);
 
+
         this.fetchGeojson()
-
-        
-
   }
 
   fetchGeojson() {
     let lap_id = sessionStorage.getItem('lap_id')
+    this.dataService.getBuildingsShape(lap_id).subscribe(res => {
+      this.buildingMap.addData(res)
+    })
     this.dataService.getPlotsByLap(lap_id).subscribe(res =>{
       this.plotMap.addData(res)
       this.map.fitBounds(this.plotMap.getBounds())
-    })  
+    }) 
+    
+    
     
   }
 
