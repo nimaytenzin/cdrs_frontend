@@ -145,7 +145,7 @@ export class UpdatePlotComponent implements OnInit {
     this.Plot.setback_e = this.updatePlotForm.get('setbackEnControl').value;
     this.Plot.parking = this.updatePlotForm.get('onsiteParkingControl').value;
     this.Plot.remarks = this.updatePlotForm.get('plotRemarksControl').value;
-
+    sessionStorage.setItem('ftype', 'plot')
     if(sessionStorage.getItem('update') === "false"){
       this.dataService.postPlot(this.Plot).subscribe(response=>{
         if(response.status === "Success"){
