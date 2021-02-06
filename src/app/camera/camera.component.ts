@@ -55,7 +55,7 @@ export class CameraComponent implements OnInit {
   }
 
   public handleImage(webcamImage: WebcamImage): void {
-    console.info('received webcam image', webcamImage);
+    console.info('received webcam image', webcamImage.imageAsDataUrl);
     this.pictureTaken.emit(webcamImage);
   }
 

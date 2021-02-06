@@ -151,7 +151,8 @@ export class UpdatePlotComponent implements OnInit {
         if(response.status === "Success"){
          this.clearCookie()
          this.dataService.shapefileSetDone(this.Plot.lap_id, this.Plot.fid).subscribe(res => console.log(res))
-            this.router.navigate(['mapview']);
+            this.router.navigate(['takephoto']);
+            sessionStorage.setItem('ftype','plot')
             this.snackBar.open('Plot Details Added', '', {
               duration: 5000,
               verticalPosition: 'bottom',
@@ -167,7 +168,8 @@ export class UpdatePlotComponent implements OnInit {
       this.dataService.updatePlot(this.Plot.lap_id,this.Plot.fid, this.Plot).subscribe(res => {
         console.log(res)
       })
-      this.router.navigate(['mapview']);
+      this.router.navigate(['takephoto']);
+      sessionStorage.setItem('ftype','plot')
       this.snackBar.open('Plot Details Updated', '', {
         duration: 5000,
         verticalPosition: 'bottom',

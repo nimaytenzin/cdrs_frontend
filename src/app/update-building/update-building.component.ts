@@ -1,9 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../service/data.service';
-
+import {environment} from '../../environments/environment'
 
 interface OPTIONS{
   id:string,
@@ -41,6 +42,8 @@ export class UpdateBuildingComponent implements OnInit {
   ownerContact:number;
   buildingDetails:any;
   updateSwitch:boolean;
+  img:any;
+  API_URL = environment.API_URL
 
   buildingUses:OPTIONS[] =[
     {id: "1", name: "Mixed Use"},
@@ -87,11 +90,13 @@ export class UpdateBuildingComponent implements OnInit {
     public dialog: MatDialog,
     private dataService: DataService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private http:HttpClient
   ) { }
 
   ngOnInit() {
     this.updateSwitch = false;
+
 
     this.Building.building_id = parseInt(sessionStorage.getItem('building_id'));
     this.dataService.getSpecificBuildingDetails(this.Building.building_id).subscribe(res => {
@@ -141,7 +146,9 @@ export class UpdateBuildingComponent implements OnInit {
         verticalPosition: 'bottom',
         panelClass: ['success-snackbar']
       });
-      this.router.navigate(['mapview']);
+      sessionStorage.setItem('ftype','building')
+      sessionStorage.setItem('fid',sessionStorage.getItem('building_id'))
+      this.router.navigate(['takephoto']);
   }
 
   updateRoad(){

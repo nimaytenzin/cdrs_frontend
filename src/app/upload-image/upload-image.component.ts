@@ -28,46 +28,32 @@ export class UploadImageComponent implements OnInit {
     this.webcamImage = null;
   }
   
-  goback(){
-    this.router.navigate(['dashboard',this.buildingId]);
+  end(){
+      this.router.navigate(['mapview']);
+      this.snackBar.open('Feature Details Completed', '', {
+        duration: 5000,
+        verticalPosition: 'bottom',
+        panelClass: ['success-snackbar']
+      });
   }
 
   uploadImg(){
-    this.snackBar.open('Image upload Complete', '', {
-      duration: 5000,
-      verticalPosition: 'bottom',
-      panelClass: ['success-snackbar']
-    });
-    this.router.navigate(['dashboard',this.buildingId]);
-
-  //   if(this.webcamImage){
-  //     let jsonObject = {
-  //       "building_id":this.buildingId,
-  //       "imageDataUrl":this.webcamImage.imageAsDataUrl
-  //     }
-  //     this.dataService.uploadImg(jsonObject).subscribe(response=>{
-  //       if(response.success === "true"){
-  //         this.router.navigate(['dashboard',this.buildingId]);
-  //         this.snackBar.open('Uploaded Image', '', {
-  //           duration: 5000,
-  //           verticalPosition: 'bottom',
-  //           panelClass: ['success-snackbar']
-  //         });
-  //       }else if(response.success === "false"){
-  //         this.snackBar.open('Could not upload image'+response.msg, '', {
-  //           duration: 5000,
-  //           verticalPosition: 'bottom',
-  //           panelClass: ['error-snackbar']
-  //         });
-  //       }else if(response.success === "error"){
-  //         this.snackBar.open('Error Uploading Image', '', {
-  //           duration: 5000,
-  //           verticalPosition: 'bottom',
-  //           panelClass: ['error-snackbar']
-  //         });
-  //       }
-  //   })
-  // }
+    if(this.webcamImage){
+      let jsonObject = {
+        "fid":sessionStorage.getItem('fid'),
+        "ftype":sessionStorage.getItem('ftype'),
+        "uri":this.webcamImage.imageAsDataUrl
+      }
+      this.dataService.uploadImg(jsonObject).subscribe(response=>{
+        this.webcamImage = null;
+        this.snackBar.open('Photo Uploaded', '', {
+          duration: 5000,
+          verticalPosition: 'bottom',
+          panelClass: ['success-snackbar']
+        });
+        
+    })
+  }
 }
 
   handleImage(webcamImage: WebcamImage) {

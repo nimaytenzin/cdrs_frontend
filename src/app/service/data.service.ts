@@ -192,20 +192,21 @@ getAllPlots(){
 
   
 
-  getDzongkhags(){
-
-  }
-
-  getZones(){
-    
-  }
+   
   
   uploadImg(item){
     return this.http
-      .post<any>(`${this.API_URL}/upload-img`,item,this.httpOptions)
+      .post<any>(`${this.API_URL}/images/add-image`,item,this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
+  }
+  getImages(fid,ftype){
+    return this.http
+    .get<any>(`${this.API_URL}/images/get-image/${ftype}/${fid}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
   }
 
   postCompletion(buildingId) {
