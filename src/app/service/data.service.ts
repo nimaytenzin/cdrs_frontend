@@ -96,14 +96,21 @@ getPlotsByLap(lap_id){
   )
 }
 
-getAllPlots(){
+getRoadsByLap(lap_id){
   return this.http
-  .get<any>(`${this.API_URL}/shapefile/get-all-plots`, this.httpOptions)
+  .get<any>(`${this.API_URL}/shapefile/get-roads/${lap_id}`, this.httpOptions)
   .pipe(
     catchError(this.handleError)
   )
 }
 
+getFootpathsByLap(lap_id){
+  return this.http
+  .get<any>(`${this.API_URL}/shapefile/get-footpaths/${lap_id}`, this.httpOptions)
+  .pipe(
+    catchError(this.handleError)
+  )
+}
 
   getPlotData(){
     return this.http

@@ -22,11 +22,12 @@ const routes: Routes = [
   {path: 'selectzone', component: SelectZoneComponent},
   {path:'mapview', component:MapviewComponent},
   {path: 'updateplot', component: UpdatePlotComponent},
+  {path:'uploadImage', component:UploadImageComponent},
   {path:'updateroad', component:UpdateRoadComponent},
   {path:"updatepath", component:UpdateFootpathComponent},
   {path:"updatebuilding", component:UpdateBuildingComponent},
   {path: 'dashboard', component: DashboardComponent},
-  {path: 'camera',component: UploadImageComponent},
+  {path: 'takephoto',component: UploadImageComponent},
   {path: '**', component: ErrorComponent},
 ];
 

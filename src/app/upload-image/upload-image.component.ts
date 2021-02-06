@@ -29,7 +29,7 @@ export class UploadImageComponent implements OnInit {
   }
   
   goback(){
-    this.router.navigate(['dashboard',this.buildingId]);
+    this.router.navigate(['mapview']);
   }
 
   uploadImg(){
@@ -38,7 +38,7 @@ export class UploadImageComponent implements OnInit {
       verticalPosition: 'bottom',
       panelClass: ['success-snackbar']
     });
-    this.router.navigate(['dashboard',this.buildingId]);
+    
 
   //   if(this.webcamImage){
   //     let jsonObject = {

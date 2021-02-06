@@ -253,12 +253,18 @@ export class MapviewComponent implements OnInit {
         
     }).addTo(this.map)
 
-
-   
     this.roadMap = L.geoJSON(null, {
+
+      style: function (feature) {
+        return {
+            color: getColor(feature),
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 1
+        };
+      },
       onEachFeature:  (feature, layer) => {
         layer.on('click',(e) => {
-         
           this.displayFootpathCard = false;
           this.displayPlotCard = false;
           this.displayRoadSegmentCard = true;
@@ -272,20 +278,24 @@ export class MapviewComponent implements OnInit {
             this.isShowing = true
           }   
         });
-      }, 
-        style: this.roadStyle}) 
+      },}) 
 
     this.footpathMap = L.geoJSON(null, {
+      style: function (feature) {
+        return {
+            weight: 2,
+            opacity: 1,
+            color:  getColor(feature),
+            dashArray: "4 4 4 4",
+        };
+      },
       onEachFeature:  (feature, layer) => {
         layer.on('click', (e) => {
-
           this.displayFootpathCard = true;
           this.displayPlotCard = false;
           this.displayRoadSegmentCard = false;
-          
           this.footpathInfo.segment_id = feature.properties.id;
           this.footpathInfo.length = Math.round(feature.properties.length);
-
           if(this.isShowing === true){
             this.isShowing = false;
           } else{
@@ -295,7 +305,7 @@ export class MapviewComponent implements OnInit {
   
         });
       }, 
-        style: this.footpathStyle}) 
+    }) 
 
         var overlayMaps = {
           "Plots": this.plotMap,
@@ -304,8 +314,6 @@ export class MapviewComponent implements OnInit {
           "Footpath": this.footpathMap
         };
         
-       
-
         this.layers = L.control.layers(baseMaps,overlayMaps).addTo(this.map);
 
 
@@ -318,11 +326,18 @@ export class MapviewComponent implements OnInit {
       this.buildingMap.addData(res)
     })
     this.dataService.getPlotsByLap(lap_id).subscribe(res =>{
+      console.log("plots",res)
       this.plotMap.addData(res)
       this.map.fitBounds(this.plotMap.getBounds())
-    }) 
-    
-    
+    })
+    this.dataService.getRoadsByLap(lap_id).subscribe(res => {
+      console.log("roads",res)
+      this.roadMap.addData(res)
+    })
+    this.dataService.getFootpathsByLap(lap_id).subscribe(res => {
+      console.log("footpath",res)
+      this.footpathMap.addData(res)
+    })
     
   }
 
