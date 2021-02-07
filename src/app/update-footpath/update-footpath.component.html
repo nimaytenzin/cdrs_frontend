@@ -32,7 +32,7 @@
 
               <mat-form-field class="justifier">
                 <mat-label>User Friendly</mat-label>
-                <mat-select name="lighting" formControlName="lightingControl"  [readonly]="disableForm" >
+                <mat-select name="friendliness" formControlName="friendlinessControl"  [readonly]="disableForm" >
                   <mat-option *ngFor="let option of lights" [value]="option.id">
                     {{option.name}}
                   </mat-option>
@@ -49,7 +49,7 @@
             <!-- End of Form-->
       </div>
       <div class="form-footer">
-        <button mat-raised-button class="btn custom-btn" (click)="submit()">
+        <button mat-raised-button class="btn custom-btn" (click)="updateFootpath()">
           <mat-icon>note_add</mat-icon> Submit
         </button>
       </div>

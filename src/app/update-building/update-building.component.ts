@@ -100,7 +100,6 @@ export class UpdateBuildingComponent implements OnInit {
     this.Building.structure_id = parseInt(sessionStorage.getItem('building_id'));
     this.dataService.getSpecificBuildingDetails(this.Building.structure_id).subscribe(res => {
       this.buildingDetails = res
-      console.log(res)
       this.buildingOwner = res.owner;
       this.ownerContact = res.contact;
       this.updateBuildingForm.patchValue({
@@ -154,9 +153,7 @@ export class UpdateBuildingComponent implements OnInit {
     this.Building.balcony = this.updateBuildingForm.get('balconyProjectionControl').value
     this.Building.color = this.updateBuildingForm.get('buildingColorControl').value
     this.Building.remarks = this.updateBuildingForm.get('buildingRemarksControl').value
-    
-    
-    console.log('req body', this.Building)
+
     this.dataService.updateBuilding(this.Building,this.Building.structure_id).subscribe(response=>{
       if(response.status === "success"){
         this.dataService.buildingSetDone(this.Building.structure_id).subscribe(
@@ -184,6 +181,9 @@ export class UpdateBuildingComponent implements OnInit {
     })
   }
 
+  back(){
+    this.router.navigate(['mapview'])
+  }
 
   
 

@@ -36,13 +36,10 @@
         </tr>
         </ng-container>
        </table>      
-   
-        <button  mat-icon-button color="black"  [disabled]=  "editDisabled" (click)="toPlotForm()">
-          <mat-icon>edit</mat-icon>
-        </button><span style="font-weight: bold;">Add  Details</span> <br>
      
         <div *ngIf="displayDetails">
-               
+               <br>
+               <br>
           <table >
             <ng-container matColumnDef="position">
             <tr>
@@ -72,53 +69,66 @@
             </tr>
             </ng-container>
            </table>     
-           <button  mat-icon-button color="black"  (click)="toPlotForm()">
-            <mat-icon>edit</mat-icon>
-          </button><span style="font-weight: bold;">Update Details</span> <br>
+           
         </div>
 
+        <button  mat-icon-button color="black"  (click)="toPlotForm()">
+          <mat-icon>edit</mat-icon>
+        </button><span style="font-weight: bold;">Update Details</span> <br>
       </mat-card>
 
+      
       <mat-card *ngIf="displayRoadSegmentCard">
         <table>
           <ng-container matColumnDef="position">
           <tr>
             <th>Segment Id: </th>
-            <td>{{roadSegmentInfo.segment_id}}</td>
+            <td>{{segmentId}}</td>
           </tr>
           <tr>
             <th>Length: </th>
-            <td>{{roadSegmentInfo.length}} metres</td>
+            <td>{{length}} metres</td>
+          </tr>
+          </ng-container>
+         </table> 
+          <br>
+          <br>
+         <table *ngIf = "roadDataExists">
+          <ng-container matColumnDef="position">
+          <tr>
+            <th>Development Status: </th>
+            <td>{{developmentStatus}}</td>
+          </tr>
+          <tr>
+            <th>ROW</th>
+            <td>{{row}}</td>
+          </tr>
+          <tr>
+            <th>Carriageway Width</th>
+            <td>{{carriageWay}}</td>
+          </tr>
+          <tr>
+            <th>Number of lanes</th>
+            <td>{{lanes}}</td>
+          </tr>
+          <tr>
+            <th>Median</th>
+            <td>{{median}}</td>
+          </tr>
+          <tr>
+            <th>Remarks</th>
+            <td>{{remarksR}}</td>
           </tr>
         
           </ng-container>
-         </table>      
-  
-          <br>
-          <button style="text-align: center;align-items: right;" (click) = "toRoadForm()"><mat-icon>edit</mat-icon></button> <br>
-          <table >
-            <td colspan="2">to be populated from database</td>
-            <ng-container matColumnDef="position">
-            <tr>
-              <th>Development Status: </th>
-              <td>Under Development</td>
-            </tr>
-            <tr>
-              <th>Use: </th>
-              <td>Residential</td>
-            </tr>
-            <tr>
-              <th>Coverage: </th>
-              <td>Maintained</td>
-            </tr>
-            </ng-container>
-           </table>
+         </table>  
+         
+         <br>
+         <br>
 
-           <p>Segment Photo</p>
-  
-           
-  
-  
+          <button  mat-icon-button color="black"  (click)="toRoadForm()">
+            <mat-icon>edit</mat-icon>
+          </button><span style="font-weight: bold;">Update Details</span> <br>
       </mat-card>
 
       <mat-card *ngIf="displayFootpathCard">
@@ -126,37 +136,49 @@
           <ng-container matColumnDef="position">
           <tr>
             <th>Segment Id: </th>
-            <td>{{roadSegmentInfo.segment_id}}</td>
+            <td>{{fSegmentId}}</td>
           </tr>
           <tr>
             <th>Length: </th>
-            <td>{{footpath.length}} metres</td>
+            <td>{{fLenght}}  metres</td>
           </tr>
         
           </ng-container>
          </table>      
-  
-          <br>
-          <button style="text-align: center;align-items: right;" (click)= "toFootpathForm()"><mat-icon>edit</mat-icon></button> <br>
+
+         <br>
+         <br>
+        
           <table >
-            <td colspan="2">to be populated from database</td>
+          
             <ng-container matColumnDef="position">
             <tr>
               <th>Development Status: </th>
-              <td>Under Development</td>
+              <td>{{fStatus}}</td>
             </tr>
             <tr>
-              <th>Use: </th>
-              <td>Residential</td>
+              <th>Width</th>
+              <td>{{fWidth}}</td>
             </tr>
             <tr>
-              <th>Coverage: </th>
-              <td>Maintained</td>
+              <th>Lighting</th>
+              <td>{{fLighting}}</td>
+            </tr>
+
+            <tr>
+              <th>User Friendliness</th>
+              <td>{{fFriendliness}}</td>
+            </tr>
+            <tr>
+              <th>Remarks</th>
+              <td>{{fRemarks}}</td>
             </tr>
             </ng-container>
            </table>
   
-  
+           <button  mat-icon-button color="black"  (click)="toFootpathForm()">
+            <mat-icon>edit</mat-icon>
+          </button><span style="font-weight: bold;">Update Details</span> <br>
       </mat-card>
   </mat-drawer>
   <mat-drawer-content>Main content  

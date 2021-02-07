@@ -13,7 +13,7 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              
+             
               <mat-form-field class="justifier">
                 <mat-label>Road Right of Way</mat-label>
                 <input matInput type="number" name="row" formControlName="rowControl" required min="0" [readonly]="disableForm" required autofocus>
@@ -37,7 +37,7 @@
 
           
                
-              <p>On Street Parking</p>
+              <p>On Street Parking (count)</p>
               <mat-form-field class="justifier">
                 <mat-label>Parking Left</mat-label>
                 <input matInput type="number" name="streetParkingLeft" formControlName="streetParkingLeftControl" required min="0" [readonly]="disableForm" required autofocus>
@@ -48,8 +48,20 @@
                 <input matInput type="number" name="streetParkingRight" formControlName="streetParkingRightControl" required min="0" [readonly]="disableForm" required autofocus>
               </mat-form-field>
 
+                     
+              <p>OnStreet Footpath (width)</p>
+              <mat-form-field class="justifier">
+                <mat-label>Footpath Left</mat-label>
+                <input matInput type="number" name="streetPathLeft" formControlName="streetPathLeftControl" required min="0" [readonly]="disableForm" required autofocus>
+              </mat-form-field>
+      
+              <mat-form-field class="justifier">
+                <mat-label>Footpath Right</mat-label>
+                <input matInput type="number" name="streetPathRight" formControlName="streetPathRightControl" required min="0" [readonly]="disableForm" required autofocus>
+              </mat-form-field>
+
                        
-              <p>Street Light</p>
+              <p>Street Light (count)</p>
               <mat-form-field class="justifier">
                 <mat-label>Light Left</mat-label>
                 <input matInput type="number" name="streetLightLeft" formControlName="streetLightLeftControl" required min="0" [readonly]="disableForm" required autofocus>
@@ -62,7 +74,7 @@
     
 
                        
-              <p>Drains</p>
+              <p>Drains (width)</p>
               <mat-form-field class="justifier">
                 <mat-label>Drain Left</mat-label>
                 <input matInput type="number" name="drainsLeft" formControlName="drainsLeftControl" required min="0" [readonly]="disableForm" required autofocus>

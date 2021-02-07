@@ -11,12 +11,13 @@ interface OPTIONS{
 }
 
 export class Footpaths{
-  gid: number;
-  lapid:number;
-  developmentStatus:string;
-  footpathWidth:number;
+  fid: number;
+  lap_id:number;
+  d_status:string;
+  width:number;
   lighting:number;
-  footpathRemarks:string
+  friendliness:string;
+  remarks:string;
 }
 
 @Component({
@@ -29,6 +30,8 @@ export class UpdateFootpathComponent implements OnInit {
   disableForm = false;
   displayForm = true;
   Footpath = new Footpaths;
+  fid:number;
+  update:boolean;
 
   developmentStatus: OPTIONS[]=[
     {id: "1", name: "Developed"},
@@ -52,6 +55,21 @@ export class UpdateFootpathComponent implements OnInit {
 
   ngOnInit() {
     this.reactiveForms()
+    this.fid = parseInt(sessionStorage.getItem('fid'));
+    this.dataService.getSpecificFootpath(this.fid).subscribe(res => {
+      if(res.length !== 0){
+        this.update = true;
+        this.updatePathForm.patchValue({
+          developmentStatusControl:res[0].d_status,
+          footpathWidthControl:res[0].width,
+          lightingControl:res[0].lighting,
+          friendlinessControl:res[0].friendliness,
+          footpathRemarksControl:res[0].remarks
+        });
+      }else{
+        this.update = false;
+      }
+    })
   }
 
   reactiveForms() {
@@ -59,52 +77,48 @@ export class UpdateFootpathComponent implements OnInit {
       developmentStatusControl:[],
       footpathWidthControl:[],
       lightingControl:[],
+      friendlinessControl:[],
       footpathRemarksControl:[],
     });    
     }
-  submit(){
-      this.updateFootpath();
-      this.snackBar.open('Footpath Segment Details Updated', '', {
-        duration: 5000,
-        verticalPosition: 'bottom',
-        panelClass: ['success-snackbar']
-      });
-      this.router.navigate(['mapview']);
-  }
 
   updateFootpath(){
-    this.Footpath.gid = 1;
-    this.Footpath.lapid = 2;
-    this.Footpath.developmentStatus = this.updatePathForm.get('developmentStatusControl').value;
-    this.Footpath.footpathWidth = this.updatePathForm.get('footpathWidthControl').value;
+    this.Footpath.fid = this.fid;
+    this.Footpath.lap_id = parseInt(sessionStorage.getItem('lap_id'));
+    this.Footpath.d_status = this.updatePathForm.get('developmentStatusControl').value;
+    this.Footpath.width = this.updatePathForm.get('footpathWidthControl').value;
     this.Footpath.lighting = this.updatePathForm.get('lightingControl').value;
-    this.Footpath.footpathRemarks =this.updatePathForm.get('footpathRemarksControl').value;
+    this.Footpath.friendliness = this.updatePathForm.get('friendlinessControl').value
+    this.Footpath.remarks =this.updatePathForm.get('footpathRemarksControl').value;
 
-    this.dataService.updatePath(this.Footpath).subscribe(response=>{
-         
-      if(response.success === "true"){
-        this.router.navigate(['dashboard',this.Footpath]);
-        this.snackBar.open('Plot Details Updated', '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['success-snackbar']
-        });
-      }else if(response.success === "false"){
-        this.snackBar.open('Could not Update Plot Details'+response.msg, '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['error-snackbar']
-        });
-      }else{
-        this.snackBar.open('Error Updating Plot Details', '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['error-snackbar']
-        });
-      }
+    console.log(this.update)
+    if(this.update !== true){
+      this.dataService.postFootpath(this.Footpath).subscribe(res =>{
+          this.dataService.footpathSetDone(this.fid).subscribe(res => {
+            sessionStorage.setItem('ftype','footpath')
+            sessionStorage.setItem('fid',sessionStorage.getItem('building_id'))
+            this.router.navigate(['takephoto']);
+            this.snackBar.open('Footpath Details Added', '', {
+              duration: 5000,
+              verticalPosition: 'bottom',
+              panelClass: ['success-snackbar']
+            });
+          })
+      })
+    }else{
+      this.dataService.updateFootpath(this.fid,this.Footpath).subscribe(res => {
+      })
+      sessionStorage.setItem('ftype','footpath')
+            sessionStorage.setItem('fid',sessionStorage.getItem('building_id'))
+            this.router.navigate(['takephoto']);
+            this.snackBar.open('Footpath Details Updated', '', {
+              duration: 5000,
+              verticalPosition: 'bottom',
+              panelClass: ['success-snackbar']
+            });
     }
+     
 
-    )
   }
 
 }

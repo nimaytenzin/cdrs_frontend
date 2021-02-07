@@ -29,6 +29,14 @@ export class UploadImageComponent implements OnInit {
   }
   
   end(){
+      sessionStorage.removeItem('fid')
+      sessionStorage.removeItem('ftype')
+      sessionStorage.removeItem('building_id')
+      sessionStorage.removeItem('setback')
+      sessionStorage.removeItem('height')
+      sessionStorage.removeItem('area')
+      sessionStorage.removeItem('coverage')
+      sessionStorage.removeItem('precinct')
       this.router.navigate(['mapview']);
       this.snackBar.open('Feature Details Completed', '', {
         duration: 5000,

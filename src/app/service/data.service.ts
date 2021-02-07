@@ -38,18 +38,6 @@ export class DataService {
       'Something bad happened; please try again later.');
   }
 
-  authenticateUser(uid, pass) {
-    const user = {
-      user: uid,
-      password: pass
-    };
-
-    return this.http
-      .post<any>(`${this.API_URL}/login`, user, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
 
   //getbuildings
   getBuildingsShape(lap_id){
@@ -60,13 +48,7 @@ export class DataService {
     )
   }
 
-  getSpecificBuildingDetails(id){
-    return this.http
-    .get<any>(`${this.API_URL}/buildings/get-building/${id}`, this.httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    )
-  }
+
 
   getThromdes(){
     return this.http
@@ -84,7 +66,6 @@ export class DataService {
   }
 
 
-  
 
 
 //renderShapefile
@@ -113,7 +94,8 @@ getFootpathsByLap(lap_id){
 }
 
 
-  // post plot detials
+
+/** *************PLOT DATA SERVICS********************* */
   postPlot(plotDetails){
     return this.http
     .post<any>(`${this.API_URL}/plots/add-plot`, plotDetails, this.httpOptions)
@@ -121,62 +103,104 @@ getFootpathsByLap(lap_id){
       catchError(this.handleError)
     );
   }
-
-  updatePlot(lap_id,fid,plotDetails){
+  updatePlot(fid,plotDetails){
     return this.http
-    .put<any>(`${this.API_URL}/plots/update-plot/${lap_id}/${fid}`, plotDetails, this.httpOptions)
+    .put<any>(`${this.API_URL}/plots/update-plot/${fid}`, plotDetails, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     );
   }
 
-  // get updated plot details
-  getSpecificPlotDetails(lap_id,fid){
+  getSpecificPlotDetails(fid){
     return this.http
-    .get<any>(`${this.API_URL}/plots/get-plot/${lap_id}/${fid}`, this.httpOptions)
+    .get<any>(`${this.API_URL}/plots/get-plot/${fid}`, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     )
   }
-
-  getRoadData(){
+  setPlotDone(fid){
     return this.http
-    .get<any>(`${this.API_URL}/roads`, this.httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    )
-  }
-
-  getSpecificRoadData(fid,lap_id){
-    return this.http
-    .get<any>(`${this.API_URL}/roads/get-road/${lap_id}/${fid}`, this.httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    )
-  }
-
-  updateRoad(lap_id, fid,roadDetails){
-    return this.http
-    .put<any>(`${this.API_URL}/roads/update-road/${lap_id}/${fid}`, roadDetails, this.httpOptions)
+    .put<any>(`${this.API_URL}/plots/set-done/${fid}`,  this.httpOptions)
     .pipe(
       catchError(this.handleError)
     );
   }
 
-  getPathData(){
+
+  /********************* ROAD DATA API ************************* */
+
+  postRoad(roadDetails){
     return this.http
-    .get<any>(`${this.API_URL}/footpaths`, this.httpOptions)
+    .post<any>(`${this.API_URL}/roads/add-road`, roadDetails, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+  updateRoad(roadDetails, fid){
+    return this.http
+    .put<any>(`${this.API_URL}/roads/update-road/${fid}`, roadDetails, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getSpecificRoadData(fid){
+    return this.http
+    .get<any>(`${this.API_URL}/roads/get-road/${fid}`, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     )
   }
-  
-  updatePath(footpathDetails){
+
+  setRoadDone(object_id){
     return this.http
-    .post<any>(`${this.API_URL}/updatepath`, footpathDetails, this.httpOptions)
+    .put<any>(`${this.API_URL}/roads/set-done/${object_id}`,  this.httpOptions)
     .pipe(
       catchError(this.handleError)
     );
+  }
+
+/************************************ FOOTPATH API ***************************************************************** */
+
+  postFootpath(footpathDetails){
+    return this.http
+    .post<any>(`${this.API_URL}/footpaths/add-path`, footpathDetails, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+  updateFootpath(fid,footpathDetails){
+    return this.http
+    .put<any>(`${this.API_URL}/footpaths/update-path/${fid}`, footpathDetails, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getSpecificFootpath(fid){
+    return this.http
+    .get<any>(`${this.API_URL}/footpaths/get-path/${fid}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  footpathSetDone(fid){
+    return this.http
+    .put<any>(`${this.API_URL}/footpaths/set-done/${fid}'`,this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
+  /******************************* BUILDING DATA API ************************************************* */
+  getSpecificBuildingDetails(id){
+    return this.http
+    .get<any>(`${this.API_URL}/buildings/get-building/${id}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
   }
 
   updateBuilding(buildingDetails,building_id){
@@ -187,13 +211,6 @@ getFootpathsByLap(lap_id){
     );
   }
 
-  shapefileSetDone(lap_id,gid){
-    return this.http
-    .put<any>(`${this.API_URL}/shapefile/set-done/${lap_id}/${gid}'`,this.httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    );
-  }
   buildingSetDone(building_id){
     return this.http
     .put<any>(`${this.API_URL}/buildings/set-done/${building_id}'`,this.httpOptions)
@@ -201,6 +218,9 @@ getFootpathsByLap(lap_id){
       catchError(this.handleError)
     );
   }
+
+
+  /********************************** IMAGE SERVICE API************************************************* */
  
   uploadImg(item){
     return this.http

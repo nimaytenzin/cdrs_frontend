@@ -15,10 +15,13 @@ export class Roads{
   d_status:string;
   row:number;
   lanes:number;
-  carriagewayWidth:number;
+  carriage_width:number;
   median:number;
+
   parking_left:number;
   parking_right:number;
+  path_left:number;
+  path_right:number;
   light_left:number;
   light_right:number;
   drains_left:number;
@@ -39,6 +42,7 @@ export class UpdateRoadComponent implements OnInit {
   disableForm = false;
   displayForm = true;
   Road = new Roads;
+  update:boolean;
 
   developmentStatus: OPTIONS[]=[
     {id: "1", name: "Developed"},
@@ -69,25 +73,33 @@ export class UpdateRoadComponent implements OnInit {
     this.reactiveForms()
     this.lap_id = parseInt(sessionStorage.getItem('lap_id'));
     this.fid = parseInt(sessionStorage.getItem('fid'));
-    this.dataService.getSpecificRoadData(this.fid,this.lap_id).subscribe(res => {
+    this.dataService.getSpecificRoadData(this.fid).subscribe(res => {
       console.log('serverRes',res)
-      this.updateRoadForm.patchValue({
-        developmentStatusControl:res[0].d_status,
-        rowControl:res[0].row,
-        laneCountControl:res[0].lanes,
-        carriagewayWidthControl:res[0].carriage_width,
-        medianControl:res[0].median,
-
-        streetParkingLeftControl:res[0].parking_left,
-        streetParkingRightControl:res[0].parking_right,
-
-        streetLightLeftControl:res[0].light_left,
-        streetLightRightControl:res[0].light_right,
-
-        drainsLeftControl:res[0].drain_left,
-        drainsRightControl:res[0].drain_right,
-        roadRemarksControl:res[0].remarks,
-      });
+      if(res.length !== 0){
+        this.update = true;
+        console.log('update', this.update)
+        this.updateRoadForm.patchValue({
+          developmentStatusControl:res[0].d_status,
+          rowControl:res[0].row,
+          laneCountControl:res[0].lanes,
+          carriagewayWidthControl:res[0].carriage_width,
+          medianControl:res[0].median,
+          streetParkingLeftControl:res[0].parking_left,
+          streetParkingRightControl:res[0].parking_right,
+          streetPathLeftControl:res[0].path_left,
+          streetPathRightControl:res[0].path_right,
+          streetLightLeftControl:res[0].light_left,
+          streetLightRightControl:res[0].light_right,
+          drainsLeftControl:res[0].drains_left,
+          drainsRightControl:res[0].drains_right,
+          roadRemarksControl:res[0].remarks,
+        });
+      }else{
+       
+        this.update = false
+        console.log('update', this.update)
+      }
+     
     })
   }
 
@@ -102,40 +114,74 @@ export class UpdateRoadComponent implements OnInit {
       streetParkingLeftControl:[],
       streetParkingRightControl:[],
 
+      streetPathLeftControl:[],
+      streetPathRightControl:[],
+
       streetLightLeftControl:[],
       streetLightRightControl:[],
 
       drainsLeftControl:[],
       drainsRightControl:[],
-      drainsControl:[],
       roadRemarksControl:[],
     });    
     }
 
   updateRoad(){
     this.Road.fid = this.fid;
-    console.log('lfid',this.fid)
-    console.log('lap_id',this.lap_id) 
     this.Road.lap_id = this.lap_id;
     this.Road.d_status = this.updateRoadForm.get('developmentStatusControl').value;
     this.Road.row = this.updateRoadForm.get('rowControl').value;
     this.Road.lanes = this.updateRoadForm.get('laneCountControl').value;
-    this.Road.carriagewayWidth = this.updateRoadForm.get('carriagewayWidthControl').value;
+    this.Road.carriage_width = this.updateRoadForm.get('carriagewayWidthControl').value;
     this.Road.median = this.updateRoadForm.get('medianControl').value;
+
     this.Road.parking_left = this.updateRoadForm.get('streetParkingLeftControl').value;
     this.Road.parking_right = this.updateRoadForm.get('streetParkingRightControl').value;
+
+    this.Road.path_left = this.updateRoadForm.get('streetPathLeftControl').value;
+    this.Road.path_right = this.updateRoadForm.get('streetPathRightControl').value
 
     this.Road.light_left = this.updateRoadForm.get('streetLightLeftControl').value;
     this.Road.light_right = this.updateRoadForm.get('streetLightRightControl').value;
 
     this.Road.drains_left =this.updateRoadForm.get('drainsLeftControl').value;
     this.Road.drains_right = this.updateRoadForm.get('drainsRightControl').value;
-
     this.Road.remarks = this.updateRoadForm.get('roadRemarksControl').value;
-    
-    this.dataService.updateRoad(this.lap_id,this.fid, this.Road).subscribe(response=>{
-        console.log(response)
-    })
+
+    if(this.update === true){
+      this.dataService.updateRoad(this.Road,this.Road.fid).subscribe(
+        res => { 
+        }
+      )
+      sessionStorage.setItem('ftype', 'road')
+      sessionStorage.setItem('fid', this.Road.fid.toString())
+      this.router.navigate(['takephoto'])
+      this.snackBar.open('Plot Details Updated', '', {
+        duration: 5000,
+        verticalPosition: 'bottom',
+        panelClass: ['success-snackbar']
+   
+   })
+     
+    }else{
+      this.dataService.postRoad(this.Road).subscribe(response=>{
+        this.dataService.setRoadDone(this.Road.fid).subscribe(res => {
+          sessionStorage.setItem('ftype', 'road')
+          sessionStorage.setItem('fid', this.Road.fid.toString())
+          this.router.navigate(['takephoto'])
+          this.snackBar.open('Plot Details Added', '', {
+            duration: 5000,
+            verticalPosition: 'bottom',
+            panelClass: ['success-snackbar']  
+        })
+        })
+      })
+
+      
+      
+    }
   }
 
 }
+
+

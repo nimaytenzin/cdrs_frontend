@@ -7,21 +7,12 @@
       <div class="form-body">
         <form [formGroup]="loginForm">
           <mat-form-field class="justifier">
-            <input matInput type="number" placeholder="Username" class="form-input" name="userName" formControlName="userName" [ngClass]="{ 'is-invalid': submitted && f.cid.errors }" required autofocus>
-            <div *ngIf="submitted && f.cid.errors" class="invalid-feedback">
-              <div *ngIf="f.cid.errors.required">Username is required</div>
-            <div *ngIf="f.cid.errors.minlength">CID number must be atleast 11 characters</div>
-              <div *ngIf="f.cid.errors.maxlength">CID number must be less then 11 characters</div>
-            </div>
+            <input matInput type="text" placeholder="Username" class="form-input" name="userName" formControlName="userName"  required autofocus>
+         
           </mat-form-field>
           <mat-form-field class="justifier">
-            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" class="form-input" name="password" formControlName="password"  [ngClass]="{ 'is-invalid': submitted && f.cid.errors }" required>
-            <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-              <div *ngIf="f.password.errors.required">Password is required</div>
-            </div>
+            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" class="form-input" name="password" formControlName="password"  required>
+      
           </mat-form-field>
         </form>
       </div>

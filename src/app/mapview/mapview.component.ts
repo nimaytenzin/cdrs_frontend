@@ -49,20 +49,37 @@ export class MapviewComponent implements OnInit {
   plotInfo: PlotInfo;
   roadSegmentInfo: RoadSegmentInfo;
   footpathInfo : FootpathInfo;
-  displayDetails:boolean = false;
+  displayDetails:boolean;
+  roadDataExists:boolean;
 
-
-  d_status: string;
+  d_status:string;
   plot_use:string;
   max_height:string;
   setback_e:string;
   parking:string;
   remarks:string
 
+  segmentId:string;
+  length:string;
+  developmentStatus:string;
+  row:string;
+  carriageWay:string;
+  lanes:string;
+  median:string;
+  remarksR:string
+
+
+  fLenght:string;
+  fSegmentId:string;
+  fWidth:string;
+  fStatus:string;
+  fLighting:string;
+  fFriendliness:string;
+  fRemarks:string;
+  
    googleSatUrl = "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}";
-   hybridMapUrl = "http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}";
    cartoPositronUrl = "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png";
-   osmBaseUrl = "https://tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png";
+
 
   
   highlight = {
@@ -127,6 +144,7 @@ export class MapviewComponent implements OnInit {
     this.displayFootpathCard = false;
     this.displayPlotCard = false;
     this.displayRoadSegmentCard = false;
+    this.displayDetails = false
     this.plotInfo = new PlotInfo();
     this.roadSegmentInfo = new RoadSegmentInfo();
     this.footpathInfo = new FootpathInfo(); 
@@ -137,7 +155,6 @@ export class MapviewComponent implements OnInit {
   }
 
   toPlotForm(){
-
     this.router.navigate(['updateplot'])
   }
   toRoadForm(){
@@ -150,12 +167,9 @@ export class MapviewComponent implements OnInit {
 
 
   renderFeatures(){
- 
     var cartoMap = L.tileLayer(this.cartoPositronUrl);
     var satelliteMap = L.tileLayer(this.googleSatUrl);
-    var osmBaseMap = L.tileLayer(this.osmBaseUrl);
 
-     
     this.map = L.map('map',{
       layers: [cartoMap],
       renderer: L.canvas({ tolerance: 3 })
@@ -163,12 +177,9 @@ export class MapviewComponent implements OnInit {
     
       var baseMaps = {
       "Satellite": satelliteMap,
-      "Carto Map" : cartoMap,
-      "OSM Base Map": osmBaseMap,
+      "Carto Map" : cartoMap
     };
-
-
-    
+   
     function getColor(feature){
       if(feature.properties.done === "true"){
         return "red"
@@ -176,6 +187,7 @@ export class MapviewComponent implements OnInit {
         return "green"
       }
     }
+
     this.buildingMap = L.geoJSON(null, {
       pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, {
@@ -208,24 +220,31 @@ export class MapviewComponent implements OnInit {
         };
       },
       onEachFeature:  (feature, layer) => {  
-        layer.on('click',(e) => {          
-          if(feature.properties.done === "true"){
-            this.editDisabled = true 
-            this.displayDetails = true     
-            this.dataService.getSpecificPlotDetails(feature.properties.lap_id, feature.properties.gid).subscribe(res => {
-              this.d_status = res.data[0].d_status;
-              this.plot_use = res.data[0].plot_use;
-              this.max_height = res.data[0].max_height;
-              this.setback_e = res.data[0].setback_e;
-              this.parking = res.data[0].parking;
-              this.d_status = res.data[0].d_status;
-              this.remarks = res.data[0].remarks;
-            })
+        layer.on('click',(e) => { 
+          this.dataService.getSpecificPlotDetails(feature.properties.gid).subscribe(res => {
+           if(res.data.length !== 0){
+             this.editDisabled = true
+             this.displayDetails = true
+            this.d_status = res.data[0].d_status;
+            this.plot_use = res.data[0].plot_use;
+            this.max_height = res.data[0].max_height;
+            this.setback_e = res.data[0].setback_e;
+            this.parking = res.data[0].parking;
+            this.d_status = res.data[0].d_status;
+            this.remarks = res.data[0].remarks;
 
-          }else{
+           }else{
+            this,this.displayDetails = false
             this.editDisabled = false
-            this.displayDetails = false
-          }
+            this.d_status= "not updated";
+            this.plot_use="not updated";
+            this.max_height="not updated";
+            this.setback_e="not updated";
+            this.parking="not updated";
+            this.remarks="not updated"         
+           }     
+          })
+        
           sessionStorage.setItem('fid', feature.properties.gid);
           sessionStorage.setItem('plot_id', feature.properties.plot_id)
           sessionStorage.setItem('precinct', feature.properties.precinct)
@@ -251,12 +270,11 @@ export class MapviewComponent implements OnInit {
          }            
         }
         );
-      }
-        
-    })
+      }    
+    }) .addTo(this.map)
+
 
     this.roadMap = L.geoJSON(null, {
-
       style: function (feature) {
         return {
             color: getColor(feature),
@@ -268,11 +286,35 @@ export class MapviewComponent implements OnInit {
       onEachFeature:  (feature, layer) => {
         layer.on('click',(e) => {
           console.log(feature)
-          sessionStorage.setItem('fid', feature.properties.gid)
+          sessionStorage.setItem('fid', feature.properties.object_id)
+          this.dataService.getSpecificRoadData(feature.properties.object_id).subscribe(
+            res => {
+             if(res.length !== 0){
+               this.roadDataExists = true;
+              this.segmentId = res[0].fid;
+              this.length = feature.properties.length + " m";
+              this.developmentStatus = res[0].d_status;
+              this.row = res[0].row + " m";
+              this.carriageWay = res[0].carriage_width + " m";
+              this.lanes = res[0].lanes;
+              this.median = res[0].median + " m";
+              this.remarksR = res[0].remarks
+             }else{
+               this.roadDataExists = false
+              this.segmentId = feature.properties.object_id;
+              this.length = feature.properties.length;
+              this.developmentStatus = "Not updated";
+              this.row ="Not updated" ;
+              this.carriageWay = "Not updated";
+              this.lanes ="Not updated";
+              this.median = "Not updated";
+              this.remarksR = "Not updated"
+             }
+            }
+          )
           this.displayFootpathCard = false;
           this.displayPlotCard = false;
           this.displayRoadSegmentCard = true;
-
           this.footpathInfo.segment_id = feature.properties.id;
           this.footpathInfo.length = feature.properties.length; 
 
@@ -282,7 +324,8 @@ export class MapviewComponent implements OnInit {
             this.isShowing = true
           }   
         });
-      },}).addTo(this.map)
+      },})
+
 
     this.footpathMap = L.geoJSON(null, {
       style: function (feature) {
@@ -295,6 +338,25 @@ export class MapviewComponent implements OnInit {
       },
       onEachFeature:  (feature, layer) => {
         layer.on('click', (e) => {
+          this.fSegmentId = feature.properties.object_id;
+          sessionStorage.setItem('fid', feature.properties.object_id)
+          this.fLenght = feature.properties.length;
+          this.dataService.getSpecificFootpath(this.fSegmentId).subscribe(res => {
+            console.log(res)
+            if(res.length !== 0){
+              this.fWidth = res[0].width + " m";
+              this.fLighting = res[0].lighting;
+              this.fStatus = res[0].d_status
+              this.fFriendliness = res[0].friendliness
+              this.fRemarks = res[0].remarks
+            }else{
+              this.fWidth = "Not Updated";
+              this.fLighting = "Not Updated"
+              this.fStatus = "Not Updated";
+              this.fFriendliness = "Not Updated";
+              this.fRemarks ="Not Updated";
+            }
+          })
           this.displayFootpathCard = true;
           this.displayPlotCard = false;
           this.displayRoadSegmentCard = false;
@@ -304,25 +366,21 @@ export class MapviewComponent implements OnInit {
             this.isShowing = false;
           } else{
             this.isShowing = true
-          }   
-
-  
-        });
+          }    
+       });
       }, 
-    }) 
+    })
 
-        var overlayMaps = {
-          "Plots": this.plotMap,
-          "Buildings":this.buildingMap,
-          "Roads": this.roadMap,
-          "Footpath": this.footpathMap
-        };
-        
-        this.layers = L.control.layers(baseMaps,overlayMaps).addTo(this.map);
-
-
-        this.fetchGeojson()
+    var overlayMaps = {
+      "Plots": this.plotMap,
+      "Buildings":this.buildingMap,
+      "Roads": this.roadMap,
+      "Footpath": this.footpathMap
+    };        
+    this.layers = L.control.layers(baseMaps,overlayMaps).addTo(this.map);
+    this.fetchGeojson()
   }
+
 
   fetchGeojson() {
     let lap_id = sessionStorage.getItem('lap_id')
@@ -332,12 +390,15 @@ export class MapviewComponent implements OnInit {
     })
     this.dataService.getPlotsByLap(lap_id).subscribe(res =>{
       this.plotMap.addData(res)
+      console.log('plots',res)
       this.map.fitBounds(this.plotMap.getBounds())
     })
     this.dataService.getRoadsByLap(lap_id).subscribe(res => {
+      console.log('roads',res)
       this.roadMap.addData(res)
     })
     this.dataService.getFootpathsByLap(lap_id).subscribe(res => {
+      console.log('footpath',res)
       this.footpathMap.addData(res)
     })
     
