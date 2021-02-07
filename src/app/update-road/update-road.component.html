@@ -40,24 +40,24 @@
               <p>On Street Parking</p>
               <mat-form-field class="justifier">
                 <mat-label>Parking Left</mat-label>
-                <input matInput type="text" name="streetParking" formControlName="streetParkingControl" required min="0" [readonly]="disableForm" required autofocus>
+                <input matInput type="number" name="streetParkingLeft" formControlName="streetParkingLeftControl" required min="0" [readonly]="disableForm" required autofocus>
               </mat-form-field>
       
               <mat-form-field class="justifier">
                 <mat-label>Parking Right</mat-label>
-                <input matInput type="text" name="streetPath" formControlName="streetPathControl" required min="0" [readonly]="disableForm" required autofocus>
+                <input matInput type="number" name="streetParkingRight" formControlName="streetParkingRightControl" required min="0" [readonly]="disableForm" required autofocus>
               </mat-form-field>
 
                        
               <p>Street Light</p>
               <mat-form-field class="justifier">
                 <mat-label>Light Left</mat-label>
-                <input matInput type="text" name="streetParking" formControlName="streetParkingControl" required min="0" [readonly]="disableForm" required autofocus>
+                <input matInput type="number" name="streetLightLeft" formControlName="streetLightLeftControl" required min="0" [readonly]="disableForm" required autofocus>
               </mat-form-field>
       
               <mat-form-field class="justifier">
                 <mat-label>Light Right</mat-label>
-                <input matInput type="text" name="streetPath" formControlName="streetPathControl" required min="0" [readonly]="disableForm" required autofocus>
+                <input matInput type="number" name="streetLightRight" formControlName="streetLightRightControl" required min="0" [readonly]="disableForm" required autofocus>
               </mat-form-field>
     
 
@@ -65,12 +65,12 @@
               <p>Drains</p>
               <mat-form-field class="justifier">
                 <mat-label>Drain Left</mat-label>
-                <input matInput type="text" name="streetParking" formControlName="streetParkingControl" required min="0" [readonly]="disableForm" required autofocus>
+                <input matInput type="number" name="drainsLeft" formControlName="drainsLeftControl" required min="0" [readonly]="disableForm" required autofocus>
               </mat-form-field>
       
               <mat-form-field class="justifier">
                 <mat-label>Drain Right</mat-label>
-                <input matInput type="text" name="streetPath" formControlName="streetPathControl" required min="0" [readonly]="disableForm" required autofocus>
+                <input matInput type="number" name="drainsRight" formControlName="drainsRightControl" required min="0" [readonly]="disableForm" required autofocus>
               </mat-form-field>
     
     
@@ -87,7 +87,7 @@
             <!-- End of Multi unit Form-->
       </div>
       <div class="form-footer">
-        <button mat-raised-button class="btn custom-btn" (click)="submit()">
+        <button mat-raised-button class="btn custom-btn" (click)="updateRoad()">
           <mat-icon>note_add</mat-icon> Submit
         </button>
       </div>

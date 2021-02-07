@@ -10,18 +10,20 @@ interface OPTIONS{
 }
 
 export class Roads{
-  gid: number;
-  lapid:number;
-  developmentStatus:string;
+  fid: number;
+  lap_id:number;
+  d_status:string;
   row:number;
-  laneCount:number;
+  lanes:number;
   carriagewayWidth:number;
   median:number;
-  streetParking:string;
-  streetPath:string;
-  streetLight:string;
-  drains:string;
-  roadRemarks:string;
+  parking_left:number;
+  parking_right:number;
+  light_left:number;
+  light_right:number;
+  drains_left:number;
+  drains_right:number;
+  remarks:string;
 }
 
 @Component({
@@ -31,7 +33,8 @@ export class Roads{
 })
 
 export class UpdateRoadComponent implements OnInit {
-
+  lap_id:number;
+  fid:number;
   updateRoadForm:FormGroup;
   disableForm = false;
   displayForm = true;
@@ -64,6 +67,28 @@ export class UpdateRoadComponent implements OnInit {
 
   ngOnInit() {
     this.reactiveForms()
+    this.lap_id = parseInt(sessionStorage.getItem('lap_id'));
+    this.fid = parseInt(sessionStorage.getItem('fid'));
+    this.dataService.getSpecificRoadData(this.fid,this.lap_id).subscribe(res => {
+      console.log('serverRes',res)
+      this.updateRoadForm.patchValue({
+        developmentStatusControl:res[0].d_status,
+        rowControl:res[0].row,
+        laneCountControl:res[0].lanes,
+        carriagewayWidthControl:res[0].carriage_width,
+        medianControl:res[0].median,
+
+        streetParkingLeftControl:res[0].parking_left,
+        streetParkingRightControl:res[0].parking_right,
+
+        streetLightLeftControl:res[0].light_left,
+        streetLightRightControl:res[0].light_right,
+
+        drainsLeftControl:res[0].drain_left,
+        drainsRightControl:res[0].drain_right,
+        roadRemarksControl:res[0].remarks,
+      });
+    })
   }
 
   reactiveForms() {
@@ -73,58 +98,43 @@ export class UpdateRoadComponent implements OnInit {
       laneCountControl:[],
       carriagewayWidthControl:[],
       medianControl:[],
-      streetParkingControl:[],
-      streetPathControl:[],
-      streetLightControl:[],
+
+      streetParkingLeftControl:[],
+      streetParkingRightControl:[],
+
+      streetLightLeftControl:[],
+      streetLightRightControl:[],
+
+      drainsLeftControl:[],
+      drainsRightControl:[],
       drainsControl:[],
       roadRemarksControl:[],
     });    
     }
-  submit(){
-      this.updateRoad();
-      this.snackBar.open('Road Segment Details Updated', '', {
-        duration: 5000,
-        verticalPosition: 'bottom',
-        panelClass: ['success-snackbar']
-      });
-      this.router.navigate(['mapview']);
-  }
 
   updateRoad(){
-    this.Road.gid = 1;
-    this.Road.lapid = 2;
-    this.Road.developmentStatus = this.updateRoadForm.get('developmentStatusControl').value;
+    this.Road.fid = this.fid;
+    console.log('lfid',this.fid)
+    console.log('lap_id',this.lap_id) 
+    this.Road.lap_id = this.lap_id;
+    this.Road.d_status = this.updateRoadForm.get('developmentStatusControl').value;
     this.Road.row = this.updateRoadForm.get('rowControl').value;
-    this.Road.laneCount = this.updateRoadForm.get('laneCountControl').value;
+    this.Road.lanes = this.updateRoadForm.get('laneCountControl').value;
     this.Road.carriagewayWidth = this.updateRoadForm.get('carriagewayWidthControl').value;
     this.Road.median = this.updateRoadForm.get('medianControl').value;
-    this.Road.streetParking = this.updateRoadForm.get('streetParkingControl').value;
-    this.Road.streetPath = this.updateRoadForm.get('streetPathControl').value;
-    this.Road.streetLight = this.updateRoadForm.get('streetLightControl').value;
-    this.Road.drains =this.updateRoadForm.get('drainsControl').value;
-    this.Road.roadRemarks = this.updateRoadForm.get('roadRemarksControl').value;
+    this.Road.parking_left = this.updateRoadForm.get('streetParkingLeftControl').value;
+    this.Road.parking_right = this.updateRoadForm.get('streetParkingRightControl').value;
 
-    this.dataService.updateRoad(this.Road).subscribe(response=>{
-      if(response.success === "true"){
-        this.router.navigate(['dashboard']);
-        this.snackBar.open('Plot Details Updated', '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['success-snackbar']
-        });
-      }else if(response.success === "false"){
-        this.snackBar.open('Could not Update Plot Details'+response.msg, '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['error-snackbar']
-        });
-      }else{
-        this.snackBar.open('Error Updating Plot Details', '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['error-snackbar']
-        });
-      }
+    this.Road.light_left = this.updateRoadForm.get('streetLightLeftControl').value;
+    this.Road.light_right = this.updateRoadForm.get('streetLightRightControl').value;
+
+    this.Road.drains_left =this.updateRoadForm.get('drainsLeftControl').value;
+    this.Road.drains_right = this.updateRoadForm.get('drainsRightControl').value;
+
+    this.Road.remarks = this.updateRoadForm.get('roadRemarksControl').value;
+    
+    this.dataService.updateRoad(this.lap_id,this.fid, this.Road).subscribe(response=>{
+        console.log(response)
     })
   }
 

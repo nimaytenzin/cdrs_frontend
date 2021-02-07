@@ -29,7 +29,7 @@
 
                 <mat-form-field class="justifier">
                     <mat-label>Year of Construction</mat-label>
-                    <input matInput type="number" name="constructionYear" formControlName="constructionYearControl" required min="0" [readonly]="disableForm" required autofocus>
+                    <input matInput type="text" name="constructionYear" formControlName="constructionYearControl" required min="0" [readonly]="disableForm" required autofocus>
                 </mat-form-field>
 
                 <mat-form-field class="justifier">
@@ -142,18 +142,12 @@
             <!-- End of Multi unit Form-->
       </div>
       <div class="form-footer">
-        <button mat-raised-button class="btn custom-btn" (click)="submit()">
+        <button mat-raised-button class="btn custom-btn" (click)="updateBuilding()">
           <mat-icon>note_add</mat-icon> Submit
         </button>
       </div>
     </div>
   </div>
 
-  <div>
-    <mat-list-item *ngFor="let image of img">
-      <img src="{{image.uri}}">
-      {{image.uri}}
-    </mat-list-item>
-  </div>
 
   

@@ -12,20 +12,23 @@ interface OPTIONS{
 }
 
 export class Building{
-  building_id: number;
-  lap_id:number;
-  d_status:string;
-  construct_year:number;
-  b_use:number;
-  b_height:number;
-  attic:number;
-  jamthog:string;
-  basement:string;
-  facade:string;
-  boundary_wall:string;
-  balcony_project:string;
-  b_color:string;
-  remarks:string;
+  structure_id: number;
+  lap_id: number;
+  owner: string;
+  contact: string;
+  year: string;
+  status: string;
+  use:string;
+  height: string;
+  attic: string;
+  jamthog: string;
+  basement: string;
+  stilts: string;
+  facade: string;
+  b_wall: string;
+  balcony: string;
+  color: string;
+  remarks: string;
 }
 
 @Component({
@@ -42,7 +45,6 @@ export class UpdateBuildingComponent implements OnInit {
   ownerContact:number;
   buildingDetails:any;
   updateSwitch:boolean;
-  img:any;
   API_URL = environment.API_URL
 
   buildingUses:OPTIONS[] =[
@@ -95,11 +97,8 @@ export class UpdateBuildingComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.updateSwitch = false;
-
-
-    this.Building.building_id = parseInt(sessionStorage.getItem('building_id'));
-    this.dataService.getSpecificBuildingDetails(this.Building.building_id).subscribe(res => {
+    this.Building.structure_id = parseInt(sessionStorage.getItem('building_id'));
+    this.dataService.getSpecificBuildingDetails(this.Building.structure_id).subscribe(res => {
       this.buildingDetails = res
       console.log(res)
       this.buildingOwner = res.owner;
@@ -111,7 +110,12 @@ export class UpdateBuildingComponent implements OnInit {
         buildingHeightControl:res.height,
         atticControl:res.attic,
         jamthogControl:res.jamthog,
-        basementControl:res.basement
+        basementControl:res.basement,
+        facadeControl:res.facade,
+        boundaryWallControl:res.b_wall,
+        balconyProjectionControl:res.balcony,
+        buildingColorControl:res.color,
+        buildingRemarksControl:res.remarks,
       });
     })
     this.reactiveForms();
@@ -135,61 +139,48 @@ export class UpdateBuildingComponent implements OnInit {
     });    
     }
 
-  submit(){
-      if(this.updateSwitch){
-        alert('asdsd')
-      }else{
-        this.updateRoad();
-      }
-      this.snackBar.open('Building Details Updated', '', {
-        duration: 5000,
-        verticalPosition: 'bottom',
-        panelClass: ['success-snackbar']
-      });
-      sessionStorage.setItem('ftype','building')
-      sessionStorage.setItem('fid',sessionStorage.getItem('building_id'))
-      this.router.navigate(['takephoto']);
-  }
-
-  updateRoad(){
-    this.Building.building_id = 1;
+  updateBuilding(){
+    this.Building.structure_id =parseInt( sessionStorage.getItem('building_id'));
     this.Building.lap_id = parseInt(sessionStorage.getItem('lapId'));
-    this.Building.d_status = this.updateBuildingForm.get('existancyStatusControl').value;
-    this.Building.construct_year = this.updateBuildingForm.get('constructionYearControl').value;
-    this.Building.b_use = this.updateBuildingForm.get('buildingUseControl').value;
-    this.Building.b_height = this.updateBuildingForm.get('buildingHeightControl').value;
+    this.Building.status = this.updateBuildingForm.get('existancyStatusControl').value;
+    this.Building.year = this.updateBuildingForm.get('constructionYearControl').value;
+    this.Building.use = this.updateBuildingForm.get('buildingUseControl').value;
+    this.Building.height = this.updateBuildingForm.get('buildingHeightControl').value;
     this.Building.attic = this.updateBuildingForm.get('atticControl').value
     this.Building.jamthog  = this.updateBuildingForm.get('jamthogControl').value
     this.Building.basement = this.updateBuildingForm.get('basementControl').value
     this.Building.facade = this.updateBuildingForm.get('facadeControl').value
-    this.Building.boundary_wall = this.updateBuildingForm.get('boundaryWallControl').value
-    this.Building.balcony_project = this.updateBuildingForm.get('balconyProjectionControl').value
-    this.Building.b_color = this.updateBuildingForm.get('buildingColorControl').value
+    this.Building.b_wall = this.updateBuildingForm.get('boundaryWallControl').value
+    this.Building.balcony = this.updateBuildingForm.get('balconyProjectionControl').value
+    this.Building.color = this.updateBuildingForm.get('buildingColorControl').value
     this.Building.remarks = this.updateBuildingForm.get('buildingRemarksControl').value
     
     
-    
-    this.dataService.updateBuilding(this.Building).subscribe(response=>{
-      if(response.success === "true"){
-        this.router.navigate(['dashboard']);
-        this.snackBar.open('Building Details Updated', '', {
+    console.log('req body', this.Building)
+    this.dataService.updateBuilding(this.Building,this.Building.structure_id).subscribe(response=>{
+      if(response.status === "success"){
+        this.dataService.buildingSetDone(this.Building.structure_id).subscribe(
+          res=>{
+           sessionStorage.setItem('ftype','building')
+           sessionStorage.setItem('fid',sessionStorage.getItem('building_id'))
+           this.router.navigate(['takephoto']);
+           this.snackBar.open('Building Details Updated', '', {
+             duration: 5000,
+             verticalPosition: 'bottom',
+             panelClass: ['success-snackbar']
+           });
+          }
+         )
+      }else{
+        this.snackBar.open('Failed Try Again', '', {
           duration: 5000,
           verticalPosition: 'bottom',
           panelClass: ['success-snackbar']
         });
-      }else if(response.success === "false"){
-        this.snackBar.open('Could not Update Building Details'+response.msg, '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['error-snackbar']
-        });
-      }else{
-        this.snackBar.open('Error Updating Building Details', '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['error-snackbar']
-        });
       }
+
+     
+       
     })
   }
 

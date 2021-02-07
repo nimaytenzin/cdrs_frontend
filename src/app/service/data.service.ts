@@ -112,13 +112,6 @@ getFootpathsByLap(lap_id){
   )
 }
 
-  getPlotData(){
-    return this.http
-    .get<any>(`${this.API_URL}/plots`, this.httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    )
-  }
 
   // post plot detials
   postPlot(plotDetails){
@@ -146,9 +139,6 @@ getFootpathsByLap(lap_id){
     )
   }
 
-
-
-
   getRoadData(){
     return this.http
     .get<any>(`${this.API_URL}/roads`, this.httpOptions)
@@ -157,9 +147,17 @@ getFootpathsByLap(lap_id){
     )
   }
 
-  updateRoad(roadDetails){
+  getSpecificRoadData(fid,lap_id){
     return this.http
-    .post<any>(`${this.API_URL}/updateroad`, roadDetails, this.httpOptions)
+    .get<any>(`${this.API_URL}/roads/get-road/${lap_id}/${fid}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  updateRoad(lap_id, fid,roadDetails){
+    return this.http
+    .put<any>(`${this.API_URL}/roads/update-road/${lap_id}/${fid}`, roadDetails, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     );
@@ -181,9 +179,9 @@ getFootpathsByLap(lap_id){
     );
   }
 
-  updateBuilding(buildingDetails){
+  updateBuilding(buildingDetails,building_id){
     return this.http
-    .post<any>(`${this.API_URL}/updateBuilding`, buildingDetails, this.httpOptions)
+    .put<any>(`${this.API_URL}/buildings/update-building/${building_id}`, buildingDetails, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     );
@@ -196,11 +194,14 @@ getFootpathsByLap(lap_id){
       catchError(this.handleError)
     );
   }
-
-  
-
-   
-  
+  buildingSetDone(building_id){
+    return this.http
+    .put<any>(`${this.API_URL}/buildings/set-done/${building_id}'`,this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+ 
   uploadImg(item){
     return this.http
       .post<any>(`${this.API_URL}/images/add-image`,item,this.httpOptions)
@@ -216,34 +217,4 @@ getFootpathsByLap(lap_id){
     )
   }
 
-  postCompletion(buildingId) {
-    return this.http
-      .post(`${this.API_URL}/mark-building-completed/${buildingId}`, '', this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  postAtm(items){
-    return this.http
-      .post(`${this.API_URL}/create-bulk-atm`,items,this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-  postNewBuilding(item) {
-    return this.http
-      .post<any>(`${this.API_URL}/buildings`, item, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  postQRScan(item) {
-    return this.http
-      .post<any>(`${this.API_URL}/scan`, item, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
 }
