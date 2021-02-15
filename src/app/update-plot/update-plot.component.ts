@@ -82,6 +82,11 @@ export class UpdatePlotComponent implements OnInit {
     {id: "6", name: "G+6"}
   ]
 
+  setbackOption:OPTIONS[]=[
+    {id: "1", name: "Adequate"},
+    {id: "2", name: "Inadequate"}
+  ]
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,

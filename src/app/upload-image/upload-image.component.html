@@ -1,20 +1,21 @@
-<h1 mat-dialog-title>Take Picture</h1>
+
 <div>
     <div class="snapshot" *ngIf="webcamImage">
         <img [src]="webcamImage.imageAsDataUrl" />
 		<div title="Take Picture">
             <div>
-                <button  class="actionBtn" (click)="uploadImg()">Upload</button> 
+                <button  mat-raised-button class="actionBtn" (click)="uploadImg()">Upload</button> 
             </div>
+            <br>
             <div>
-                <button   class="actionBtn"(click)="clearImg()">clear</button> 
+                <button  mat-raised-button class="actionBtn"(click)="clearImg()">clear</button> 
             </div>
 		</div>
     </div>
     <app-camera (pictureTaken)="handleImage($event)" *ngIf="!webcamImage"></app-camera>
 
-   
-    <div>
-        <button  (click)="end()">Complete and Go back to Map</button>
+    <br>
+    <div style="display: flex; flex-direction: row;justify-content: center;">
+        <button mat-raised-button [ngStyle]="{'background-color':'#C49A0A','color':'white'}" (click)="end()">Complete and Go back to Map</button>
     </div>
 </div>

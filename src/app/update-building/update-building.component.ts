@@ -85,6 +85,9 @@ export class UpdateBuildingComponent implements OnInit {
     {id: "3", name: "Demolished"}
 
   ]
+
+
+
   
   constructor(
     private fb: FormBuilder,

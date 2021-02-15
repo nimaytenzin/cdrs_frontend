@@ -5,11 +5,12 @@
 		 (initError)="handleInitError($event)"></webcam>
 
 		<br/>
-		<div class="actionBtn" (click)="triggerSnapshot();" title="Take Picture">
-			<button>Take Photo</button> 
+		<div mat-flat-button class="actionBtn" (click)="triggerSnapshot();" title="Take Picture">
+			<button mat-raised-button>Take Photo</button> 
 		</div>
-		<div class="actionBtn" (click)="showNextWebcam(true);" title="Switch Camera">
-			<button>Change Camera</button>
+		<br>
+		<div  class="actionBtn" (click)="showNextWebcam(true);" title="Switch Camera">
+			<button mat-raised-button >Change Camera</button>
 		</div>
 	</div>
 </div>

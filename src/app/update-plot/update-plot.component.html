@@ -59,10 +59,10 @@
             </mat-form-field>
 
             <mat-form-field class="justifier">
-              <mat-label>Setback Encroachment</mat-label>
+              <mat-label>Setback</mat-label>
               <mat-select name="setbackEn" formControlName="setbackEnControl" [readonly]="disableForm" >
-                <mat-option *ngFor="let height of yesNo" [value]="height.name">
-                  {{height.name}}
+                <mat-option *ngFor="let option of setbackOption" [value]="option.name">
+                  {{option.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
