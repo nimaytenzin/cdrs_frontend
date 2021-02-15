@@ -36,7 +36,8 @@ export class UpdateFootpathComponent implements OnInit {
   developmentStatus: OPTIONS[]=[
     {id: "1", name: "Developed"},
     {id: "2", name: "Undeveloped"},
-    {id: "3", name: "Under Development"}
+    {id: "3", name: "Under Development"},
+    {id: "4", name: "UnderDeveloped"}
   ]
 
   lights: OPTIONS[]=[
@@ -57,6 +58,7 @@ export class UpdateFootpathComponent implements OnInit {
     this.reactiveForms()
     this.fid = parseInt(sessionStorage.getItem('fid'));
     this.dataService.getSpecificFootpath(this.fid).subscribe(res => {
+      console.log(res)
       if(res.length !== 0){
         this.update = true;
         this.updatePathForm.patchValue({

@@ -47,7 +47,8 @@ export class UpdatePlotComponent implements OnInit {
   developmentStatus: OPTIONS[]=[
     {id: "1", name: "Developed"},
     {id: "2", name: "Undeveloped"},
-    {id: "3", name: "Under Development"}
+    {id: "3", name: "Under Development"},
+    {id: "4", name: "UnderDeveloped"}
   ]
   
   yesNo:OPTIONS[]=[
@@ -63,12 +64,6 @@ export class UpdatePlotComponent implements OnInit {
     {id: "2", name: "Services"},
     {id: "3", name: "Recreational"},
     {id: "4", name: "Others"}
-  ]
-
-  
-  coverage:OPTIONS[]=[
-    {id: "1", name: "Maintained"},
-    {id: "2", name: "Not Maintained"}
   ]
 
 
@@ -164,8 +159,6 @@ export class UpdatePlotComponent implements OnInit {
         }
       }) 
     } else{
-      alert('updatin ok')
-
       this.dataService.updatePlot(this.Plot.fid, this.Plot).subscribe(res => {
         this.router.navigate(['takephoto']);
         sessionStorage.setItem('ftype','plot')

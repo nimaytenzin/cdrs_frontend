@@ -13,6 +13,7 @@ export class Roads{
   fid: number;
   lap_id:number;
   d_status:string;
+  t_flow:string;
   row:number;
   lanes:number;
   carriage_width:number;
@@ -47,7 +48,13 @@ export class UpdateRoadComponent implements OnInit {
   developmentStatus: OPTIONS[]=[
     {id: "1", name: "Developed"},
     {id: "2", name: "Undeveloped"},
-    {id: "3", name: "Under Development"}
+    {id: "3", name: "Under Development"},
+    {id: "4", name: "UnderDeveloped"}
+  ]
+
+  trafficFlow: OPTIONS[]=[
+    {id: "1", name: "One Way"},
+    {id: "2", name: "Two Way"},
   ]
 
   streetLight: OPTIONS[]=[
@@ -80,6 +87,7 @@ export class UpdateRoadComponent implements OnInit {
         console.log('update', this.update)
         this.updateRoadForm.patchValue({
           developmentStatusControl:res[0].d_status,
+          trafficFlowControl:res[0].t_flow,
           rowControl:res[0].row,
           laneCountControl:res[0].lanes,
           carriagewayWidthControl:res[0].carriage_width,
@@ -106,20 +114,17 @@ export class UpdateRoadComponent implements OnInit {
   reactiveForms() {
     this.updateRoadForm = this.fb.group({
       developmentStatusControl:[],
+      trafficFlowControl:[],
       rowControl:[],
       laneCountControl:[],
       carriagewayWidthControl:[],
       medianControl:[],
-
       streetParkingLeftControl:[],
       streetParkingRightControl:[],
-
       streetPathLeftControl:[],
       streetPathRightControl:[],
-
       streetLightLeftControl:[],
       streetLightRightControl:[],
-
       drainsLeftControl:[],
       drainsRightControl:[],
       roadRemarksControl:[],
@@ -130,20 +135,17 @@ export class UpdateRoadComponent implements OnInit {
     this.Road.fid = this.fid;
     this.Road.lap_id = this.lap_id;
     this.Road.d_status = this.updateRoadForm.get('developmentStatusControl').value;
+    this.Road.t_flow = this.updateRoadForm.get('trafficFlowControl').value;
     this.Road.row = this.updateRoadForm.get('rowControl').value;
     this.Road.lanes = this.updateRoadForm.get('laneCountControl').value;
     this.Road.carriage_width = this.updateRoadForm.get('carriagewayWidthControl').value;
     this.Road.median = this.updateRoadForm.get('medianControl').value;
-
     this.Road.parking_left = this.updateRoadForm.get('streetParkingLeftControl').value;
     this.Road.parking_right = this.updateRoadForm.get('streetParkingRightControl').value;
-
     this.Road.path_left = this.updateRoadForm.get('streetPathLeftControl').value;
     this.Road.path_right = this.updateRoadForm.get('streetPathRightControl').value
-
     this.Road.light_left = this.updateRoadForm.get('streetLightLeftControl').value;
     this.Road.light_right = this.updateRoadForm.get('streetLightRightControl').value;
-
     this.Road.drains_left =this.updateRoadForm.get('drainsLeftControl').value;
     this.Road.drains_right = this.updateRoadForm.get('drainsRightControl').value;
     this.Road.remarks = this.updateRoadForm.get('roadRemarksControl').value;

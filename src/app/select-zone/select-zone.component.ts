@@ -14,6 +14,10 @@ interface Laps {
   id: string;
   lap_name: string;
 }
+interface Types{
+  id:number,
+  name:string
+}
 
 interface Thromde {
   id: string;
@@ -33,6 +37,17 @@ export class SelectZoneComponent implements OnInit {
   thromdes: Thromde[] = [];
   laps: Laps[] = [];
   
+
+
+  types:Types[]=[
+    {id: 1, name: "Plots" },
+    {id: 2, name: "Buildings" },
+    {id: 3, name: "Roads" },
+    {id: 4, name: "Footpaths" },
+    {id: 4, name: "Points" }
+
+  ]
+
   isUserLoggedIn: boolean;
 
   constructor(
@@ -54,7 +69,8 @@ export class SelectZoneComponent implements OnInit {
   reactiveForm() {
     this.lapForm = this.fb.group({
       thromdeControl: [],
-      lapControl: []
+      lapControl: [],
+      featureControl:[]
     });
   }
 
@@ -67,6 +83,8 @@ export class SelectZoneComponent implements OnInit {
   redirectToDashboard() {
     if (this.lapForm.valid) {
       sessionStorage.setItem('lap_id', this.lapForm.get('lapControl').value);
+      sessionStorage.setItem('featureEdit', this.lapForm.get('featureControl').value);
+
       this.router.navigate(['mapview']);
     }
   }

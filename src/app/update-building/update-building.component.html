@@ -133,6 +133,25 @@
                 </mat-select>
               </mat-form-field>
          
+              
+              <mat-form-field class="justifier">
+                <mat-label>Parking</mat-label>
+                <input matInput type="number" name="buildingRemarks" formControlName="parkingControl"   [readonly]="disableForm" autofocus>
+              </mat-form-field>
+              <mat-form-field class="justifier">
+                <mat-label>Residential Units</mat-label>
+                <input matInput type="text" name="buildingRemarks" formControlName="residentialUnitControl"   [readonly]="disableForm" autofocus>
+              </mat-form-field>
+              <mat-form-field class="justifier">
+                <mat-label>Commercial Units</mat-label>
+                <input matInput type="text" name="buildingRemarks" formControlName="commercialUnitControl"   [readonly]="disableForm" autofocus>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>Office Units</mat-label>
+                <input matInput type="text" name="buildingRemarks" formControlName="officeUnitControl"   [readonly]="disableForm" autofocus>
+              </mat-form-field>
+
               <mat-form-field class="justifier">
                 <mat-label>Remarks</mat-label>
                 <input matInput type="text" name="buildingRemarks" formControlName="buildingRemarksControl"   [readonly]="disableForm" autofocus>
@@ -148,7 +167,7 @@
       </div>
       <div class="form-footer">
         <button mat-raised-button class="btn custom-btn" (click)="back()">
-          <mat-icon>note_add</mat-icon> Back to Map
+          <mat-icon>map</mat-icon> Back to Map
         </button>
       </div>
     </div>

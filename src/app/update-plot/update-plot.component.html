@@ -67,11 +67,17 @@
               </mat-select>
             </mat-form-field>
 
-  
             <mat-form-field class="justifier">
               <mat-label>On-site Parking</mat-label>
-              <input matInput type="number" name="onsiteParking" formControlName="onsiteParkingControl" required min="0" [readonly]="disableForm" required autofocus>
+              <mat-select   formControlName="onsiteParkingControl" [readonly]="disableForm" >
+                <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
+
+  
+  
       
             <mat-form-field class="justifier">
               <mat-label>Remarks</mat-label>

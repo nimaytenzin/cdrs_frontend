@@ -105,6 +105,7 @@ export class UpdateFeatureComponent implements OnInit {
       this.dataservice.updatePoint(this.id,this.pointFeatureDetails).subscribe(res => {
         console.log(res)
         if(res.status === "success"){
+          sessionStorage.setItem('ftype', 'pointFeature')
             this.router.navigate(['takephoto'])
             this.snackBar.open('Feature Details Updated', '', {
               duration: 5000,

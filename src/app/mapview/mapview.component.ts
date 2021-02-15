@@ -205,10 +205,7 @@ export class MapviewComponent implements OnInit {
         verticalPosition: 'top',
         panelClass: ['info-snackbar']
       });
-      this.isAddAllowed = true;
-
-
-  }).addTo(this.map);
+      this.isAddAllowed = true;}).addTo(this.map);
    
     function getColor(feature){
       if(feature.properties.done === "true"){
@@ -231,7 +228,7 @@ export class MapviewComponent implements OnInit {
     },
     onEachFeature:  (feature, layer) => {
       layer.on('click',(e) => {
-        console.log(feature)
+
        sessionStorage.setItem('building_id', feature.properties.structure_)
        this.router.navigate(['updatebuilding'])
       });
@@ -242,8 +239,8 @@ export class MapviewComponent implements OnInit {
       pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, {
           radius : 4,
-          fillColor : getColor(feature),
-          color : getColor(feature),
+          fillColor : "rgb(33,150,243)",
+          color :"rgb(33,150,243)",
           weight : 1,
           opacity : 1,
           fillOpacity : 1
@@ -251,12 +248,11 @@ export class MapviewComponent implements OnInit {
     },
     onEachFeature:  (feature, layer) => {
       layer.on('click',(e) => {
-        console.log(feature)
         sessionStorage.setItem('fid', feature.properties.id)
         this.router.navigate(['updatefeature'])
       });
     }
-    }).addTo(this.map)
+    })
    
  
     this.plotMap= L.geoJSON(null,{
@@ -320,7 +316,7 @@ export class MapviewComponent implements OnInit {
         }
         );
       }    
-    }) .addTo(this.map)
+    })
 
     
 
@@ -336,7 +332,6 @@ export class MapviewComponent implements OnInit {
       },
       onEachFeature:  (feature, layer) => {
         layer.on('click',(e) => {
-          console.log(feature)
           sessionStorage.setItem('fid', feature.properties.object_id)
           this.dataService.getSpecificRoadData(feature.properties.object_id).subscribe(
             res => {
@@ -393,7 +388,6 @@ export class MapviewComponent implements OnInit {
           sessionStorage.setItem('fid', feature.properties.object_id)
           this.fLenght = feature.properties.length;
           this.dataService.getSpecificFootpath(this.fSegmentId).subscribe(res => {
-            console.log(res)
             if(res.length !== 0){
               this.fWidth = res[0].width + " m";
               this.fLighting = res[0].lighting;
@@ -437,41 +431,54 @@ export class MapviewComponent implements OnInit {
         if (this.newMarker !== undefined) {
           this.map.removeLayer(this.newMarker);
         }
-        this.newMarker = L.marker($e.latlng, {icon: this.myMarker}).addTo(this.map);
-        console.log($e.latlng)
+        this.newMarker = L.marker($e.latlng, {icon: this.myMarker}).addTo(this.map)
         sessionStorage.setItem('lat',$e.latlng.lat)
         sessionStorage.setItem('lng', $e.latlng.lng)
         this.presentAlert($e.latlng)
       }
     });
     //preload vs on load
-    this.map.on('overlayadd', function(eo) {
-      console.log(eo)
-    });
+    this.displaySelectively(sessionStorage.getItem('featureEdit'))
+  }
+
+  displaySelectively(value){
+    switch(value) {
+      case "Buildings":
+        this.map.addLayer(this.buildingMap)
+        break;
+      case "Roads":
+        this.map.addLayer(this.roadMap)
+        break;
+      case "Footpaths":
+        this.map.addLayer(this.footpathMap)
+        break;
+      case "Points":
+        this.map.addLayer(this.pointFeatureMap)
+        break;
+      default:
+        this.map.addLayer(this.plotMap)
+    }
+
+
   }
 
 
   fetchGeojson() {
     let lap_id = sessionStorage.getItem('lap_id')
     this.dataService.getPointFeaturesByLap(lap_id).subscribe(res => {
-      console.log(res)
       this.pointFeatureMap.addData(res)
     })
     this.dataService.getBuildingsShape(lap_id).subscribe(res => {
       this.buildingMap.addData(res)
-      console.log('bulding',res)
     })
     this.dataService.getPlotsByLap(lap_id).subscribe(res =>{
       this.plotMap.addData(res)
-      console.log('plots',res)
       this.map.fitBounds(this.plotMap.getBounds())
     })
     this.dataService.getRoadsByLap(lap_id).subscribe(res => {
-      console.log('roads',res)
       this.roadMap.addData(res)
     })
     this.dataService.getFootpathsByLap(lap_id).subscribe(res => {
-      console.log('footpath',res)
       this.footpathMap.addData(res)
     })
     
@@ -490,7 +497,6 @@ export class MapviewComponent implements OnInit {
     });
     confirmDialog.afterClosed().subscribe(result => {
       if (result === true) {
-        //post new building api
         this.router.navigate(['updatefeature'])
       }else{
         this.map.removeLayer(this.newMarker)

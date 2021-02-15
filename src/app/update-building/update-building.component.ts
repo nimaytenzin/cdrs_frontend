@@ -28,6 +28,10 @@ export class Building{
   b_wall: string;
   balcony: string;
   color: string;
+  parking:number;
+  res_units:number;
+  com_units:number;
+  off_units:number;
   remarks: string;
 }
 
@@ -87,8 +91,6 @@ export class UpdateBuildingComponent implements OnInit {
   ]
 
 
-
-  
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -103,6 +105,7 @@ export class UpdateBuildingComponent implements OnInit {
     this.Building.structure_id = parseInt(sessionStorage.getItem('building_id'));
     this.dataService.getSpecificBuildingDetails(this.Building.structure_id).subscribe(res => {
       this.buildingDetails = res
+      console.log(res)
       this.buildingOwner = res.owner;
       this.ownerContact = res.contact;
       this.updateBuildingForm.patchValue({
@@ -117,6 +120,10 @@ export class UpdateBuildingComponent implements OnInit {
         boundaryWallControl:res.b_wall,
         balconyProjectionControl:res.balcony,
         buildingColorControl:res.color,
+        parkingControl:res.parking,
+        residentialUnitControl:res.res_units,
+        commercialUnitControl:res.com_units,
+        officeUnitControl:res.off_units,
         buildingRemarksControl:res.remarks,
       });
     })
@@ -137,6 +144,10 @@ export class UpdateBuildingComponent implements OnInit {
       boundaryWallControl:[],
       balconyProjectionControl:[],
       buildingColorControl:[],
+      parkingControl:[],
+      residentialUnitControl:[],
+      commercialUnitControl:[],
+      officeUnitControl:[],
       buildingRemarksControl:[],
     });    
     }
@@ -155,6 +166,10 @@ export class UpdateBuildingComponent implements OnInit {
     this.Building.b_wall = this.updateBuildingForm.get('boundaryWallControl').value
     this.Building.balcony = this.updateBuildingForm.get('balconyProjectionControl').value
     this.Building.color = this.updateBuildingForm.get('buildingColorControl').value
+    this.Building.parking = this.updateBuildingForm.get('parkingControl').value
+    this.Building.res_units = this.updateBuildingForm.get('residentialUnitControl').value
+    this.Building.com_units = this.updateBuildingForm.get('commercialUnitControl').value
+    this.Building.off_units = this.updateBuildingForm.get('officeUnitControl').value
     this.Building.remarks = this.updateBuildingForm.get('buildingRemarksControl').value
 
     this.dataService.updateBuilding(this.Building,this.Building.structure_id).subscribe(response=>{
@@ -186,6 +201,7 @@ export class UpdateBuildingComponent implements OnInit {
 
   back(){
     this.router.navigate(['mapview'])
+    sessionStorage.removeItem('building_id')
   }
 
   
