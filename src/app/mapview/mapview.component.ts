@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
+import 'leaflet-easybutton';
+import 'leaflet-easybutton/src/easy-button.css';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DataService } from '../service/data.service';
 import { MatSnackBar, MatDialog, MatSidenav } from '@angular/material';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 export class PlotInfo{
   
@@ -39,6 +42,7 @@ export class MapviewComponent implements OnInit {
   buildingMap:L.GeoJSON;
   roadMap:L.GeoJSON;
   footpathMap:L.GeoJSON;
+  pointFeatureMap: L.GeoJSON;
   map: L.Map;
   layers: L.Control;
   isShowing:boolean;
@@ -76,11 +80,17 @@ export class MapviewComponent implements OnInit {
   fLighting:string;
   fFriendliness:string;
   fRemarks:string;
-  
+
+  isAddAllowed = false;
+  newMarker:L.Marker
    googleSatUrl = "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}";
    cartoPositronUrl = "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png";
 
 
+   myMarker = L.icon({
+    iconUrl: 'assets/mymarker.png',
+    iconSize: [20, 20]
+  });
   
   highlight = {
     'fillColor': 'yellow',
@@ -165,6 +175,15 @@ export class MapviewComponent implements OnInit {
     this.router.navigate(['updatepath'])
   }
 
+  toggleAdd() {
+    this.snackBar.open('Tap on the structure/building you want to add', '', {
+      duration: 5000,
+      verticalPosition: 'top',
+      panelClass: ['info-snackbar']
+    });
+ 
+  }
+
 
   renderFeatures(){
     var cartoMap = L.tileLayer(this.cartoPositronUrl);
@@ -179,6 +198,17 @@ export class MapviewComponent implements OnInit {
       "Satellite": satelliteMap,
       "Carto Map" : cartoMap
     };
+
+    L.easyButton('<img src="../assets/plus.png">', (btn, map) =>{
+      this.snackBar.open('Tap on map to add', '', {
+        duration: 5000,
+        verticalPosition: 'top',
+        panelClass: ['info-snackbar']
+      });
+      this.isAddAllowed = true;
+
+
+  }).addTo(this.map);
    
     function getColor(feature){
       if(feature.properties.done === "true"){
@@ -207,6 +237,26 @@ export class MapviewComponent implements OnInit {
       });
     }, 
     })
+
+    this.pointFeatureMap = L.geoJSON(null, {
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius : 4,
+          fillColor : getColor(feature),
+          color : getColor(feature),
+          weight : 1,
+          opacity : 1,
+          fillOpacity : 1
+      });
+    },
+    onEachFeature:  (feature, layer) => {
+      layer.on('click',(e) => {
+        console.log(feature)
+        sessionStorage.setItem('fid', feature.properties.id)
+        this.router.navigate(['updatefeature'])
+      });
+    }
+    }).addTo(this.map)
    
  
     this.plotMap= L.geoJSON(null,{
@@ -232,9 +282,8 @@ export class MapviewComponent implements OnInit {
             this.parking = res.data[0].parking;
             this.d_status = res.data[0].d_status;
             this.remarks = res.data[0].remarks;
-
            }else{
-            this,this.displayDetails = false
+            this.displayDetails = false
             this.editDisabled = false
             this.d_status= "not updated";
             this.plot_use="not updated";
@@ -273,7 +322,9 @@ export class MapviewComponent implements OnInit {
       }    
     }) .addTo(this.map)
 
+    
 
+    
     this.roadMap = L.geoJSON(null, {
       style: function (feature) {
         return {
@@ -375,15 +426,37 @@ export class MapviewComponent implements OnInit {
       "Plots": this.plotMap,
       "Buildings":this.buildingMap,
       "Roads": this.roadMap,
-      "Footpath": this.footpathMap
+      "Footpath": this.footpathMap,
+      "Point Features":this.pointFeatureMap
     };        
     this.layers = L.control.layers(baseMaps,overlayMaps).addTo(this.map);
     this.fetchGeojson()
+
+    this.map.on('click', <LeafletMouseEvent>($e) => {
+      if (this.isAddAllowed) {
+        if (this.newMarker !== undefined) {
+          this.map.removeLayer(this.newMarker);
+        }
+        this.newMarker = L.marker($e.latlng, {icon: this.myMarker}).addTo(this.map);
+        console.log($e.latlng)
+        sessionStorage.setItem('lat',$e.latlng.lat)
+        sessionStorage.setItem('lng', $e.latlng.lng)
+        this.presentAlert($e.latlng)
+      }
+    });
+    //preload vs on load
+    this.map.on('overlayadd', function(eo) {
+      console.log(eo)
+    });
   }
 
 
   fetchGeojson() {
     let lap_id = sessionStorage.getItem('lap_id')
+    this.dataService.getPointFeaturesByLap(lap_id).subscribe(res => {
+      console.log(res)
+      this.pointFeatureMap.addData(res)
+    })
     this.dataService.getBuildingsShape(lap_id).subscribe(res => {
       this.buildingMap.addData(res)
       console.log('bulding',res)
@@ -406,6 +479,24 @@ export class MapviewComponent implements OnInit {
 
   goToDash(){
     this.router.navigate(['dashboard'])
+  }
+
+  presentAlert(latlng) {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmation',
+        message: `Add a feature Here at ${latlng.lat}, ${latlng.lng} ?`
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result === true) {
+        //post new building api
+        this.router.navigate(['updatefeature'])
+      }else{
+        this.map.removeLayer(this.newMarker)
+        this.isAddAllowed = false;
+      }
+    });
   }
 
   getLocation(): void {

@@ -13,6 +13,7 @@ import { MapviewComponent } from './mapview/mapview.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
 import { UpdateBuildingComponent } from './update-building/update-building.component';
 import { CameraComponent } from './camera/camera.component';
+import { UpdateFeatureComponent } from './update-feature/update-feature.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   {path: 'selectzone', component: SelectZoneComponent},
   {path:'mapview', component:MapviewComponent},
   {path: 'updateplot', component: UpdatePlotComponent},
+  {path: 'updatefeature', component: UpdateFeatureComponent},
   {path:'uploadImage', component:UploadImageComponent},
   {path:'updateroad', component:UpdateRoadComponent},
   {path:'takephoto',component:UploadImageComponent},

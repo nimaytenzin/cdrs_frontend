@@ -37,6 +37,7 @@ import { UpdateFootpathComponent } from './update-footpath/update-footpath.compo
 import { RegisterUserComponent } from "./register-user/register-user.component";
 import { MapviewComponent } from './mapview/mapview.component';
 import { UpdateBuildingComponent } from './update-building/update-building.component';
+import { UpdateFeatureComponent } from './update-feature/update-feature.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { UpdateBuildingComponent } from './update-building/update-building.compo
     UpdateFootpathComponent,
     MapviewComponent,
     RegisterUserComponent,
-    UpdateBuildingComponent
+    UpdateBuildingComponent,
+    UpdateFeatureComponent
   ],
   imports: [
     BrowserModule,

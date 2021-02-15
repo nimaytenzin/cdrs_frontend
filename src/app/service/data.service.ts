@@ -92,7 +92,36 @@ getFootpathsByLap(lap_id){
     catchError(this.handleError)
   )
 }
+/** *************POINT FEATURE DATA SERVICS********************* */
+getPointFeaturesByLap(lap_id){
+  return this.http
+  .get<any>(`${this.API_URL}/points/get-all/${lap_id}`)
+  .pipe(
+    catchError(this.handleError)
+  )
+}
+addPointFeature(featureDetails){
+  return this.http
+  .post<any>(`${this.API_URL}/points/add-point`, featureDetails, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+}
+getSpecificPoint(id){
+  return this.http
+  .get<any>(`${this.API_URL}/points/get-point/${id}`)
+  .pipe(
+    catchError(this.handleError)
+  )
+} 
 
+updatePoint(id,featureDetails){
+  return this.http
+  .put<any>(`${this.API_URL}/points/update-point/${id}`, featureDetails, this.httpOptions)
+  .pipe(
+    catchError(this.handleError)
+  );
+}
 
 
 /** *************PLOT DATA SERVICS********************* */

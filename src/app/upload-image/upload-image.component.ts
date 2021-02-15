@@ -30,6 +30,7 @@ export class UploadImageComponent implements OnInit {
   
   end(){
       sessionStorage.removeItem('fid')
+      sessionStorage.removeItem('plot_id')
       sessionStorage.removeItem('ftype')
       sessionStorage.removeItem('building_id')
       sessionStorage.removeItem('setback')
@@ -37,6 +38,8 @@ export class UploadImageComponent implements OnInit {
       sessionStorage.removeItem('area')
       sessionStorage.removeItem('coverage')
       sessionStorage.removeItem('precinct')
+      sessionStorage.removeItem('lat')
+      sessionStorage.removeItem('lng')
       this.router.navigate(['mapview']);
       this.snackBar.open('Feature Details Completed', '', {
         duration: 5000,
