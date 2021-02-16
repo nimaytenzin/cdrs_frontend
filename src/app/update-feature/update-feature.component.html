@@ -11,7 +11,7 @@
             <form [formGroup]="updateFeatureForm">
               <mat-form-field class="justifier">
                 <mat-label>Type</mat-label>
-                <mat-select name="developmentStatus" formControlName="typeControl" required [readonly]="disableForm" >
+                <mat-select name="developmentStatus" formControlName="typeControl" required >
                   <mat-option *ngFor="let type of types" [value]="type.name">
                     {{type.name}}
                   </mat-option>
@@ -20,7 +20,7 @@
           
               <mat-form-field class="justifier">
                 <mat-label>Remarks</mat-label>
-                <input matInput type="text" name="plotRemarks" formControlName="remarksControl"     [readonly]="disableForm" autofocus>
+                <input matInput type="text" name="plotRemarks" formControlName="remarksControl"   autofocus>
               </mat-form-field>
             </form>
             <!-- End of Multi unit Form-->
