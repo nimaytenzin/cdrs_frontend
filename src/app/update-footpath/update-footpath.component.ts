@@ -111,7 +111,7 @@ export class UpdateFootpathComponent implements OnInit {
       this.dataService.updateFootpath(this.fid,this.Footpath).subscribe(res => {
       })
       sessionStorage.setItem('ftype','footpath')
-            sessionStorage.setItem('fid',sessionStorage.getItem('building_id'))
+            sessionStorage.setItem('fid',sessionStorage.getItem('fid'))
             this.router.navigate(['takephoto']);
             this.snackBar.open('Footpath Details Updated', '', {
               duration: 5000,
