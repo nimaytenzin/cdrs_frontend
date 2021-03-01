@@ -56,6 +56,7 @@ export class UploadImageComponent implements OnInit {
         "uri":this.webcamImage.imageAsDataUrl
       }
       this.dataService.uploadImg(jsonObject).subscribe(response=>{
+        console.log(response)
         this.webcamImage = null;
         this.snackBar.open('Photo Uploaded', '', {
           duration: 5000,
