@@ -85,6 +85,101 @@ getRoadsByLap(lap_id){
   )
 }
 
+getPrecicntColor(precicnt){
+  switch(precicnt) {
+    case "E1":
+      return {
+        name:"Environmental Conservation",
+        color: "rgb(56,167,0)"
+      }
+      break;
+    case "E2":
+      return {
+        name:"Forest Environments",
+        color: "rgb(224,88,186)"
+      }
+      break;
+    case "EN":
+      return {
+        name:"Endowment for future",
+        color: "rgb(239,135,126)"
+      }
+      break;
+    case "G2":
+      return {
+        name:"Green Space System",
+        color: "rgb(75,75,209)"
+      }
+      break;
+    case "I":
+      return {
+        name:"Institutional",
+        color: "rgb(85,224,245)"
+      }
+      break;
+    case "NN":
+      return {
+        name:"Neighborhood Node",
+        color: "rgb(212,210,97)"
+      }
+      break;
+    case "RH":
+      return {
+        name:"Religious Institution",
+        color: "rgb(175,135,205)"
+      }
+      break;
+    case "SP":
+      return {
+        name:"Public Use and Service Area",
+        color: "rgb(128,83,112)"
+      }
+      break;
+    case "UH":
+      return {
+        name:"Urban Hub",
+        color: "rgb(207,103,156)"
+      }
+      break;
+    case "UV1":
+      return {
+        name:"Urban Village Core",
+        color: "rgb(125,66,184)"
+      }
+      break;
+    case "UV-1":
+      return {
+        name:"Urban Village Core",
+        color: "rgb(125,66,184)"
+      }
+      break;
+    case "UV2-MD":
+      return {
+        name:"Urban Village Medium Density",
+        color: "rgb(129,51,67)"
+      }
+      break;
+    case "UV-2MD":
+      return {
+        name:"Urban Village Medium Density",
+        color: "rgb(129,51,67)"
+      }
+      break;
+    case "Workshop":
+      return {
+        name:"Workshop",
+        color: "rgb(128,66,141)"
+      }
+      break;
+    default:
+      return {
+        name:"Not assigned",
+        color: "white"
+      }
+  }
+
+}
+
 getFootpathsByLap(lap_id){
   return this.http
   .get<any>(`${this.API_URL}/shapefile/get-footpaths/${lap_id}`, this.httpOptions)

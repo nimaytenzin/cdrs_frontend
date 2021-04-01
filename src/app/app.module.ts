@@ -38,6 +38,7 @@ import { RegisterUserComponent } from "./register-user/register-user.component";
 import { MapviewComponent } from './mapview/mapview.component';
 import { UpdateBuildingComponent } from './update-building/update-building.component';
 import { UpdateFeatureComponent } from './update-feature/update-feature.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { UpdateFeatureComponent } from './update-feature/update-feature.componen
     MapviewComponent,
     RegisterUserComponent,
     UpdateBuildingComponent,
-    UpdateFeatureComponent
+    UpdateFeatureComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

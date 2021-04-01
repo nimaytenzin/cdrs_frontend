@@ -14,11 +14,13 @@ import { RegisterUserComponent } from './register-user/register-user.component';
 import { UpdateBuildingComponent } from './update-building/update-building.component';
 import { CameraComponent } from './camera/camera.component';
 import { UpdateFeatureComponent } from './update-feature/update-feature.component';
+import { AdminComponent } from './admin/admin.component';
 
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'admin', component: AdminComponent},
   {path:'registerUser', component:RegisterUserComponent},
   {path: 'selectzone', component: SelectZoneComponent},
   {path:'mapview', component:MapviewComponent},
