@@ -33,7 +33,7 @@ section{
 
 .basic-info{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     overflow-wrap: normal;
 }
@@ -54,3 +54,10 @@ section{
     margin-right: 5rem;
     margin-left: 5rem;
 }
+
+
+#chart {
+    max-width: 650px;
+    margin: 35px auto;
+  }
+  

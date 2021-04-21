@@ -39,6 +39,7 @@ import { MapviewComponent } from './mapview/mapview.component';
 import { UpdateBuildingComponent } from './update-building/update-building.component';
 import { UpdateFeatureComponent } from './update-feature/update-feature.component';
 import { AdminComponent } from './admin/admin.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { AdminComponent } from './admin/admin.component';
     LayoutModule,
     MatListModule,
     MatCheckboxModule,
-    WebcamModule
+    WebcamModule,
+    NgApexchartsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}

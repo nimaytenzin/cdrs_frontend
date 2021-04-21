@@ -1,10 +1,10 @@
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../service/data.service';
 import * as L from 'leaflet';
-import {take} from 'rxjs/operators';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { MatSnackBar, MatDialog, MatSidenav } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 
 export class Feedback{
   name:string;
@@ -30,22 +30,27 @@ export class AdminComponent implements OnInit {
   totalPopulation = 34000;
   totalLandArea = "23000 Sq.M";
 
+
+  //precinct stats
+  precinctLabels =[];
+  precicntPlotCounts=[];
+  precinctArea;
+  
   feedback = new Feedback
   feedbackForm:FormGroup
-
-  @ViewChild('autosize',{static:false}) autosize: CdkTextareaAutosize;
 
   constructor(
     private fb:FormBuilder,
     private dataService:DataService,
     private _ngZone: NgZone,
     private snackBar: MatSnackBar
-  ) { }
+  ) {}
 
   ngOnInit() {
-    console.log(this.dataService.getPrecicntColor("UV1"))
-    this.renderMap(this.dataService)
-    this.reactiveForms()
+    this.renderMap(this.dataService);
+    this.reactiveForms();
+    this.fetchChartData()
+    
   }
 
   reactiveForms() {
@@ -54,6 +59,18 @@ export class AdminComponent implements OnInit {
       email:[],
       feedbacks:[]
     });    
+  }
+
+
+
+  fetchChartData(){
+    this.dataService.getPrecinctStats(2).subscribe(res => {
+      this.precinctLabels = res[0];
+      this.precicntPlotCounts = res[1]
+      this.precinctArea = res[2]
+   
+    })
+
   }
 
   renderMap(dataS){
@@ -174,7 +191,7 @@ export class AdminComponent implements OnInit {
   }
 
   fetchGeojson(){
-    this.dataService.getPlotsByLap(1).subscribe(res =>{
+    this.dataService.getPlotsByLap(2).subscribe(res =>{
       this.precinctMap.addData(res).addTo(this.map)
       this.totalPlots = res.features.length;
       this.map.fitBounds(this.precinctMap.getBounds())      

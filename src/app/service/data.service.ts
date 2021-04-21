@@ -361,4 +361,14 @@ updatePoint(id,featureDetails){
     )
   }
 
+  /********************************** Chart SERVICE API************************************************* */
+  getPrecinctStats(lap_id){
+    return this.http
+    .get<any>(`${this.API_URL}/charts/precinct_stats/${lap_id}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+
 }
