@@ -19,6 +19,8 @@ export class Feedback{
 })
 export class AdminComponent implements OnInit {
   map: L.Map;
+  map2:L.Map ;
+
   googleSatUrl = "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}";
   cartoPositronUrl = "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png";
   lapName = "Dechencholing Lap"
@@ -56,8 +58,10 @@ export class AdminComponent implements OnInit {
 
   renderMap(dataS){
     this.map = L.map('map').setView([ 27.4712,89.64191,], 13);    
+    this.map2 = L.map('map2').setView([ 27.4712,89.64191,], 13);    
+    
     var cartoMap = L.tileLayer(this.cartoPositronUrl).addTo(this.map);
-
+    var cartoMap = L.tileLayer(this.cartoPositronUrl).addTo(this.map2);
 
     function getPrecicntColor(precicnt){
       switch(precicnt) {

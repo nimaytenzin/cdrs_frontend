@@ -33,7 +33,7 @@ const routes: Routes = [
   {path:"updatebuilding", component:UpdateBuildingComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'camera',component: CameraComponent},
-  {path: '**', component: ErrorComponent},
+  {path: '**', component: ErrorComponent}
 ];
 
 @NgModule({

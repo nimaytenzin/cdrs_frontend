@@ -1,47 +1,68 @@
-<div class="precicnt-info">
-    <h1 style="text-align: center;">{{lapName}}</h1>
-    <p class="description">
-        The LAP lies at the northern end of the Thimphu Valley, on the west bank of the Thimphu River. The LAP is accessed via the Dechhen Lam (road) which runs along the eastern bank of the Thimphu river from the district of Yangchenphug, through Langjupakha for several kilometres before approaching the palace. On the way to the palace the road passes the Royal Banquet Hall, the Centre for Bhutan Studies, the Woodcraft Centre and then passes the Indian Estate on the other side of the river.[3] Just south of the palace on the other side of the river is the suburb of Taba. The palace is surrounded by forest to the east and west; the eastern forest is denser and is said to be the only leafy forest in the city.[4] Opposite on a slope in the forest high above Taba is the Wangchuck Resort, used as a meditation retreat (the retreat has no connection to the palace)
-    </p>
 
-    <div class="basic-info">
-        <mat-card class="info-card">
-            <mat-card-header>
-              <mat-card-title>Total Land Area</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <h1 class="card-number">
-                    {{totalLandArea}}
-                </h1>
-            </mat-card-content>
-             
-          </mat-card>
 
-          <mat-card class="info-card">
-            <mat-card-header>
-              <mat-card-title>Total Population(as Per Zhichar Survey)</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
+
+<section class="introdution">
+    <div class="precicnt-info">
+        <h1 style="text-align: center;">{{lapName}}</h1>
+        <p class="description">
+            The LAP lies at the northern end of the Thimphu Valley, on the west bank of the Thimphu River. The LAP is accessed via the Dechhen Lam (road) which runs along the eastern bank of the Thimphu river from the district of Yangchenphug, through Langjupakha for several kilometres before approaching the palace. On the way to the palace the road passes the Royal Banquet Hall, the Centre for Bhutan Studies, the Woodcraft Centre and then passes the Indian Estate on the other side of the river.[3] Just south of the palace on the other side of the river is the suburb of Taba. The palace is surrounded by forest to the east and west; the eastern forest is denser and is said to be the only leafy forest in the city.[4] Opposite on a slope in the forest high above Taba is the Wangchuck Resort, used as a meditation retreat (the retreat has no connection to the palace)
+        </p>
+    
+        <div class="basic-info">
+            <mat-card class="info-card">
+                <mat-card-header>
+                  <mat-card-title>Total Land Area</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <h1 class="card-number">
+                        {{totalLandArea}}
+                    </h1>
+                </mat-card-content>
+                 
+              </mat-card>
+    
+              <mat-card class="info-card">
+                <mat-card-header>
+                  <mat-card-title>Total Population(as Per Zhichar Survey)</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <h1  class="card-number">
+                        {{totalPopulation}}
+                    </h1>
+                </mat-card-content>
+                
+              </mat-card>
+    
+              <mat-card class="info-card">
+                <mat-card-header>
+                  <mat-card-title>Total Plots</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
                 <h1  class="card-number">
-                    {{totalPopulation}}
+                    {{totalPlots}}
                 </h1>
-            </mat-card-content>
-            
-          </mat-card>
-
-          <mat-card class="info-card">
-            <mat-card-header>
-              <mat-card-title>Total Plots</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-            <h1  class="card-number">
-                {{totalPlots}}
-            </h1>
-            </mat-card-content>
-             
-          </mat-card>
+                </mat-card-content>
+                 
+              </mat-card>
+        </div>
+    
+      
+    
     </div>
 
+    <div id="map">
+
+    </div>
+</section>
+
+<section class="precinct">
+    <h2>Precinct Information</h2>
+    <div id="map2">
+
+    </div>
+</section>
+
+<section class="outro">
     <div class="feedback">
         <h4>
             Feedback Section
@@ -73,9 +94,5 @@
         </button>
         </form>
     </div>
+</section>
 
-</div>
-
-<div id="map">
-
-</div>
