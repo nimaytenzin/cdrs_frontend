@@ -227,6 +227,14 @@ updatePoint(id,featureDetails){
       catchError(this.handleError)
     );
   }
+
+  getIndividualPlot(gid){
+    return this.http
+    .get<any>(`${this.API_URL}/shapefile/get-plots/${gid}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
   updatePlot(fid,plotDetails){
     return this.http
     .put<any>(`${this.API_URL}/plots/update-plot/${fid}`, plotDetails, this.httpOptions)
@@ -365,6 +373,14 @@ updatePoint(id,featureDetails){
   getPrecinctStats(lap_id){
     return this.http
     .get<any>(`${this.API_URL}/charts/precinct_stats/${lap_id}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getPlotDetailsByLap(lap_id){
+    return this.http
+    .get<any>(`${this.API_URL}/charts/plot_details/${lap_id}`, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     )

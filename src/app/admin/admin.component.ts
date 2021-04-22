@@ -1,9 +1,9 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../service/data.service';
 import * as L from 'leaflet';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { MatSnackBar, MatDialog, MatSidenav } from '@angular/material';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { PlotDetailsDialogComponent } from '../dialogs/plot-details-dialog/plot-details-dialog.component';
 
 
 export class Feedback{
@@ -27,8 +27,8 @@ export class AdminComponent implements OnInit {
   precinctMap:any;
   plotData:any
   totalPlots = 0;
-  totalPopulation = 34000;
-  totalLandArea = "23000 Sq.M";
+  totalPopulation = 0;
+  totalLandArea;
 
 
   //precinct stats
@@ -37,19 +37,28 @@ export class AdminComponent implements OnInit {
   precinctArea;
   
   feedback = new Feedback
-  feedbackForm:FormGroup
+  feedbackForm:FormGroup;
+
 
   constructor(
     private fb:FormBuilder,
     private dataService:DataService,
+    public dialog: MatDialog,
     private _ngZone: NgZone,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar) {}
+    
 
   ngOnInit() {
-    this.renderMap(this.dataService);
+    this.renderMap(this.dialog);
     this.reactiveForms();
     this.fetchChartData()
+    this.dataService.getPlotDetailsByLap(2).subscribe(res => {
+      console.log(res)
+      this.totalLandArea = parseFloat(res.sum).toFixed(2) + "Acres";
+      this.totalPlots = res.count;
+    })
+
+  
     
   }
 
@@ -73,49 +82,53 @@ export class AdminComponent implements OnInit {
 
   }
 
-  renderMap(dataS){
-    this.map = L.map('map').setView([ 27.4712,89.64191,], 13);    
-    this.map2 = L.map('map2').setView([ 27.4712,89.64191,], 13);    
-    
+  renderMap(dialog){
+    this.map = L.map('map').setView([ 27.4712,89.64191,], 13);        
     var cartoMap = L.tileLayer(this.cartoPositronUrl).addTo(this.map);
-    var cartoMap = L.tileLayer(this.cartoPositronUrl).addTo(this.map2);
+
+    var highlight = {
+      'color': '#333333',
+      'weight': 2,
+      'opacity': 1
+  };
+
 
     function getPrecicntColor(precicnt){
       switch(precicnt) {
         case "E1":
           return {
             name:"Environmental Conservation",
-            color: "rgb(56,167,0)"
+            color: "#6fdd6d"
           }
           break;
         case "E2":
           return {
             name:"Forest Environments",
-            color: "rgb(224,88,186)"
+            color: "#719501"
           }
           break;
         case "EN":
           return {
             name:"Endowment for future",
-            color: "rgb(239,135,126)"
+            color: "#ffdf80"
           }
           break;
         case "G2":
           return {
             name:"Green Space System",
-            color: "rgb(75,75,209)"
+            color: "#00dd6f"
           }
           break;
         case "I":
           return {
             name:"Institutional",
-            color: "rgb(85,224,245)"
+            color: "#7ea0fb"
           }
           break;
         case "NN":
           return {
             name:"Neighborhood Node",
-            color: "rgb(212,210,97)"
+            color: "#ff7f00"
           }
           break;
         case "RH":
@@ -127,37 +140,37 @@ export class AdminComponent implements OnInit {
         case "SP":
           return {
             name:"Public Use and Service Area",
-            color: "rgb(128,83,112)"
+            color: "#ff7f7e"
           }
           break;
         case "UH":
           return {
             name:"Urban Hub",
-            color: "rgb(207,103,156)"
+            color: "#c07fff"
           }
           break;
         case "UV1":
           return {
             name:"Urban Village Core",
-            color: "rgb(125,66,184)"
+            color: "#ddc16e"
           }
           break;
         case "UV-1":
           return {
             name:"Urban Village Core",
-            color: "rgb(125,66,184)"
+            color: "#ddc16e"
           }
           break;
         case "UV2-MD":
           return {
             name:"Urban Village Medium Density",
-            color: "rgb(129,51,67)"
+            color: "#b9b800"
           }
           break;
         case "UV-2MD":
           return {
             name:"Urban Village Medium Density",
-            color: "rgb(129,51,67)"
+            color: "#b9b800"
           }
           break;
         case "Workshop":
@@ -184,10 +197,25 @@ export class AdminComponent implements OnInit {
             fillOpacity: .5
         };
       },
-     
+      onEachFeature(feature,layer){
+        layer.on('click', (e) => {
+           console.log(e)
+          const confirmDialog = dialog.open(PlotDetailsDialogComponent, {
+            width: '50%',
+            data:{
+              e: e.target.feature.properties
+            }
+          });
+        })
+      }     
     })
     this.fetchGeojson()
+   
     
+  }
+
+  openDialog(){
+ 
   }
 
   fetchGeojson(){

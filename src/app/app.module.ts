@@ -19,6 +19,7 @@ import {
   MatMenuModule,
   MatGridListModule,
   MatDialogModule,
+  MatDialogRef,
   MatCheckboxModule,
   MatSnackBarModule} from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -40,6 +41,7 @@ import { UpdateBuildingComponent } from './update-building/update-building.compo
 import { UpdateFeatureComponent } from './update-feature/update-feature.component';
 import { AdminComponent } from './admin/admin.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { PlotDetailsDialogComponent } from './dialogs/plot-details-dialog/plot-details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     RegisterUserComponent,
     UpdateBuildingComponent,
     UpdateFeatureComponent,
-    AdminComponent
+    AdminComponent,
+    PlotDetailsDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -91,6 +94,6 @@ import { NgApexchartsModule } from 'ng-apexcharts';
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [ ConfirmDialogComponent]
+  entryComponents: [ ConfirmDialogComponent,PlotDetailsDialogComponent]
 })
 export class AppModule { }

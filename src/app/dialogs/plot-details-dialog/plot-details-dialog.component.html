@@ -1,0 +1,63 @@
+
+<div class= "main-container">
+   
+    <div class="plotdetails">
+        <h4>Plot Details</h4>
+        <p>
+            Plot Number : {{ plotData.plot_id}}
+        </p>
+        
+        <p>
+            Area in Acres : {{ plotData.area_acres}}
+        </p>
+        
+        <p>
+            Precicnt : {{ plotData.precinct }}
+        </p>
+        
+        <p>
+            Maximum Allowable height : {{ plotData.height }}
+        </p>
+        
+        <p>
+            Setback Requirements : {{ plotData.setback }}
+        </p>
+        
+        <p>
+            Coverage : {{ plotData.coverage }}
+        </p>
+    </div>
+    
+    <div class="groundstatus">
+        <h4>Ground Status</h4>
+        <p>
+            Development Status : {{ plotGroundData.d_status ? plotGroundData.d_status : "Not Updated" }}
+        </p>
+        
+        <p>
+            Plot Use :  {{ plotGroundData.plot_use ? plotGroundData.plot_use : "Not Updated" }}
+        </p>
+        
+        <p>
+            Maximum height Constructed :  {{ plotGroundData.max_height ? plotGroundData.max_height : "Not Updated"}}
+        </p>
+        
+        <p>
+            Setback Adequacy : {{ plotGroundData.setback_e ? plotGroundData.setback_e : "Not Updated" }}
+        </p>
+        
+        <p>
+            On Site Parking : {{ plotGroundData.parking ? plotGroundData.parking : "Not Updated" }}
+        </p>
+        <p>
+            Coverage : {{ plotGroundData.remarks ? plotGroundData.remarks : " "}}
+        </p>
+
+        
+    </div>
+
+</div>
+
+<div>
+    <h4>Site Photos</h4>
+</div>
