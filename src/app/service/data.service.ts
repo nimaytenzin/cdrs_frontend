@@ -386,5 +386,13 @@ updatePoint(id,featureDetails){
     )
   }
 
+  getDevelopmentStatusStats(lap_id){
+    return this.http
+    .get<any>(`${this.API_URL}/charts/d_status_precinct/${lap_id}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
 
 }

@@ -53,9 +53,12 @@ export class AdminComponent implements OnInit {
     this.reactiveForms();
     this.fetchChartData()
     this.dataService.getPlotDetailsByLap(2).subscribe(res => {
-      console.log(res)
       this.totalLandArea = parseFloat(res.sum).toFixed(2) + "Acres";
       this.totalPlots = res.count;
+    })
+
+    this.dataService.getDevelopmentStatusStats(2).subscribe(res => {
+      console.log(res)
     })
 
   
@@ -87,10 +90,9 @@ export class AdminComponent implements OnInit {
     var cartoMap = L.tileLayer(this.cartoPositronUrl).addTo(this.map);
 
     var highlight = {
-      'color': '#333333',
-      'weight': 2,
-      'opacity': 1
-  };
+      'color': 'red',
+      'weight': 2
+    };
 
 
     function getPrecicntColor(precicnt){
@@ -199,14 +201,29 @@ export class AdminComponent implements OnInit {
       },
       onEachFeature(feature,layer){
         layer.on('click', (e) => {
-           console.log(e)
-          const confirmDialog = dialog.open(PlotDetailsDialogComponent, {
+           e.target.setStyle(highlight)
+           const confirmDialog = dialog.open(PlotDetailsDialogComponent, {
             width: '50%',
+            position: { right: '5%', top: '10%'},
             data:{
               e: e.target.feature.properties
             }
           });
+
+          confirmDialog.afterClosed().subscribe(res => {
+            e.target.setStyle(  function () {
+              return {
+                  weight: 0.5,
+                  opacity: 1,
+                  color: "white",
+                  fillOpacity: .5
+              }
+            }()
+            )
+          })
+          
         })
+        
       }     
     })
     this.fetchGeojson()
@@ -230,8 +247,6 @@ export class AdminComponent implements OnInit {
     this.feedback.name = this.feedbackForm.get('name').value
     this.feedback.email = this.feedbackForm.get('email').value
     this.feedback.feedback = this.feedbackForm.get('feedbacks').value
-
-    console.log(this.feedback)
 
     this.snackBar.open('Thank you for your Feedback la', '', {
       duration: 5000,
