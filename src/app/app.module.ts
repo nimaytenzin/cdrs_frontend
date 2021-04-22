@@ -40,8 +40,9 @@ import { MapviewComponent } from './mapview/mapview.component';
 import { UpdateBuildingComponent } from './update-building/update-building.component';
 import { UpdateFeatureComponent } from './update-feature/update-feature.component';
 import { AdminComponent } from './admin/admin.component';
-import { NgApexchartsModule } from 'ng-apexcharts';
 import { PlotDetailsDialogComponent } from './dialogs/plot-details-dialog/plot-details-dialog.component';
+
+import { NgApexchartsModule } from "ng-apexcharts";
 
 @NgModule({
   declarations: [

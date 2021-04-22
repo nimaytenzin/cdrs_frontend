@@ -4,7 +4,28 @@ import * as L from 'leaflet';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PlotDetailsDialogComponent } from '../dialogs/plot-details-dialog/plot-details-dialog.component';
+import {
+  ApexAxisChartSeries,
+  ApexChart,
+  ChartComponent,
+  ApexDataLabels,
+  ApexPlotOptions,
+  ApexYAxis,
+  ApexTitleSubtitle,
+  ApexXAxis,
+  ApexFill
+} from "ng-apexcharts";
 
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  plotOptions: ApexPlotOptions;
+  yaxis: ApexYAxis;
+  xaxis: ApexXAxis;
+  fill: ApexFill;
+  title: ApexTitleSubtitle;
+};
 
 export class Feedback{
   name:string;
@@ -19,15 +40,14 @@ export class Feedback{
 })
 export class AdminComponent implements OnInit {
   map: L.Map;
-  map2:L.Map ;
 
   googleSatUrl = "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}";
   cartoPositronUrl = "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png";
-  lapName = "Dechencholing Lap"
+  
+
   precinctMap:any;
   plotData:any
   totalPlots = 0;
-  totalPopulation = 0;
   totalLandArea;
 
 
@@ -39,17 +59,26 @@ export class AdminComponent implements OnInit {
   feedback = new Feedback
   feedbackForm:FormGroup;
 
+  @ViewChild("chart", {static:true}) chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
 
   constructor(
     private fb:FormBuilder,
     private dataService:DataService,
     public dialog: MatDialog,
     private _ngZone: NgZone,
-    private snackBar: MatSnackBar) {}
+    
+    private snackBar: MatSnackBar) {
+
+     
+    }
     
 
   ngOnInit() {
+
+
     this.renderMap(this.dialog);
+    this.renderChart()
     this.reactiveForms();
     this.fetchChartData()
     this.dataService.getPlotDetailsByLap(2).subscribe(res => {
@@ -57,13 +86,122 @@ export class AdminComponent implements OnInit {
       this.totalPlots = res.count;
     })
 
-    this.dataService.getDevelopmentStatusStats(2).subscribe(res => {
-      console.log(res)
-    })
 
-  
-    
+
   }
+
+
+  renderChart(){
+      this.chartOptions = {
+              series: [
+                {
+                  name: "Inflation",
+                  data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
+                }
+              ],
+              chart: {
+                height: 350,
+                type: "bar"
+              },
+              plotOptions: {
+                bar: {
+                  dataLabels: {
+                    position: "top" // top, center, bottom
+                  }
+                }
+              },
+              dataLabels: {
+                enabled: true,
+                formatter: function(val) {
+                  return val + "%";
+                },
+                offsetY: -20,
+                style: {
+                  fontSize: "12px",
+                  colors: ["#304758"]
+                }
+              },
+        
+              xaxis: {
+                categories: [
+                  "Jan",
+                  "Feb",
+                  "Mar",
+                  "Apr",
+                  "May",
+                  "Jun",
+                  "Jul",
+                  "Aug",
+                  "Sep",
+                  "Oct",
+                  "Nov",
+                  "Dec"
+                ],
+                position: "top",
+                labels: {
+                  offsetY: -18
+                },
+                axisBorder: {
+                  show: false
+                },
+                axisTicks: {
+                  show: false
+                },
+                crosshairs: {
+                  fill: {
+                    type: "gradient",
+                    gradient: {
+                      colorFrom: "#D8E3F0",
+                      colorTo: "#BED1E6",
+                      stops: [0, 100],
+                      opacityFrom: 0.4,
+                      opacityTo: 0.5
+                    }
+                  }
+                },
+                tooltip: {
+                  enabled: true,
+                  offsetY: -35
+                }
+              },
+              fill: {
+                type: "gradient",
+                gradient: {
+                  shade: "light",
+                  type: "horizontal",
+                  shadeIntensity: 0.25,
+                  gradientToColors: undefined,
+                  inverseColors: true,
+                  opacityFrom: 1,
+                  opacityTo: 1,
+                  stops: [50, 0, 100, 100]
+                }
+              },
+              yaxis: {
+                axisBorder: {
+                  show: false
+                },
+                axisTicks: {
+                  show: false
+                },
+                labels: {
+                  show: false,
+                  formatter: function(val) {
+                    return val + "%";
+                  }
+                }
+              },
+              title: {
+                text: "Monthly Inflation in Argentina, 2002",
+                offsetY: 320,
+                align: "center",
+                style: {
+                  color: "#444"
+                }
+              }
+            };
+  }
+
 
   reactiveForms() {
     this.feedbackForm = this.fb.group({
@@ -87,7 +225,9 @@ export class AdminComponent implements OnInit {
 
   renderMap(dialog){
     this.map = L.map('map').setView([ 27.4712,89.64191,], 13);        
-    var cartoMap = L.tileLayer(this.cartoPositronUrl).addTo(this.map);
+    var cartoMap = L.tileLayer(this.cartoPositronUrl, {
+      
+    }).addTo(this.map);
 
     var highlight = {
       'color': 'red',
@@ -231,9 +371,7 @@ export class AdminComponent implements OnInit {
     
   }
 
-  openDialog(){
- 
-  }
+
 
   fetchGeojson(){
     this.dataService.getPlotsByLap(2).subscribe(res =>{

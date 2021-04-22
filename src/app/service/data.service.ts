@@ -378,6 +378,8 @@ updatePoint(id,featureDetails){
     )
   }
 
+  
+
   getPlotDetailsByLap(lap_id){
     return this.http
     .get<any>(`${this.API_URL}/charts/plot_details/${lap_id}`, this.httpOptions)
