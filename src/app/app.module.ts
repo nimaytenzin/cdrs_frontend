@@ -43,6 +43,7 @@ import { AdminComponent } from './admin/admin.component';
 import { PlotDetailsDialogComponent } from './dialogs/plot-details-dialog/plot-details-dialog.component';
 
 import { NgApexchartsModule } from "ng-apexcharts";
+import { RoadsDetailsDialogComponent } from './dialogs/roads-details-dialog/roads-details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { NgApexchartsModule } from "ng-apexcharts";
     UpdateBuildingComponent,
     UpdateFeatureComponent,
     AdminComponent,
-    PlotDetailsDialogComponent
+    PlotDetailsDialogComponent,
+    RoadsDetailsDialogComponent
   ],
   imports: [
     BrowserModule,

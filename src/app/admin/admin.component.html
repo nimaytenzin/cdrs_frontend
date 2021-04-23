@@ -1,23 +1,24 @@
 
 
-
 <section class="introdution">
-    <div class="precicnt-info">
-        {{totalPlots}}
-        {{totalLandArea}}
 
-        <div id="chart">
-            <apx-chart
-              [series]="chartOptions.series"
-              [chart]="chartOptions.chart"
-              [dataLabels]="chartOptions.dataLabels"
-              [plotOptions]="chartOptions.plotOptions"
-              [yaxis]="chartOptions.yaxis"
-              [xaxis]="chartOptions.xaxis"
-              [fill]="chartOptions.fill"
-              [title]="chartOptions.title"
-            ></apx-chart>
-          </div>
+    
+   <div >
+     
+    <img-comparison-slider>
+    <img width="100%" slot="after" src="../../assets/1.jpg" />
+    <img width="100%" slot="before" src="../../assets/2.jpg" />
+  </img-comparison-slider>
+   </div>
+</section>
+
+
+
+<section class="s">
+    <div class="precicnt-info">
+        <h3> Total Plots : {{totalPlots}} </h3>
+        <h3> Total LandArea:  {{totalLandArea}}</h3>
+
     </div>
     <div id="map">
 
@@ -26,6 +27,10 @@
 
 <section class="precinct">
 
+    <h2>Development Status</h2>
+    <div id="developmentStatusMap">
+            this is working
+    </div>
 </section>
 
 <!-- <section class="outro">

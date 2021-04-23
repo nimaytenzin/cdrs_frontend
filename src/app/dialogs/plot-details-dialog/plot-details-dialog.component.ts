@@ -2,6 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DataService } from 'src/app/service/data.service';
 
+
+
 @Component({
   selector: 'app-plot-details-dialog',
   templateUrl: './plot-details-dialog.component.html',
@@ -10,7 +12,7 @@ import { DataService } from 'src/app/service/data.service';
 export class PlotDetailsDialogComponent implements OnInit {
 
   plotData = <any>[];
-  plotGroundData  = <any> {};
+  plotGroundData;
   
 
   constructor(
@@ -22,6 +24,7 @@ export class PlotDetailsDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {   
+    console.log(this.plotGroundData)
     this.plotData = this.data.e
     console.log(this.plotData)
     this.dataService.getSpecificPlotDetails(this.plotData.gid).subscribe(res => {

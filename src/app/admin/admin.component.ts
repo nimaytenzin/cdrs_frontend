@@ -16,6 +16,8 @@ import {
   ApexFill
 } from "ng-apexcharts";
 
+
+
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -33,6 +35,11 @@ export class Feedback{
   feedback:string;
 }
 
+interface PlotData{
+  d_status:String,
+
+}
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -40,6 +47,10 @@ export class Feedback{
 })
 export class AdminComponent implements OnInit {
   map: L.Map;
+  dStatusMap:L.Map;
+  dStatusMapp;
+  dStatusRoads;
+  layers: L.Control;
 
   googleSatUrl = "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}";
   cartoPositronUrl = "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png";
@@ -59,7 +70,7 @@ export class AdminComponent implements OnInit {
   feedback = new Feedback
   feedbackForm:FormGroup;
 
-  @ViewChild("chart", {static:true}) chart: ChartComponent;
+  @ViewChild("chart", {static:false}) chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
   constructor(
@@ -67,7 +78,6 @@ export class AdminComponent implements OnInit {
     private dataService:DataService,
     public dialog: MatDialog,
     private _ngZone: NgZone,
-    
     private snackBar: MatSnackBar) {
 
      
@@ -75,28 +85,32 @@ export class AdminComponent implements OnInit {
     
 
   ngOnInit() {
-
-
     this.renderMap(this.dialog);
-    this.renderChart()
+    this.renderDevelopmentStatuMap(this.dialog)
     this.reactiveForms();
     this.fetchChartData()
     this.dataService.getPlotDetailsByLap(2).subscribe(res => {
       this.totalLandArea = parseFloat(res.sum).toFixed(2) + "Acres";
       this.totalPlots = res.count;
     })
-
-
-
   }
 
+  highlight = {
+    'color': 'red',
+    'weight': 2
+  };
 
-  renderChart(){
+  
+
+  renderPrecinctBar(label,data){
+    const add = arr => arr.reduce((a, b) => parseInt(a) + parseInt(b), 0);
+    const sum = add(data);
       this.chartOptions = {
+        
               series: [
                 {
-                  name: "Inflation",
-                  data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
+                  name: "Percentage",
+                  data:data
                 }
               ],
               chart: {
@@ -105,15 +119,19 @@ export class AdminComponent implements OnInit {
               },
               plotOptions: {
                 bar: {
+                  borderRadius: 4,
                   dataLabels: {
                     position: "top" // top, center, bottom
                   }
-                }
+                },
+              },
+              fill: {
+                colors: ['black', 'green','black', 'green']
               },
               dataLabels: {
                 enabled: true,
                 formatter: function(val) {
-                  return val + "%";
+                  return val + " plots";
                 },
                 offsetY: -20,
                 style: {
@@ -123,20 +141,7 @@ export class AdminComponent implements OnInit {
               },
         
               xaxis: {
-                categories: [
-                  "Jan",
-                  "Feb",
-                  "Mar",
-                  "Apr",
-                  "May",
-                  "Jun",
-                  "Jul",
-                  "Aug",
-                  "Sep",
-                  "Oct",
-                  "Nov",
-                  "Dec"
-                ],
+                categories:label,
                 position: "top",
                 labels: {
                   offsetY: -18
@@ -159,24 +164,14 @@ export class AdminComponent implements OnInit {
                     }
                   }
                 },
+                
+                
                 tooltip: {
                   enabled: true,
                   offsetY: -35
                 }
               },
-              fill: {
-                type: "gradient",
-                gradient: {
-                  shade: "light",
-                  type: "horizontal",
-                  shadeIntensity: 0.25,
-                  gradientToColors: undefined,
-                  inverseColors: true,
-                  opacityFrom: 1,
-                  opacityTo: 1,
-                  stops: [50, 0, 100, 100]
-                }
-              },
+              
               yaxis: {
                 axisBorder: {
                   show: false
@@ -187,12 +182,12 @@ export class AdminComponent implements OnInit {
                 labels: {
                   show: false,
                   formatter: function(val) {
-                    return val + "%";
+                    return ((val/sum)*100).toFixed(2) + " %";
                   }
                 }
               },
               title: {
-                text: "Monthly Inflation in Argentina, 2002",
+                text: "Plot Counts by Precicnt",
                 offsetY: 320,
                 align: "center",
                 style: {
@@ -211,30 +206,120 @@ export class AdminComponent implements OnInit {
     });    
   }
 
-
-
   fetchChartData(){
     this.dataService.getPrecinctStats(2).subscribe(res => {
       this.precinctLabels = res[0];
       this.precicntPlotCounts = res[1]
       this.precinctArea = res[2]
-   
+      // this.renderPrecinctBar(res[0], res[1])
     })
-
   }
 
+
+  renderDevelopmentStatuMap(dialog){
+    this.dStatusMap = L.map('developmentStatusMap').setView([27.4712,89.64191],13);
+    var fdfd = L.tileLayer(this.cartoPositronUrl).addTo(this.dStatusMap);
+    
+    function getColor(d_status){
+      switch(d_status) {
+        case "UnderDeveloped":
+          return  "#F26722"
+          break;
+        case "Undeveloped":
+          return  "#636466"
+          break;
+        case "Developed":
+          return "#F26722"
+          break;
+        case "Under Development":
+          return "#E7E8E8"
+          break;
+        case null:
+          return "#E7E8E8"
+          break;
+   
+        default:
+          return "white"
+          break;
+      }   
+    }
+
+    function getRoadColor(status){
+      switch(status) {
+        case "Developed":
+          return "#F26722"
+          break;
+        default:
+          return "gray"
+          break;
+      }   
+    }
+
+    this.dStatusRoads  = L.geoJSON(null, {
+      style: function (feature) {
+        return {
+            color: getRoadColor(feature.properties.d_status),
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 1
+        };
+      },
+      onEachFeature:  (feature, layer) => {
+        layer.on('click',(e) => {
+          console.log(e)
+        })
+      }
+    })
+
+    this.dStatusMapp= L.geoJSON(null,{
+      style: function (feature) {
+        return {
+            fillColor: getColor(feature.properties.d_status),
+            weight: 0.2,
+            opacity: 1,
+            color: "black",
+            fillOpacity: .5
+        };
+      },
+      onEachFeature(feature,layer){
+        layer.on('click', (e) => {
+          e.target.setStyle(this.highlight)
+           const confirmDialog = dialog.open(PlotDetailsDialogComponent, {
+            width: '50%',
+            position: { right: '5%', top: '10%'},
+            data:{
+              e: e.target.feature.properties
+            }
+          });
+          confirmDialog.afterClosed().subscribe(res => {
+            e.target.setStyle(  function () {
+              return {
+                  weight: 0.5,
+                  opacity: 1,
+                  color: "white",
+                  fillOpacity: .5
+              }
+            }()
+            )
+          })
+        })
+      } 
+    }).addTo(this.dStatusMap)
+
+    var overlayMaps = {
+      "Plots": this.dStatusMapp,
+      "Roads":this.dStatusRoads
+    };        
+    this.layers = L.control.layers(overlayMaps).addTo(this.dStatusMap);
+    this.fetchGeojson()
+    
+  }
+
+
+
   renderMap(dialog){
-    this.map = L.map('map').setView([ 27.4712,89.64191,], 13);        
-    var cartoMap = L.tileLayer(this.cartoPositronUrl, {
-      
-    }).addTo(this.map);
-
-    var highlight = {
-      'color': 'red',
-      'weight': 2
-    };
-
-
+    this.map = L.map('map').setView([ 27.4712,89.64191], 13);        
+    var cartoMap = L.tileLayer(this.cartoPositronUrl).addTo(this.map);
     function getPrecicntColor(precicnt){
       switch(precicnt) {
         case "E1":
@@ -333,15 +418,16 @@ export class AdminComponent implements OnInit {
       style: function (feature) {
         return {
             fillColor: getPrecicntColor(feature.properties.precinct).color,
-            weight: 0.5,
+            weight: 0.2,
             opacity: 1,
-            color: "white",
+            color: "gray",
             fillOpacity: .5
         };
       },
       onEachFeature(feature,layer){
         layer.on('click', (e) => {
-           e.target.setStyle(highlight)
+          
+           e.target.setStyle(this.highlight)
            const confirmDialog = dialog.open(PlotDetailsDialogComponent, {
             width: '50%',
             position: { right: '5%', top: '10%'},
@@ -364,12 +450,31 @@ export class AdminComponent implements OnInit {
           
         })
         
-      }     
+      } 
+          
     })
+
+
+    var legend = L.control({position: 'bottomright'});
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            categories = ['E1','E2','EN','G2','I', 'NN', 'RH', 'SP', 'SP', 'UH', 'UV1','UV2-MD','Workshop'];
+            var labels = [];
+        for (var i = 0; i < categories.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' +  getPrecicntColor(categories[i]).color + '"></i> ' +
+                categories[i] + (categories[i + 1] ? '&ndash;' + categories[i + 1] + '<br>' : '+');
+        }
+        return div;
+     };
+    legend.addTo(this.map);
+
     this.fetchGeojson()
-   
-    
+  
   }
+
+
+  
 
 
 
@@ -379,6 +484,18 @@ export class AdminComponent implements OnInit {
       this.totalPlots = res.features.length;
       this.map.fitBounds(this.precinctMap.getBounds())      
     })
+
+    this.dataService.getShapeJoined(2).subscribe(res => {
+      console.log(res);
+      this.dStatusMapp.addData(res).addTo(this.dStatusMap);
+      this.dStatusMap.fitBounds(this.dStatusMap.getBounds())
+    })
+
+    this.dataService.getRoadShapeJoined(2).subscribe(res => {
+      this.dStatusRoads.addData(res).addTo(this.dStatusMap)
+    })
+
+
   }
 
   submitFeedback(){

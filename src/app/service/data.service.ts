@@ -396,5 +396,23 @@ updatePoint(id,featureDetails){
     )
   }
 
+  // ANalysis data api
+
+  getShapeJoined(lap_id){
+    return this.http
+    .get<any>(`${this.API_URL}/analysis/plots/${lap_id}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getRoadShapeJoined(lap_id){
+    return this.http
+    .get<any>(`${this.API_URL}/analysis/roads/${lap_id}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
 
 }
