@@ -51,10 +51,10 @@ export class AdminComponent implements OnInit {
   dStatusMapp;
   dStatusRoads;
   layers: L.Control;
-
+  lapName = "Dechencholing LAP"
   googleSatUrl = "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}";
   cartoPositronUrl = "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png";
-  
+  osmTileUrl = "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z} ";
 
   precinctMap:any;
   plotData:any
@@ -319,7 +319,7 @@ export class AdminComponent implements OnInit {
 
   renderMap(dialog){
     this.map = L.map('map').setView([ 27.4712,89.64191], 13);        
-    var cartoMap = L.tileLayer(this.cartoPositronUrl).addTo(this.map);
+    var cartoMap = L.tileLayer(this.osmTileUrl).addTo(this.map);
     function getPrecicntColor(precicnt){
       switch(precicnt) {
         case "E1":
@@ -455,19 +455,19 @@ export class AdminComponent implements OnInit {
     })
 
 
-    var legend = L.control({position: 'bottomright'});
-    legend.onAdd = function (map) {
-        var div = L.DomUtil.create('div', 'info legend'),
-            categories = ['E1','E2','EN','G2','I', 'NN', 'RH', 'SP', 'SP', 'UH', 'UV1','UV2-MD','Workshop'];
-            var labels = [];
-        for (var i = 0; i < categories.length; i++) {
-            div.innerHTML +=
-                '<i style="background:' +  getPrecicntColor(categories[i]).color + '"></i> ' +
-                categories[i] + (categories[i + 1] ? '&ndash;' + categories[i + 1] + '<br>' : '+');
-        }
-        return div;
-     };
-    legend.addTo(this.map);
+    // var legend = L.control({position: 'bottomright'});
+    // legend.onAdd = function (map) {
+    //     var div = L.DomUtil.create('div', 'info legend'),
+    //         categories = ['E1','E2','EN','G2','I', 'NN', 'RH', 'SP', 'SP', 'UH', 'UV1','UV2-MD','Workshop'];
+    //         var labels = [];
+    //     for (var i = 0; i < categories.length; i++) {
+    //         div.innerHTML +=
+    //             '<i style="background:' +  getPrecicntColor(categories[i]).color + '"></i> ' +
+    //             categories[i] + (categories[i + 1] ? '&ndash;' + categories[i + 1] + '<br>' : '+');
+    //     }
+    //     return div;
+    //  };
+    // legend.addTo(this.map);
 
     this.fetchGeojson()
   

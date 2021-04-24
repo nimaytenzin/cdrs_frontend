@@ -1,87 +1,109 @@
-section{
-    height: 100vh;
-  
+html {
+    scroll-behavior: smooth;
+    font-family: 'Roboto', sans-serif;
 }
+
+.scroll-container {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+  }
+  
+  section {
+    height: 100vh; 
+    height: 100vh;
+    margin-bottom: 3%;
+    scroll-snap-align: center;
+  }
+
+
 
 .introdution{
     height:100% ;
     overflow-y: hidden;
     flex-direction: column;
 }
-
-.welcome{
-    position: absolute;
-    bottom: 15px;
+.introdution p{
     text-align: center;
+    font-size: larger;
+    font-weight: lighter;
+    margin: 0;
+    padding: 0;
 }
+
+.intro-divison{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.intro-divison div{
+    display: flex;
+    flex-direction: column;
+    font-size: larger;
+}
+
+//lap details sectoin
+.lap-details{
+    display: flex;
+    flex-direction: row;
+    margin-top: 2%;
+}
+
+.lap-details div{
+    display: flex;
+    flex-direction: column;
+}
+.lap-details #map{
+    width: 50%;
+}
+.lap-details .info{
+    width: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #map, #developmentStatusMap{
     height: 90vh;
     width: 50%;
 }
 
-.legend {
-    line-height: 18px;
-    color: #555;
-}
-.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
-}
-.precicnt-info{
-    float: right;
-    width: 50%;
-    overflow-y: auto;
-    height:2000px
-}
-.description{
-    text-align: justify;
-    overflow: hidden;
-    margin: 2rem;
-    font-weight: lighter;
+
+.title{
+    text-align: center;
+    position:fixed; /* Sit on top of the page content */
+    top: 70%;
+    left: 50%;
+    font-size: 50px;
+    color:rgba(250,231,162);
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 5px;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
 }
 
-.basic-info{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow-wrap: normal;
-}
-.info-card{
-    margin-left: 1rem;
-    margin-right: 1rem;
-    text-align: right;
+img-comparison-slider{
+    height: 85vh;
+    border: none;
 }
 
-.card-number{
- font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
- font-weight: bolder;   
-}
-
-.feedback{
-    display: flex;
-    flex-direction: column;
-    margin-right: 5rem;
-    margin-left: 5rem;
-}
-
-
-#chart {
-    max-width: 650px;
-    margin: 35px auto;
-  }
-
-.legend {
-    line-height: 18px;
-    color: #555;
-}
-.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
-}
-  
