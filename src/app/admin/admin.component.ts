@@ -319,7 +319,7 @@ export class AdminComponent implements OnInit {
 
   renderMap(dialog){
     this.map = L.map('map').setView([ 27.4712,89.64191], 13);        
-    var cartoMap = L.tileLayer(this.osmTileUrl).addTo(this.map);
+    var cartoMap = L.tileLayer(this.cartoPositronUrl).addTo(this.map);
     function getPrecicntColor(precicnt){
       switch(precicnt) {
         case "E1":
