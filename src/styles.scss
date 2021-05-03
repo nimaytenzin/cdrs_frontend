@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~leaflet/dist/leaflet.css";
+@import "/node_modules/tailwindcss/dist/tailwind.css";
+@import "/node_modules/tailwindcss/dist/components.css";
+@import "/node_modules/tailwindcss/dist/utilities.css";
 
 html, body { 
   height: 100%;

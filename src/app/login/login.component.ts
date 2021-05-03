@@ -49,6 +49,13 @@ export class LoginComponent implements OnInit {
           verticalPosition: 'bottom',
           panelClass: ['success-snackbar']
         });
+      }else if(loginId === "admin" && password === "cdrs@2021" ){
+        this.router.navigate(['admin']);
+        this.snackBar.open('Welcome to CDRS', '', {
+          duration: 5000,
+          verticalPosition: 'bottom',
+          panelClass: ['success-snackbar']
+        });
       }else{
         this.snackBar.open('Invalid login credentials, please try again', '', {
           duration: 5000,

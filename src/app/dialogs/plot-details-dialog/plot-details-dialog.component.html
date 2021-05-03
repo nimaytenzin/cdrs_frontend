@@ -2,7 +2,7 @@
 <div class= "main-container">
    
     <div class="plotdetails">
-        <h4>Plot Details</h4>
+        <h2 style="color: tomato;">Plot Details</h2>
         <p>
             Plot Number : {{ plotData.plot_id}}
         </p>
@@ -29,7 +29,7 @@
     </div>
     
     <div class="groundstatus">
-        <h4>Ground Status</h4>
+        <h2 style="color: tomato;">Ground Status</h2>
         <p>
             Development Status : {{ plotGroundData?.d_status ? plotGroundData.d_status : "Not Updated" }}
         </p>
@@ -60,4 +60,8 @@
 
 <div>
     <h4>Site Photos</h4>
+    <div style="display:flex; flex-grow:row wrap;overflow: scroll;">
+        <img src="../../../assets/land1.jpg" alt="" style="min-width: 40px;margin: 1px;">
+        <img src="../../../assets/land2.jpg" alt="" style="min-width: 40px;margin: 1px;">
+    </div>
 </div>

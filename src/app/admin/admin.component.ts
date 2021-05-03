@@ -85,20 +85,17 @@ export class AdminComponent implements OnInit {
     
 
   ngOnInit() {
-    this.renderMap(this.dialog);
-    this.renderDevelopmentStatuMap(this.dialog)
-    this.reactiveForms();
-    this.fetchChartData()
-    this.dataService.getPlotDetailsByLap(2).subscribe(res => {
-      this.totalLandArea = parseFloat(res.sum).toFixed(2) + "Acres";
-      this.totalPlots = res.count;
-    })
+    // this.renderMap(this.dialog);
+    // this.renderDevelopmentStatuMap(this.dialog)
+    // this.reactiveForms();
+    // this.fetchChartData()
+    // this.dataService.getPlotDetailsByLap(2).subscribe(res => {
+    //   this.totalLandArea = parseFloat(res.sum).toFixed(2) + "Acres";
+    //   this.totalPlots = res.count;
+    // })
   }
 
-  highlight = {
-    'color': 'red',
-    'weight': 2
-  };
+
 
   
 
@@ -219,6 +216,11 @@ export class AdminComponent implements OnInit {
   renderDevelopmentStatuMap(dialog){
     this.dStatusMap = L.map('developmentStatusMap').setView([27.4712,89.64191],13);
     var fdfd = L.tileLayer(this.cartoPositronUrl).addTo(this.dStatusMap);
+
+   var  highlight = {
+      'color': 'red',
+      'weight': 2
+    };
     
     function getColor(d_status){
       switch(d_status) {
@@ -285,8 +287,7 @@ export class AdminComponent implements OnInit {
         layer.on('click', (e) => {
           e.target.setStyle(this.highlight)
            const confirmDialog = dialog.open(PlotDetailsDialogComponent, {
-            width: '50%',
-            position: { right: '5%', top: '10%'},
+            width: 'fit-content',
             data:{
               e: e.target.feature.properties
             }
@@ -414,6 +415,11 @@ export class AdminComponent implements OnInit {
       }   
     }
 
+    var  highlight = {
+      'color': 'red',
+      'weight': 2
+    };
+
     this.precinctMap= L.geoJSON(null,{
       style: function (feature) {
         return {
@@ -427,10 +433,9 @@ export class AdminComponent implements OnInit {
       onEachFeature(feature,layer){
         layer.on('click', (e) => {
           
-           e.target.setStyle(this.highlight)
+           e.target.setStyle(highlight)
            const confirmDialog = dialog.open(PlotDetailsDialogComponent, {
             width: '50%',
-            position: { right: '5%', top: '10%'},
             data:{
               e: e.target.feature.properties
             }
