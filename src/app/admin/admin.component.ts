@@ -85,14 +85,14 @@ export class AdminComponent implements OnInit {
     
 
   ngOnInit() {
-    // this.renderMap(this.dialog);
-    // this.renderDevelopmentStatuMap(this.dialog)
-    // this.reactiveForms();
-    // this.fetchChartData()
-    // this.dataService.getPlotDetailsByLap(2).subscribe(res => {
-    //   this.totalLandArea = parseFloat(res.sum).toFixed(2) + "Acres";
-    //   this.totalPlots = res.count;
-    // })
+    this.renderMap(this.dialog);
+    this.renderDevelopmentStatuMap(this.dialog)
+    this.reactiveForms();
+    this.fetchChartData()
+    this.dataService.getPlotDetailsByLap(2).subscribe(res => {
+      this.totalLandArea = parseFloat(res.sum).toFixed(2) + "Acres";
+      this.totalPlots = res.count;
+    })
   }
 
 
@@ -214,7 +214,7 @@ export class AdminComponent implements OnInit {
 
 
   renderDevelopmentStatuMap(dialog){
-    this.dStatusMap = L.map('developmentStatusMap').setView([27.4712,89.64191],13);
+    this.dStatusMap = L.map('developmentStatusMap').setView([27.4712,89.64191],17);
     var fdfd = L.tileLayer(this.cartoPositronUrl).addTo(this.dStatusMap);
 
    var  highlight = {
@@ -257,21 +257,21 @@ export class AdminComponent implements OnInit {
       }   
     }
 
-    this.dStatusRoads  = L.geoJSON(null, {
-      style: function (feature) {
-        return {
-            color: getRoadColor(feature.properties.d_status),
-            weight: 2,
-            opacity: 1,
-            fillOpacity: 1
-        };
-      },
-      onEachFeature:  (feature, layer) => {
-        layer.on('click',(e) => {
-          console.log(e)
-        })
-      }
-    })
+    // this.dStatusRoads  = L.geoJSON(null, {
+    //   style: function (feature) {
+    //     return {
+    //         color: getRoadColor(feature.properties.d_status),
+    //         weight: 2,
+    //         opacity: 1,
+    //         fillOpacity: 1
+    //     };
+    //   },
+    //   onEachFeature:  (feature, layer) => {
+    //     layer.on('click',(e) => {
+    //       console.log(e)
+    //     })
+    //   }
+    // })
 
     this.dStatusMapp= L.geoJSON(null,{
       style: function (feature) {
@@ -307,11 +307,11 @@ export class AdminComponent implements OnInit {
       } 
     }).addTo(this.dStatusMap)
 
-    var overlayMaps = {
-      "Plots": this.dStatusMapp,
-      "Roads":this.dStatusRoads
-    };        
-    this.layers = L.control.layers(overlayMaps).addTo(this.dStatusMap);
+    // var overlayMaps = {
+    //   "Plots": this.dStatusMapp,
+    //   "Roads":this.dStatusRoads
+    // };        
+    // this.layers = L.control.layers(overlayMaps).addTo(this.dStatusMap);
     this.fetchGeojson()
     
   }
@@ -481,8 +481,6 @@ export class AdminComponent implements OnInit {
 
   
 
-
-
   fetchGeojson(){
     this.dataService.getPlotsByLap(2).subscribe(res =>{
       this.precinctMap.addData(res).addTo(this.map)
@@ -490,15 +488,15 @@ export class AdminComponent implements OnInit {
       this.map.fitBounds(this.precinctMap.getBounds())      
     })
 
+
+    // this.dataService.getRoadShapeJoined(2).subscribe(res => {
+    //   this.dStatusRoads.addData(res).addTo(this.dStatusMap)
+    // })
     this.dataService.getShapeJoined(2).subscribe(res => {
-      console.log(res);
       this.dStatusMapp.addData(res).addTo(this.dStatusMap);
       this.dStatusMap.fitBounds(this.dStatusMap.getBounds())
     })
 
-    this.dataService.getRoadShapeJoined(2).subscribe(res => {
-      this.dStatusRoads.addData(res).addTo(this.dStatusMap)
-    })
 
 
   }
