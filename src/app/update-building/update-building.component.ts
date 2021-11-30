@@ -11,6 +11,11 @@ interface OPTIONS{
   name:string
 }
 
+interface OPTIONS2{
+  id:string,
+  name:boolean
+}
+
 export class Building{
   structure_id: number;
   lap_id: number;
@@ -50,7 +55,15 @@ export class UpdateBuildingComponent implements OnInit {
   buildingDetails:any;
   updateSwitch:boolean;
   API_URL = environment.API_URL;
-  hhBuildingData = {};
+  hhBuildingData = {
+    existancyStatus:"",
+    constructionYear:"",
+    buildingUse:"",
+    floors:"",
+    attic:"",
+    basement:"",
+    jamthog:""
+  };
   hhUnitData =[];
 
   buildingUses:OPTIONS[] =[
@@ -81,7 +94,12 @@ export class UpdateBuildingComponent implements OnInit {
     {id: "4", name: "UnderDeveloped"}
   ]
 
-  yesNo:OPTIONS[]=[
+  yesNo:OPTIONS2[]=[
+    {id: "1", name: true},
+    {id: "2", name: false}
+  ]
+
+  yesNo2:OPTIONS[]=[
     {id: "1", name: "Yes"},
     {id: "2", name: "No"}
   ]
@@ -110,36 +128,67 @@ export class UpdateBuildingComponent implements OnInit {
     this.dataService.getHHsurveyBuildingData(this.Building.structure_id).subscribe(res =>{
       this.hhBuildingData = res.data
       console.log(res, "BUILDING DATA")
-    })
-    this.dataService.getHHsurveyUnitData(this.Building.structure_id).subscribe(res =>{
-      this.hhUnitData = res.data
-      console.log("HHHHH", res)
-    })
+      this.dataService.getHHsurveyUnitData(this.Building.structure_id).subscribe(res =>{
+        this.hhUnitData = res.data
+        console.log(this.hhUnitData)
+        this.dataService.getSpecificBuildingDetails(this.Building.structure_id).subscribe(res => {
+          this.buildingDetails = res
 
-    this.dataService.getSpecificBuildingDetails(this.Building.structure_id).subscribe(res => {
-      this.buildingDetails = res
-      console.log(res)
-      this.buildingOwner = res.owner;
-      this.ownerContact = res.contact;
-      this.updateBuildingForm.patchValue({
-        existancyStatusControl: res.status,
-        constructionYearControl:res.year,
-        buildingUseControl:res.use,
-        buildingHeightControl:res.height,
-        atticControl:res.attic,
-        jamthogControl:res.jamthog,
-        basementControl:res.basement,
-        facadeControl:res.facade,
-        boundaryWallControl:res.b_wall,
-        balconyProjectionControl:res.balcony,
-        buildingColorControl:res.color,
-        parkingControl:res.parking,
-        residentialUnitControl:res.res_units,
-        commercialUnitControl:res.com_units,
-        officeUnitControl:res.off_units,
-        buildingRemarksControl:res.remarks,
-      });
+          if(res.status !== null){
+            this.updateBuildingForm.patchValue({
+              existancyStatusControl: res.status,
+              constructionYearControl:res.year,
+              buildingUseControl:res.use,
+              buildingHeightControl:res.height,
+              atticControl:res.attic,
+              jamthogControl:res.jamthog,
+              basementControl:res.basement,
+              facadeControl:res.facade,
+              boundaryWallControl:res.b_wall,
+              balconyProjectionControl:res.balcony,
+              buildingColorControl:res.color,
+              parkingControl:res.parking,
+              residentialUnitControl:res.res_units,
+              commercialUnitControl:res.com_units,
+              officeUnitControl:res.off_units,
+              buildingRemarksControl:res.remarks,
+            });
+          }else{
+            let residentialUnits =0;
+            let commercialUnits =0;
+            let officeUnits = 0
+            this.hhUnitData.forEach(unit =>{
+             if(unit.unitUse === "Commercial"){
+              commercialUnits += 1 
+             }else if (unit.unitUse === "Residential"){
+               residentialUnits +=1
+             }else if(unit.unitUse === "Office"){
+               officeUnits +=1
+             }
+            })
+            this.updateBuildingForm.patchValue({
+              existancyStatusControl: this.hhBuildingData.existancyStatus,
+              constructionYearControl:this.hhBuildingData.constructionYear,
+              buildingUseControl:this.hhBuildingData.buildingUse,
+              buildingHeightControl:this.hhBuildingData.floors,
+              atticControl:this.hhBuildingData.attic,
+              jamthogControl:this.hhBuildingData.jamthog,
+              basementControl:this.hhBuildingData.basement,
+              residentialUnitControl:residentialUnits,
+              commercialUnitControl:commercialUnits,
+              officeUnitControl:officeUnits,
+              parkingControl:0
+            });
+          }
+        
+         
+        })
+      })
+      
     })
+    
+
+   
     this.reactiveForms();
     
   }
@@ -167,14 +216,14 @@ export class UpdateBuildingComponent implements OnInit {
 
   updateBuilding(){
     this.Building.structure_id =parseInt( sessionStorage.getItem('building_id'));
-    this.Building.lap_id = parseInt(sessionStorage.getItem('lapId'));
+    this.Building.lap_id = parseInt(sessionStorage.getItem('lap_id'));
     this.Building.status = this.updateBuildingForm.get('existancyStatusControl').value;
     this.Building.year = this.updateBuildingForm.get('constructionYearControl').value;
     this.Building.use = this.updateBuildingForm.get('buildingUseControl').value;
     this.Building.height = this.updateBuildingForm.get('buildingHeightControl').value;
-    this.Building.attic = this.updateBuildingForm.get('atticControl').value
-    this.Building.jamthog  = this.updateBuildingForm.get('jamthogControl').value
-    this.Building.basement = this.updateBuildingForm.get('basementControl').value
+    this.Building.attic = this.updateBuildingForm.get('atticControl').value === true? "Yes" : "No"
+    this.Building.jamthog  = this.updateBuildingForm.get('jamthogControl').value=== true? "Yes" : "No"
+    this.Building.basement = this.updateBuildingForm.get('basementControl').value=== true? "Yes" : "No"
     this.Building.facade = this.updateBuildingForm.get('facadeControl').value
     this.Building.b_wall = this.updateBuildingForm.get('boundaryWallControl').value
     this.Building.balcony = this.updateBuildingForm.get('balconyProjectionControl').value
@@ -185,6 +234,7 @@ export class UpdateBuildingComponent implements OnInit {
     this.Building.off_units = this.updateBuildingForm.get('officeUnitControl').value
     this.Building.remarks = this.updateBuildingForm.get('buildingRemarksControl').value
 
+    console.log(this.Building)
     this.dataService.updateBuilding(this.Building,this.Building.structure_id).subscribe(response=>{
       if(response.status === "success"){
         this.dataService.buildingSetDone(this.Building.structure_id).subscribe(

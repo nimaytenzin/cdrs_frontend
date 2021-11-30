@@ -6,6 +6,9 @@
         <td>Existancy Status </td><td>{{hhBuildingData.existancyStatus}}</td>
       </tr>
       <tr>
+        <td>Use  </td><td>{{hhBuildingData.buildingUse}}</td>
+      </tr>
+      <tr>
         <td>Building Owner </td><td>{{hhBuildingData.nameOfBuildingOwner}}</td>
       </tr>
       <tr>
@@ -27,19 +30,9 @@
         <td>Jamthog  </td><td>{{hhBuildingData.jamthog === 'true'?"Yes":"No"}}</td>
       </tr>
     </table>
-
     <p>
       Units : {{ hhUnitData.length }}
     </p>
-    <table style="width:100%">
-      <tr  *ngFor="let unit of hhUnitData">
-          <div style="padding: 5px; border: 1px solid #C8C1B4;">
-           Ownership: {{ unit.unitOwnership }} <br>
-           Unit Use: {{ unit.unitUse }} <br>
-           Rooms : {{ unit.numberOfRooms }} <br>
-          </div>
-      </tr>      
-    </table>
     </div>
   </div>
 
@@ -85,7 +78,7 @@
                 <mat-label>Attic</mat-label>
                 <mat-select name="attic" formControlName="atticControl"  [readonly]="disableForm" >
                   <mat-option *ngFor="let option of yesNo" [value]="option.name">
-                    {{option.name}}
+                    {{option.name == true? "Yes" : "No"}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -94,7 +87,7 @@
                 <mat-label>Jamthog</mat-label>
                 <mat-select name="jamthog" formControlName="jamthogControl"  [readonly]="disableForm" >
                   <mat-option *ngFor="let option of yesNo" [value]="option.name">
-                    {{option.name}}
+                    {{option.name == true? "Yes" : "No"}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -103,7 +96,7 @@
                 <mat-label>Basement</mat-label>
                 <mat-select name="basement" formControlName="basementControl"  [readonly]="disableForm" >
                   <mat-option *ngFor="let option of yesNo" [value]="option.name">
-                    {{option.name}}
+                    {{option.name == true? "Yes" : "No"}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -111,7 +104,7 @@
               <mat-form-field class="justifier">
                 <mat-label>Facade as per BAG</mat-label>
                 <mat-select name="facade" formControlName="facadeControl"  [readonly]="disableForm" >
-                  <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                  <mat-option *ngFor="let option of yesNo2" [value]="option.name">
                     {{option.name}}
                   </mat-option>
                 </mat-select>
@@ -120,18 +113,16 @@
               <mat-form-field class="justifier">
                 <mat-label>Boundary Wall</mat-label>
                 <mat-select name="boundaryWall" formControlName="boundaryWallControl"  [readonly]="disableForm" >
-                  <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                  <mat-option *ngFor="let option of yesNo2" [value]="option.name">
                     {{option.name}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
 
-
-
               <mat-form-field class="justifier">
                 <mat-label>Balcony projection towards Primary Road</mat-label>
                 <mat-select name="balconyProjection" formControlName="balconyProjectionControl"  [readonly]="disableForm" >
-                  <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                  <mat-option *ngFor="let option of yesNo2" [value]="option.name">
                     {{option.name}}
                   </mat-option>
                 </mat-select>
@@ -158,7 +149,7 @@
               <mat-form-field class="justifier">
                 <mat-label>Building Color Code Compliance</mat-label>
                 <mat-select name="buildingColor" formControlName="buildingColorControl"  [readonly]="disableForm" >
-                  <mat-option *ngFor="let option of yesNo" [value]="option.name">
+                  <mat-option *ngFor="let option of yesNo2" [value]="option.name">
                     {{option.name}}
                   </mat-option>
                 </mat-select>
