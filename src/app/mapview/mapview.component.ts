@@ -307,6 +307,7 @@ export class MapviewComponent implements OnInit {
           this.plotInfo.coverage = feature.properties.coverage;
           this.plotInfo.setback = feature.properties.setback;
 
+          console.log(feature.properties)
          if(this.isShowing === true){
            this.isShowing = false;
          } else{
