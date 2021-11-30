@@ -49,7 +49,9 @@ export class UpdateBuildingComponent implements OnInit {
   ownerContact:number;
   buildingDetails:any;
   updateSwitch:boolean;
-  API_URL = environment.API_URL
+  API_URL = environment.API_URL;
+  hhBuildingData = {};
+  hhUnitData =[];
 
   buildingUses:OPTIONS[] =[
     {id: "1", name: "Mixed Use"},
@@ -58,7 +60,8 @@ export class UpdateBuildingComponent implements OnInit {
     {id: "4", name: "Institutional"},
     {id: "5", name: "Industry"},
     {id: "6", name: "Services"},
-    {id: "7", name: "Recreational"}
+    {id: "7", name: "Recreational"},
+    {id: "7", name: "Heritage"}
   ]
 
   buildingHeight:OPTIONS[]=[
@@ -103,6 +106,16 @@ export class UpdateBuildingComponent implements OnInit {
 
   ngOnInit() {
     this.Building.structure_id = parseInt(sessionStorage.getItem('building_id'));
+
+    this.dataService.getHHsurveyBuildingData(this.Building.structure_id).subscribe(res =>{
+      this.hhBuildingData = res.data
+      console.log(res, "BUILDING DATA")
+    })
+    this.dataService.getHHsurveyUnitData(this.Building.structure_id).subscribe(res =>{
+      this.hhUnitData = res.data
+      console.log("HHHHH", res)
+    })
+
     this.dataService.getSpecificBuildingDetails(this.Building.structure_id).subscribe(res => {
       this.buildingDetails = res
       console.log(res)

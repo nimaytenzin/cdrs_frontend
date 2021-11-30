@@ -49,7 +49,6 @@ export class DataService {
   }
 
 
-
   getThromdes(){
     return this.http
     .get<any>(`${this.API_URL}/get-thromdes`, this.httpOptions)
@@ -327,9 +326,25 @@ updatePoint(id,featureDetails){
 
 
   /******************************* BUILDING DATA API ************************************************* */
+  getHHsurveyBuildingData(id){
+    return this.http
+    .get<any>(`https://zhichar.ddnsfree.com/hpi/building/get/${id}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
   getSpecificBuildingDetails(id){
     return this.http
     .get<any>(`${this.API_URL}/buildings/get-building/${id}`, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getHHsurveyUnitData(id){
+    return this.http
+    .get<any>(`https://zhichar.ddnsfree.com/hpi/household/get-all/${id}`, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     )

@@ -228,7 +228,6 @@ export class MapviewComponent implements OnInit {
     },
     onEachFeature:  (feature, layer) => {
       layer.on('click',(e) => {
-
        sessionStorage.setItem('building_id', feature.properties.structure_)
        this.router.navigate(['updatebuilding'])
       });

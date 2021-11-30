@@ -3,11 +3,42 @@
     <div class="form-container card" >
     <table style="width: 100%" >
       <tr>
-        <td>Building Owner </td><td>{{buildingOwner}}</td>
+        <td>Existancy Status </td><td>{{hhBuildingData.existancyStatus}}</td>
       </tr>
       <tr>
-        <td>Contact Number </td><td>{{ownerContact}}</td>
+        <td>Building Owner </td><td>{{hhBuildingData.nameOfBuildingOwner}}</td>
       </tr>
+      <tr>
+        <td>Contact Number </td><td>{{hhBuildingData.contactOwner}}</td>
+      </tr>
+      <tr>
+        <td>Year of Construction </td><td>{{hhBuildingData.constructionYear}}</td>
+      </tr>
+      <tr>
+        <td>Number of Floors  </td><td>{{hhBuildingData.floors}}</td>
+      </tr>
+      <tr>
+        <td>Attic  </td><td>{{hhBuildingData.attic === 'true'?"Yes":"No"}}</td>
+      </tr>
+      <tr>
+        <td>Basement  </td><td>{{hhBuildingData.basement === 'true'?"Yes":"No"}}</td>
+      </tr>
+      <tr>
+        <td>Jamthog  </td><td>{{hhBuildingData.jamthog === 'true'?"Yes":"No"}}</td>
+      </tr>
+    </table>
+
+    <p>
+      Units : {{ hhUnitData.length }}
+    </p>
+    <table style="width:100%">
+      <tr  *ngFor="let unit of hhUnitData">
+          <div style="padding: 5px; border: 1px solid #C8C1B4;">
+           Ownership: {{ unit.unitOwnership }} <br>
+           Unit Use: {{ unit.unitUse }} <br>
+           Rooms : {{ unit.numberOfRooms }} <br>
+          </div>
+      </tr>      
     </table>
     </div>
   </div>
