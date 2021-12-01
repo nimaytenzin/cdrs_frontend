@@ -125,33 +125,34 @@ export class UpdateBuildingComponent implements OnInit {
   ngOnInit() {
     this.Building.structure_id = parseInt(sessionStorage.getItem('building_id'));
 
-    this.dataService.getHHsurveyBuildingData(this.Building.structure_id).subscribe(res =>{
-      this.hhBuildingData = res.data
-      console.log(res, "BUILDING DATA")
-      this.dataService.getHHsurveyUnitData(this.Building.structure_id).subscribe(res =>{
-        this.hhUnitData = res.data
+    this.dataService.getHHsurveyBuildingData(this.Building.structure_id).subscribe(res1 =>{
+      this.hhBuildingData = res1.data
+      console.log(res1, "BUILDING DATA")
+      this.dataService.getHHsurveyUnitData(this.Building.structure_id).subscribe(res2 =>{
+        this.hhUnitData = res2.data
         console.log(this.hhUnitData)
-        this.dataService.getSpecificBuildingDetails(this.Building.structure_id).subscribe(res => {
-          this.buildingDetails = res
-
-          if(res.status !== null){
+        this.dataService.getSpecificBuildingDetails(this.Building.structure_id).subscribe(res3 => {
+          this.buildingDetails = res3
+          console.log(res3, "response three")
+          if(res3.status !== null){
+  
             this.updateBuildingForm.patchValue({
-              existancyStatusControl: res.status,
-              constructionYearControl:res.year,
-              buildingUseControl:res.use,
-              buildingHeightControl:res.height,
-              atticControl:res.attic,
-              jamthogControl:res.jamthog,
-              basementControl:res.basement,
-              facadeControl:res.facade,
-              boundaryWallControl:res.b_wall,
-              balconyProjectionControl:res.balcony,
-              buildingColorControl:res.color,
-              parkingControl:res.parking,
-              residentialUnitControl:res.res_units,
-              commercialUnitControl:res.com_units,
-              officeUnitControl:res.off_units,
-              buildingRemarksControl:res.remarks,
+              existancyStatusControl: res3.status,
+              constructionYearControl:res3.year,
+              buildingUseControl:res3.use,
+              buildingHeightControl:res3.height,
+              atticControl:res3.attic === "Yes"? true:false ,
+              jamthogControl:res3.jamthog === "Yes"? true:false,
+              basementControl:res3.basement === "Yes"? true:false,
+              facadeControl:res3.facade,
+              boundaryWallControl:res3.b_wall,
+              balconyProjectionControl:res3.balcony,
+              buildingColorControl:res3.color,
+              parkingControl:res3.parking,
+              residentialUnitControl:res3.res_units,
+              commercialUnitControl:res3.com_units,
+              officeUnitControl:res3.off_units,
+              buildingRemarksControl:res3.remarks,
             });
           }else{
             let residentialUnits =0;
