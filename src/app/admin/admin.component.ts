@@ -89,15 +89,13 @@ export class AdminComponent implements OnInit {
     this.renderDevelopmentStatuMap(this.dialog)
     this.reactiveForms();
     this.fetchChartData()
-    this.dataService.getPlotDetailsByLap(2).subscribe(res => {
+    this.dataService.getPlotDetailsByLap(6).subscribe(res => {
+      console.log(res)
       this.totalLandArea = parseFloat(res.sum).toFixed(2) + "Acres";
       this.totalPlots = res.count;
     })
   }
 
-
-
-  
 
   renderPrecinctBar(label,data){
     const add = arr => arr.reduce((a, b) => parseInt(a) + parseInt(b), 0);

@@ -135,7 +135,6 @@ export class UpdateBuildingComponent implements OnInit {
           this.buildingDetails = res3
           console.log(res3, "response three")
           if(res3.status !== null){
-  
             this.updateBuildingForm.patchValue({
               existancyStatusControl: res3.status,
               constructionYearControl:res3.year,
@@ -235,7 +234,6 @@ export class UpdateBuildingComponent implements OnInit {
     this.Building.off_units = this.updateBuildingForm.get('officeUnitControl').value
     this.Building.remarks = this.updateBuildingForm.get('buildingRemarksControl').value
 
-    console.log(this.Building)
     this.dataService.updateBuilding(this.Building,this.Building.structure_id).subscribe(response=>{
       if(response.status === "success"){
         this.dataService.buildingSetDone(this.Building.structure_id).subscribe(
